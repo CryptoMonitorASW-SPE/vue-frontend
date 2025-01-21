@@ -4,6 +4,7 @@ export default [
     js.configs.recommended,
 
     {
+        ignores: ["**/node_modules/", ".git/"],
         rules: {
             "no-unused-vars": "warn", // Warns about variables declared but not used
             "no-undef": "off",       // Turns off the undefined variable checks
