@@ -4,19 +4,25 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vite build",
+    "dev": "vite",
+    "preview": "vite preview"
   },
   "dependencies": {
     "axios": "^1.4.0",
     "core-js": "^3.6.5",
-    "vue": "^3.2.45"
+    "pinia": "^2.3.1",
+    "vue": "^3.2.45",
+    "vue-router": "^4.5.0"
   },
   "engines": {
-      "node": "22.13.0"
+    "node": "22.13.0"
   },
   "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
-    "@vue/compiler-sfc": "^3.2.45"
+    "@vue/compiler-sfc": "^3.2.45",
+    "vite": "^6.0.9"
   }
 }

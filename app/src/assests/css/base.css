@@ -1,0 +1,54 @@
+/* Definizione delle variabili CSS */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+:root {
+    /* Colori */
+    --primary-color: #4a6cf7;
+    --secondary-color: #f4f4f4;
+    --text-color: #000000;
+    --background-color: #ffffff;
+    --navbar-background: #f0f1ff;
+
+    /* Font */
+    --font-family: Roboto;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.2rem;
+    --font-size-xl: 1.5rem;
+
+    /* Spaziature */
+    --padding-sm: 0.5rem;
+    --padding-md: 1rem;
+    --padding-lg: 2rem;
+
+    /* Altri */
+    --border-radius: 5px;
+    --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Stili Globale */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* Layout Flexbox per App.vue */
+#app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Occupa almeno l'altezza della finestra */
+}
+
+main {
+    flex: 1; /* Occupa lo spazio rimanente */
+    padding: var(--padding-md); /* Aggiungi padding se necessario */
+}

@@ -1,6 +1,5 @@
 const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors"); // Enables CORS
+const cors = require("cors"); 
 const bodyParser = require("body-parser");
 
 const routes = require("./src/routes/routes");
@@ -12,15 +11,6 @@ const app = express();
 app.use(cors()); // Enable CORS for all origins
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-// Connect to MongoDB
-const mongoURI = process.env.MONGO_URI || "mongodb://mongodb:27017/dbsa";
-
-mongoose.set("strictQuery", false); // Optional: Adjust based on Mongoose version
-mongoose
-    .connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log("✅ MongoDB Connected!"))
-    .catch((err) => console.error("❌ MongoDB Connection Error:", err));
 
 // Health Check Endpoint
 app.get("/health", (req, res) => {

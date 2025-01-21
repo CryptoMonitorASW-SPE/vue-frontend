@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div id="app">
       <header>
         <h1>Sequence Alignment Tool</h1>
@@ -45,4 +45,10 @@
     justify-content: center;
   }
   </style>
-  
+   -->
+
+<script setup></script>
+
+<template>
+  <router-view />
+</template>
