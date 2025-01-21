@@ -58,7 +58,7 @@
 </template>
 
 <script>
-    export default {
-    name: 'CryptoTable',
-    };
+export default {
+    name: "CryptoTable",
+};
 </script>

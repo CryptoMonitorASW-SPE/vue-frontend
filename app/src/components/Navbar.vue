@@ -17,8 +17,8 @@
     </header>
   </template>
   
-  <script>
-  export default {
-    name: 'Navbar',
-  };
-  </script>
+<script>
+export default {
+    name: "Navbar",
+};
+</script>

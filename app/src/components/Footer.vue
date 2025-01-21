@@ -5,8 +5,8 @@
     </footer>
   </template>
   
-  <script>
-  export default {
-    name: 'Footer',
-  };
-  </script>
+<script>
+export default {
+    name: "Footer",
+};
+</script>

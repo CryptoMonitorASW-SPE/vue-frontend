@@ -16,17 +16,17 @@
     </div>
   </template>
   
-  <script>
-  import Navbar from '../components/Navbar.vue';
-  import Footer from '../components/Footer.vue';
-  import CryptoTable from '../components/CryptoTable.vue';
+<script>
+import Navbar from "../components/Navbar.vue";
+import Footer from "../components/Footer.vue";
+import CryptoTable from "../components/CryptoTable.vue";
   
-  export default {
-    name: 'HomeView',
+export default {
+    name: "HomeView",
     components: {
-      Navbar,
-      Footer,
-      CryptoTable,
+        Navbar,
+        Footer,
+        CryptoTable,
     },
-  };
-  </script>
+};
+</script>
