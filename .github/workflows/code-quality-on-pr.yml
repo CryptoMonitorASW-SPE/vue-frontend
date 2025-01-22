@@ -29,8 +29,8 @@ jobs:
       - name: Execute ESLint
         id: eslint
         run: |
-          npx eslint app/index.js \
-            app/src/components/* \
+          npx eslint app/src/components/* \
+            app/src/layouts/* \
             app/src/routes/* \
             app/src/views/* \
             app/src/App.vue \
