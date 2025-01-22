@@ -11,6 +11,8 @@
 
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import LoginView from "../views/LoginView.vue";
+import AuthLayout from "../layouts/AuthLayout.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -19,7 +21,20 @@ const router = createRouter({
             path: "/",
             name: "Home",
             component: HomeView,
-        }
+        },
+        {
+            path:"/Login",
+            component: AuthLayout,
+            children: [
+                {
+                    path: "",
+                    name: "Login",
+                    component: LoginView,
+
+                }
+            ]
+        },
+
     ]
 });
 

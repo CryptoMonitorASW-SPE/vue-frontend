@@ -58,12 +58,17 @@
     background-color: var(--primary-color);
     color: white;
     border: none;
-    padding: var(--padding-sm) var(--padding-md);
+    padding: var(--padding-sm) var(--padding-sm);
     border-radius: var(--border-radius);
     cursor: pointer;
-    width: 100%; /* Pulsante a larghezza piena su mobile */
+    width: 100%; 
     margin-top: var(--padding-sm);
+    text-decoration: none;
 }
+
+.sign-in:hover {
+    background-color: #3a5fcc;
+  }
 
 /* Hero Section */
 .hero {

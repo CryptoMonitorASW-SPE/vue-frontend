@@ -11,9 +11,9 @@
           </nav>
       </div>
       <div class="search-signin">
-      <input type="text" class="search-bar" placeholder="Search..." />
-      <button class="sign-in">Sign In</button>
-    </div>
+        <input type="text" class="search-bar" placeholder="Search..." />
+          <RouterLink to="/Login" class="sign-in">Sign In</RouterLink>      
+      </div>
     </header>
   </template>
   
