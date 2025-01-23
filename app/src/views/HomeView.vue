@@ -10,6 +10,7 @@
       </main>
         <section style="margin-left: 2rem; margin-right: 2rem;">
           <h3>Top Cryptocurrencies</h3>
+          <p>{{ message }}</p>
           <CryptoTable />
         </section>
       <Footer />
@@ -20,6 +21,7 @@
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
 import CryptoTable from "../components/CryptoTable.vue";
+import socket from "../controllers/socketioController";
   
 export default {
     name: "HomeView",
@@ -28,5 +30,17 @@ export default {
         Footer,
         CryptoTable,
     },
+    data () {
+        return {
+            message: "",
+        };
+    },
+    mounted () {
+        socket.on("broadcast", (data) => {
+            console.log("Received broadcast message:", data);
+            this.message = data.message || "No message";
+        });
+    },
+
 };
 </script>

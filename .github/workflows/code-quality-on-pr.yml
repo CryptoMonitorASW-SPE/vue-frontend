@@ -31,6 +31,7 @@ jobs:
         run: |
           npx eslint app/src/components/* \
             app/src/layouts/* \
+            app/src/controllers/* \
             app/src/routes/* \
             app/src/views/* \
             app/src/App.vue \
