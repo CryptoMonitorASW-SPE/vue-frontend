@@ -32,6 +32,7 @@ jobs:
           npx eslint app/src/components/* \
             app/src/layouts/* \
             app/src/controllers/* \
+            app/src/stores/* \
             app/src/routes/* \
             app/src/views/* \
             app/src/App.vue \
