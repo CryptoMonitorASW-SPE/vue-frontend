@@ -25,7 +25,7 @@ gitSemVer {
 }
 
 node {
-    version.set("22.13.0")
+    version.set("22.13.1")
 
     // Download a local Node.js distribution (instead of using a global one)
     download.set(true)
@@ -37,14 +37,10 @@ node {
     nodeProjectDir.set(file(project.projectDir))
 }
 
-tasks.register<NpmTask>("runBackend") {
-    dependsOn("npm_install")
-    args.set(listOf("run", "dev"))
-}
 
 tasks.register<NpmTask>("runFrontend") {
     dependsOn("npm_install")
-    args.set(listOf("run", "serve"))
+    args.set(listOf("run", "dev"))
 }
 
 tasks.register("printVersion") {
