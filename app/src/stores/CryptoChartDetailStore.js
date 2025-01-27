@@ -1,41 +1,62 @@
-// store/cryptoChartDetailStore.js
+// store/CryptoChartDetailStore.js
 import { defineStore } from 'pinia'
+import axios from 'axios'
 
 export const useCryptoChartDetailStore = defineStore('cryptoChartDetailStore', {
   state: () => ({
     chartData: {}, // Store chart data per time span
     timestamp: null,
     isLoading: false,
-    error: null,
+    error: null
   }),
   actions: {
-    // Action to update chart data based on event type
+    /**
+     * Updates chart data based on the event type.
+     * @param {Object} data - The data object containing eventType, timeSpan, payload, and timestamp.
+     */
     updateCryptoChartDetail(data) {
       if (data.eventType === 'CRYPTO_DETAIL_CHART_UPDATE') {
-        const { timeSpan, payload, timestamp } = data
-        this.chartData[timeSpan] = payload
-        this.timestamp = timestamp
+        this.chartData[data.timespan] = data
       }
     },
-    // Action to fetch chart data for a specific time span
-    async fetchChartData(timeSpan) {
+
+    /**
+     * Fetches chart data for a specific coin, currency, and time span.
+     * @param {string} coinId - The ID of the cryptocurrency (e.g., 'bitcoin').
+     * @param {string} currency - The currency to display prices in (e.g., 'usd').
+     * @param {number|string} days - The number of days for the chart data (e.g., 1).
+     * @param {string} timeSpan - The time span label corresponding to days (e.g., '1D').
+     */
+    async fetchChartData(coinId, currency, days, timeSpan) {
       this.isLoading = true
       this.error = null
       try {
-        // Replace the following with your actual data fetching logic
-        // For example, you might call an API or subscribe to a WebSocket
-        const response = await fetch(`/api/crypto/chart?span=${timeSpan}`)
-        if (!response.ok) {
-          throw new Error('Failed to fetch chart data')
+        // Construct the API endpoint with string expansion
+        const endpoint = `/api/cryptomarket/chart/${coinId}/${currency}/${days}`
+        const response = await axios.get(endpoint)
+
+        if (!response || !response.data) {
+          throw new Error('Invalid response from the crypto-market service.')
         }
-        const data = await response.json()
-        // Assume the response has the structure: { eventType, payload, timestamp, timeSpan }
-        this.updateCryptoChartDetail({ ...data, timeSpan })
+
+        const data = response.data.dataPoints.map(point => ({
+          x: new Date(point.timestamp),
+          y: [point.open, point.high, point.low, point.close]
+        }))
+
+        console.log(data)
+        // Update the store with the fetched data
+        this.updateCryptoChartDetail({
+          eventType: 'CRYPTO_DETAIL_CHART_UPDATE',
+          payload: data,
+          timespan: timeSpan
+        })
       } catch (err) {
-        this.error = err.message
+        this.error = err.response?.data?.message || err.message || 'Failed to fetch chart data.'
+        console.error('Fetch Chart Data Error:', err)
       } finally {
         this.isLoading = false
       }
-    },
-  },
+    }
+  }
 })
