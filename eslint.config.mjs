@@ -3,6 +3,7 @@ import js from '@eslint/js';
 import vue from 'eslint-plugin-vue';
 import vueParser from 'vue-eslint-parser';
 import globals from 'globals';
+import eslintConfigPrettier from "eslint-config-prettier";
 
 export default [
   {
@@ -32,4 +33,5 @@ export default [
       'no-use-before-define': 'error', // Disallows using variables before they are defined
     },
   },
+  eslintConfigPrettier,
 ];
