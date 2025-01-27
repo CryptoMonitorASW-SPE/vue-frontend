@@ -1,4 +1,3 @@
-;
 <template>
   <main
     class="login-form"
@@ -17,12 +16,13 @@
       "
     >
       <h2 style="font-size: 1.2rem; margin-bottom: 1rem">Welcome Back!</h2>
-      <form>
+      <form @submit.prevent="submitForm">
         <div class="form-group" style="margin-bottom: 1rem; text-align: left">
           <label for="email" style="display: block; font-weight: bold; margin-bottom: 0.5rem">
             Email
           </label>
           <input
+            v-model="email"
             type="email"
             id="email"
             placeholder="Enter your email address"
@@ -40,6 +40,7 @@
             Password
           </label>
           <input
+            v-model="password"
             type="password"
             id="password"
             placeholder="Enter your password"
@@ -81,3 +82,27 @@
     </div>
   </main>
 </template>
+
+<script setup>
+import { ref } from 'vue'
+import { useAuthenticationStore } from '../../stores/AuthenticationStore'
+import { useRouter } from 'vue-router'
+
+const email = ref('')
+const password = ref('')
+const authStore = useAuthenticationStore()
+const router = useRouter()
+
+const submitForm = async () => {
+  const credentials = { email: email.value, password: password.value }
+
+  // Perform login
+  await authStore.login(credentials)
+
+  if (authStore.error) {
+    alert(authStore.error)
+  } else {
+    router.push('/')
+  }
+}
+</script>
