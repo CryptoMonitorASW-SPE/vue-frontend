@@ -1,0 +1,332 @@
+@use 'sass:color';
+@use './base' as base;
+
+/* Skip Link */
+.skip-link {
+  @extend .sr-only;
+
+  &:focus {
+    position: fixed;
+    top: base.$padding-sm;
+    left: base.$padding-sm;
+    z-index: 100;
+    width: auto;
+    height: auto;
+    padding: base.$padding-sm;
+    background: base.$background-color;
+    color: base.$text-color;
+  }
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: base.$padding-sm;
+  background-color: base.$navbar-background;
+  box-shadow: base.$box-shadow;
+  margin-bottom: base.$padding-md;
+
+  .logo {
+    font-weight: bold;
+    font-size: base.$font-size-lg;
+    margin-bottom: base.$padding-sm;
+  }
+
+  nav ul {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    gap: base.$padding-sm;
+    margin-left: 0;
+    padding: 0;
+
+    li a {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: base.$text-color;
+      width: 100%;
+      padding: base.$padding-sm;
+      min-height: 44px;
+      border-bottom: 1px solid #e0e0e0;
+      transition: color 0.2s ease;
+
+      &:hover,
+      &:focus-visible {
+        color: base.$primary-color;
+        @include base.focus-visible;
+      }
+    }
+  }
+
+  .search-signin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: base.$padding-sm;
+    width: 100%;
+    max-width: 300px;
+
+    .search-bar {
+      width: 100%;
+      padding: base.$padding-sm;
+      border: 1px solid #ccc;
+      border-radius: base.$border-radius;
+      min-height: 44px;
+
+      &:focus {
+        @include base.focus-visible;
+        border-color: base.$primary-color;
+      }
+    }
+
+    .sign-in {
+      @include base.touch-target;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: base.$primary-color;
+      color: white;
+      border: none;
+      padding: base.$padding-sm base.$padding-md;
+      border-radius: base.$border-radius;
+      cursor: pointer;
+      width: 100%;
+      text-decoration: none;
+      font-weight: 500;
+
+      &:hover {
+        background-color: color.adjust(base.$primary-color, $lightness: -10%);
+      }
+
+      &:focus-visible {
+        @include base.focus-visible;
+      }
+
+      &[disabled] {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+  background-color: base.$primary-color;
+  color: white;
+  padding: base.$padding-lg;
+  border-radius: base.$border-radius;
+  margin: 0 base.$padding-md;
+
+  h1 {
+    font-size: base.$font-size-xl;
+    margin-bottom: base.$padding-md;
+    line-height: 1.2;
+  }
+
+  p {
+    margin-bottom: base.$padding-lg;
+    line-height: 1.5;
+    max-width: 60ch;
+    margin-inline: auto;
+  }
+
+  .cta {
+    @include base.touch-target;
+    background-color: white;
+    color: base.$primary-color;
+    border: none;
+    padding: base.$padding-sm base.$padding-md;
+    border-radius: base.$border-radius;
+    font-size: base.$font-size-base;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: base.$box-shadow;
+
+    &:hover {
+      background-color: base.$secondary-color;
+    }
+
+    &:focus-visible {
+      @include base.focus-visible;
+    }
+
+    &[disabled] {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  }
+}
+
+/* Table Container */
+.table-container {
+  display: flex;
+  justify-content: center;
+  padding: 0 base.$padding-md;
+  width: 100%;
+  margin: base.$padding-lg 0;
+}
+
+/* Crypto Table */
+.crypto-table {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: base.$padding-lg;
+  position: relative;
+
+  &::after {
+    content: '→';
+    position: absolute;
+    right: base.$padding-md;
+    top: 50%;
+    transform: translateY(-50%);
+
+    @media (min-width: 768px) {
+      display: none;
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+
+    caption {
+      @extend .sr-only;
+      content: 'Current cryptocurrency prices and changes';
+    }
+
+    th,
+    td {
+      padding: base.$padding-sm;
+      border: none;
+      white-space: nowrap;
+    }
+
+    th {
+      background-color: base.$secondary-color;
+      font-weight: 600;
+      color: base.$text-color;
+    }
+
+    tr {
+      border-bottom: 1px solid #e0e0e0;
+
+      &:hover {
+        background-color: color.adjust(base.$background-color, $lightness: -2%);
+      }
+    }
+
+    td {
+      background-color: transparent;
+    }
+
+    .positive {
+      color: base.$success-color;
+      font-weight: 500;
+    }
+
+    .negative {
+      color: base.$error-color;
+      font-weight: 500;
+    }
+  }
+
+  &.loading {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  .error-state {
+    color: base.$error-color;
+    padding: base.$padding-md;
+    border: 1px solid base.$error-color;
+    border-radius: base.$border-radius;
+    margin: base.$padding-md 0;
+  }
+}
+
+/* Media Queries for Tablet */
+@media (min-width: 768px) {
+  .navbar {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: base.$padding-md base.$padding-lg;
+
+    .logo {
+      margin-bottom: 0;
+    }
+
+    nav ul {
+      flex-direction: row;
+      align-items: center;
+
+      li a {
+        border: none;
+        padding: base.$padding-sm base.$padding-md;
+      }
+    }
+
+    .search-signin {
+      flex-direction: row;
+      max-width: none;
+      width: auto;
+      gap: base.$padding-md;
+
+      .search-bar {
+        width: 200px;
+      }
+
+      .sign-in {
+        width: auto;
+      }
+    }
+  }
+
+  .hero {
+    margin: 0 base.$padding-lg;
+    padding: base.$padding-lg;
+
+    p {
+      font-size: base.$font-size-lg;
+    }
+  }
+
+  .table-container {
+    padding: 0 base.$padding-lg;
+  }
+}
+
+/* Media Queries for Desktop */
+@media (min-width: 1024px) {
+  .navbar {
+    padding: base.$padding-lg base.$padding-lg;
+
+    .logo {
+      font-size: base.$font-size-xl;
+    }
+
+    .search-signin .search-bar {
+      width: 300px;
+    }
+  }
+
+  .hero {
+    margin: 0 base.$padding-lg;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

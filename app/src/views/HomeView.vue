@@ -34,3 +34,7 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+@use '../assets/scss/home';
+</style>

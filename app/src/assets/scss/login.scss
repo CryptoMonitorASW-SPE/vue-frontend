@@ -1,0 +1,207 @@
+@use 'sass:color';
+@use './base' as base;
+
+/* Skip Link for Keyboard Navigation */
+.skip-to-login {
+  @extend .sr-only;
+
+  &:focus {
+    position: fixed;
+    top: base.$padding-sm;
+    left: base.$padding-sm;
+    z-index: 100;
+    width: auto;
+    height: auto;
+    padding: base.$padding-sm;
+    background: base.$background-color;
+    color: base.$text-color;
+  }
+}
+
+.login-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  min-height: calc(100vh - 120px); // Adjust based on header/footer height
+  padding: base.$padding-sm;
+
+  .form-container {
+    background-color: base.$background-color;
+    padding: base.$padding-md;
+    border-radius: base.$border-radius;
+    box-shadow: base.$box-shadow;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+
+    h2 {
+      font-size: base.$font-size-lg;
+      margin-bottom: base.$padding-md;
+      color: base.$text-color;
+    }
+
+    .form-group {
+      margin-bottom: base.$padding-md;
+      text-align: left;
+
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: base.$padding-sm;
+      }
+
+      input {
+        width: 100%;
+        padding: base.$padding-md; // Larger touch target
+        border: 2px solid #ddd; // Thicker border for better visibility
+        border-radius: base.$border-radius;
+        font-size: base.$font-size-base;
+        @include base.touch-target;
+
+        &:focus {
+          @include base.focus-visible;
+          border-color: base.$primary-color;
+        }
+
+        &:invalid {
+          border-color: base.$error-color;
+        }
+
+        &[aria-invalid='true'] {
+          border-color: base.$error-color;
+        }
+      }
+
+      .error-message {
+        color: base.$error-color;
+        font-size: base.$font-size-sm;
+        margin-top: base.$padding-sm;
+        font-weight: 500;
+
+        &[role='alert'] {
+          animation: fadeIn 0.2s ease-in;
+
+          @media (prefers-reduced-motion: reduce) {
+            animation: none;
+          }
+        }
+      }
+    }
+
+    .btn-login {
+      @include base.touch-target;
+      background-color: base.$primary-color;
+      color: white;
+      border: none;
+      padding: base.$padding-md;
+      border-radius: base.$border-radius;
+      font-size: base.$font-size-base;
+      cursor: pointer;
+      width: 100%;
+      margin-top: base.$padding-sm;
+      box-shadow: base.$box-shadow;
+      font-weight: 500;
+      position: relative;
+
+      &:hover {
+        background-color: color.adjust(base.$primary-color, $lightness: -10%);
+      }
+
+      &:focus-visible {
+        @include base.focus-visible;
+      }
+
+      &[disabled] {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+
+      &.loading {
+        color: transparent;
+
+        &::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 1.5em;
+          height: 1.5em;
+          margin: -0.75em;
+          border: 2px solid white;
+          border-radius: 50%;
+          border-right-color: transparent;
+          animation: rotate 0.8s linear infinite;
+
+          @media (prefers-reduced-motion: reduce) {
+            animation: none;
+          }
+        }
+      }
+    }
+
+    .form-footer {
+      margin-top: base.$padding-md;
+      font-size: base.$font-size-sm;
+      color: #666; // Darker for better contrast
+
+      a {
+        color: base.$primary-color;
+        text-decoration: none;
+        padding: base.$padding-sm; // Larger touch target
+        display: inline-block;
+        font-weight: 500;
+
+        &:hover {
+          text-decoration: underline;
+        }
+
+        &:focus-visible {
+          @include base.focus-visible;
+        }
+      }
+
+      p {
+        margin-top: base.$padding-md;
+      }
+    }
+  }
+}
+
+/* Tablet and up */
+@media (min-width: 481px) {
+  .login-form {
+    padding: base.$padding-md;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .login-form {
+    padding: base.$padding-lg;
+
+    .form-container {
+      padding: base.$padding-xl;
+    }
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
