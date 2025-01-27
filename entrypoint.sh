@@ -1,8 +1,10 @@
 #!/bin/sh
 
 
+
 envsubst '\
-    \${AUTHENTICATION_SERVICE_NAME} \${AUTHENTICATION_SERVICE_PORT}' < /etc/nginx/conf.d/nginx.conf.template > /etc/nginx/nginx.conf
+    \${AUTHENTICATION_SERVICE_NAME} \${AUTHENTICATION_SERVICE_PORT} \
+    ${CRYPTOMARKET_SERVICE_NAME} \${CRYPTOMARKET_SERVICE_PORT}' < /etc/nginx/conf.d/nginx.conf.template > /etc/nginx/nginx.conf
 
 # Start Nginx
 exec "$@"
