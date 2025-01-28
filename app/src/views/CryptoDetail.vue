@@ -11,7 +11,7 @@
     <CryptoPrice :price="crypto.price" :currency="userCurrency" />
     <section class="crypto-chart">
       <h2>Price Trend</h2>
-      <ChartComponent :cryptoId="crypto.id" />
+      <ChartComponent v-if="crypto.id" :cryptoId="crypto.id" :currency="userCurrency" />
     </section>
     <CryptoExchanges :exchanges="exchanges" />
   </article>

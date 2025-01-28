@@ -28,12 +28,15 @@ export default {
   components: {
     apexcharts: VueApexCharts
   },
-  setup() {
+  props: {
+    cryptoId: { type: String, required: true },
+    currency: { type: String, default: 'usd' }
+  },
+  setup(props) {
     const cryptoChartDetailStore = useCryptoChartDetailStore()
 
-    // Define constants for coinId and currency
-    const coinId = 'bitcoin' // You can make this dynamic as needed
-    const currency = 'usd' // You can make this dynamic as needed
+    const coinId = props.cryptoId
+    const currency = props.currency
 
     const timeSpans = ['1D', '7D', '1M', '6M', '1Y']
     const spanToDaysMap = {
@@ -56,7 +59,7 @@ export default {
         }
       },
       title: {
-        text: 'OHLC Chart',
+        text: '',
         align: 'left'
       },
       xaxis: {
