@@ -32,8 +32,8 @@ export default [
       sourceType: 'module',
       globals: {
         ...globals.browser,
-        ...globals.node,
-      },
+        ...globals.node
+      }
     },
     plugins: {
       vue,
@@ -74,5 +74,5 @@ export default [
       semi: ['warn', 'always'],
     },
   },
-  eslintConfigPrettier,
-];
+  eslintConfigPrettier
+]
