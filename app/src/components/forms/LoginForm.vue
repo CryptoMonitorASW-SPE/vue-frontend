@@ -5,14 +5,14 @@
       <form @submit.prevent="submitForm">
         <div class="form-group">
           <label for="email">Email</label>
-          <input v-model="email" type="email" id="email" placeholder="Enter your email address" />
+          <input id="email" v-model="email" type="email" placeholder="Enter your email address" />
         </div>
         <div class="form-group">
           <label for="password">Password</label>
           <input
+            id="password"
             v-model="password"
             type="password"
-            id="password"
             placeholder="Enter your password"
           />
         </div>
