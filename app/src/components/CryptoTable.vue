@@ -127,13 +127,21 @@
               class="crypto-logo"
             />
           </td>
-          <td>{{ crypto.name }}</td>
+          <td>
+            <RouterLink
+              :to="`/crypto/${crypto.id}`"
+              class="crypto-link"
+              :aria-label="`View details for ${crypto.name}`"
+            >
+              {{ crypto.name }}
+            </RouterLink>
+          </td>
           <td>{{ crypto.symbol.toUpperCase() }}</td>
-          <td>{{ formatCurrency(crypto.prices.values.usd) }}</td>
-          <td>{{ formatCurrency(crypto.marketCap.values.usd) }}</td>
-          <td>{{ formatCurrency(crypto.totalVolume.values.usd) }}</td>
-          <td>{{ formatCurrency(crypto.high24h.values.usd) }}</td>
-          <td>{{ formatCurrency(crypto.low24h.values.usd) }}</td>
+          <td>{{ formatCurrency(crypto.price) }}</td>
+          <td>{{ formatCurrency(crypto.marketCap) }}</td>
+          <td>{{ formatCurrency(crypto.totalVolume) }}</td>
+          <td>{{ formatCurrency(crypto.high24h) }}</td>
+          <td>{{ formatCurrency(crypto.low24h) }}</td>
           <td
             :class="{
               positive: crypto.priceChangePercentage24h >= 0,
@@ -196,5 +204,21 @@ export default {
   width: 30px;
   height: 30px;
   margin-right: 8px;
+}
+
+.crypto-link {
+  color: inherit;
+  text-decoration: none;
+  display: block;
+  padding: 0.5rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+  }
 }
 </style>
