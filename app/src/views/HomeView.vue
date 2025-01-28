@@ -11,7 +11,7 @@
     <section style="margin-left: 2rem; margin-right: 2rem; margin-top: 2rem">
       <div style="display: flex; justify-content: space-between; align-items: center">
         <h3>Top Cryptocurrencies</h3>
-        <button @click="openFilterModal" class="filter-btn">Filter</button>
+        <button class="filter-btn" @click="openFilterModal">Filter</button>
       </div>
       <FilterModal
         :isVisible="isFilterModalVisible"
@@ -50,6 +50,9 @@ export default {
       }
     }
   },
+  mounted() {
+    initializeSocket()
+  },
   methods: {
     openFilterModal() {
       this.isFilterModalVisible = true
@@ -62,9 +65,6 @@ export default {
       this.closeFilterModal()
       console.log('Filters applied:', this.filters)
     }
-  },
-  mounted() {
-    initializeSocket()
   }
 }
 </script>

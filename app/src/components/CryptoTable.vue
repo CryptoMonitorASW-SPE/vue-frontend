@@ -6,85 +6,83 @@
           <th scope="col">Logo</th>
           <th
             scope="col"
-            @click="sortTable('name')"
-            @keydown.enter="sortTable('name')"
             style="cursor: pointer"
             :aria-sort="sortKey === 'name' ? (sortAsc ? 'ascending' : 'descending') : 'none'"
             tabindex="0"
+            @click="sortTable('name')"
+            @keydown.enter="sortTable('name')"
           >
             Name
             <span v-if="sortKey === 'name'">{{ sortAsc ? '↑' : '↓' }}</span>
           </th>
           <th
             scope="col"
-            @click="sortTable('symbol')"
-            @keydown.enter="sortTable('symbol')"
             style="cursor: pointer"
             :aria-sort="sortKey === 'symbol' ? (sortAsc ? 'ascending' : 'descending') : 'none'"
             tabindex="0"
+            @click="sortTable('symbol')"
+            @keydown.enter="sortTable('symbol')"
           >
             Symbol
             <span v-if="sortKey === 'symbol'">{{ sortAsc ? '↑' : '↓' }}</span>
           </th>
           <th
             scope="col"
-            @click="sortTable('prices')"
-            @keydown.enter="sortTable('prices')"
             style="cursor: pointer"
             :aria-sort="sortKey === 'prices' ? (sortAsc ? 'ascending' : 'descending') : 'none'"
             tabindex="0"
+            @click="sortTable('prices')"
+            @keydown.enter="sortTable('prices')"
           >
             Price (USD)
             <span v-if="sortKey === 'prices'">{{ sortAsc ? '↑' : '↓' }}</span>
           </th>
           <th
             scope="col"
-            @click="sortTable('marketCap')"
-            @keydown.enter="sortTable('marketCap')"
             style="cursor: pointer"
             :aria-sort="sortKey === 'marketCap' ? (sortAsc ? 'ascending' : 'descending') : 'none'"
             tabindex="0"
+            @click="sortTable('marketCap')"
+            @keydown.enter="sortTable('marketCap')"
           >
             Market Cap (USD)
             <span v-if="sortKey === 'marketCap'">{{ sortAsc ? '↑' : '↓' }}</span>
           </th>
           <th
             scope="col"
-            @click="sortTable('totalVolume')"
-            @keydown.enter="sortTable('totalVolume')"
             style="cursor: pointer"
             :aria-sort="sortKey === 'totalVolume' ? (sortAsc ? 'ascending' : 'descending') : 'none'"
             tabindex="0"
+            @click="sortTable('totalVolume')"
+            @keydown.enter="sortTable('totalVolume')"
           >
             Volume (24h)
             <span v-if="sortKey === 'totalVolume'">{{ sortAsc ? '↑' : '↓' }}</span>
           </th>
           <th
             scope="col"
-            @click="sortTable('high24h')"
-            @keydown.enter="sortTable('high24h')"
             style="cursor: pointer"
             :aria-sort="sortKey === 'high24h' ? (sortAsc ? 'ascending' : 'descending') : 'none'"
             tabindex="0"
+            @click="sortTable('high24h')"
+            @keydown.enter="sortTable('high24h')"
           >
             High (24h)
             <span v-if="sortKey === 'high24h'">{{ sortAsc ? '↑' : '↓' }}</span>
           </th>
           <th
             scope="col"
-            @click="sortTable('low24h')"
-            @keydown.enter="sortTable('low24h')"
             style="cursor: pointer"
             :aria-sort="sortKey === 'low24h' ? (sortAsc ? 'ascending' : 'descending') : 'none'"
             tabindex="0"
+            @click="sortTable('low24h')"
+            @keydown.enter="sortTable('low24h')"
           >
             Low (24h)
             <span v-if="sortKey === 'low24h'">{{ sortAsc ? '↑' : '↓' }}</span>
           </th>
           <th
             scope="col"
-            @click="sortTable('priceChangePercentage24h')"
-            @keydown.enter="sortTable('priceChangePercentage24h')"
             style="cursor: pointer"
             :aria-sort="
               sortKey === 'priceChangePercentage24h'
@@ -94,19 +92,21 @@
                 : 'none'
             "
             tabindex="0"
+            @click="sortTable('priceChangePercentage24h')"
+            @keydown.enter="sortTable('priceChangePercentage24h')"
           >
             Change (24h)
             <span v-if="sortKey === 'priceChangePercentage24h'">{{ sortAsc ? '↑' : '↓' }}</span>
           </th>
           <th
             scope="col"
-            @click="sortTable('circulatingSupply')"
-            @keydown.enter="sortTable('circulatingSupply')"
             style="cursor: pointer"
             :aria-sort="
               sortKey === 'circulatingSupply' ? (sortAsc ? 'ascending' : 'descending') : 'none'
             "
             tabindex="0"
+            @click="sortTable('circulatingSupply')"
+            @keydown.enter="sortTable('circulatingSupply')"
           >
             Circulating Supply
             <span v-if="sortKey === 'circulatingSupply'">{{ sortAsc ? '↑' : '↓' }}</span>

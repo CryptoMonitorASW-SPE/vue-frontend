@@ -1,0 +1,122 @@
+@use 'sass:color';
+@use '../../assets/scss/base' as base;
+
+/* Overlay della Modale */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+
+  /* Centro il contenuto figlio */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Contenuto della Modale */
+.filter-modal {
+  position: relative;
+  background-color: white;
+  padding: 20px;
+  border-radius: base.$border-radius;
+  width: 300px;
+  box-shadow: base.$box-shadow;
+}
+
+/* Pulsante di Chiusura */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: base.$text-color;
+
+  &:focus {
+    @include base.focus-visible;
+  }
+}
+
+/* Titolo della Modale */
+.filter-modal h4 {
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: base.$font-size-lg;
+}
+
+/* Etichette dei Filtri */
+.filter-modal label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: base.$text-color;
+}
+
+/* Input dei Filtri */
+.filter-modal input {
+  width: 100%;
+  padding: base.$padding-sm;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: base.$border-radius;
+  box-sizing: border-box;
+
+  &:focus {
+    border-color: base.$primary-color;
+    outline: none;
+    @include base.focus-visible;
+  }
+}
+
+/* Pulsanti della Modale */
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: base.$padding-sm;
+}
+
+.modal-buttons button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: base.$border-radius;
+  cursor: pointer;
+  font-size: base.$font-size-base;
+  box-shadow: base.$box-shadow;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
+
+  &.apply-btn {
+    background-color: base.$primary-color;
+    color: white;
+
+    &:hover {
+      background-color: color.adjust(base.$primary-color, $lightness: -10%);
+      transform: scale(1.05);
+    }
+
+    &:focus-visible {
+      @include base.focus-visible;
+    }
+  }
+
+  &.reset-btn {
+    background-color: #ccc;
+    color: #333;
+
+    &:hover {
+      background-color: #999;
+      transform: scale(1.05);
+    }
+
+    &:focus-visible {
+      @include base.focus-visible;
+    }
+  }
+}
