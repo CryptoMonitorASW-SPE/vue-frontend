@@ -1,5 +1,6 @@
 import { io } from 'socket.io-client'
 import { useCryptoStore } from '../stores/CryptoStore'
+import axios from 'axios'
 
 let socket = null
 
@@ -14,6 +15,10 @@ export function initializeSocket() {
   // Listen for the 'connect' event to confirm connection
   socket.on('connect', () => {
     console.log('Connected to the server!')
+    axios.post('/api/cryptomarket/start').then(response => {
+      console.log('Initial data:', response.data)
+      cryptoStore.updateCryptocurrencies(response.data)
+    })
   })
 
   // Listen for the 'broadcast' event
