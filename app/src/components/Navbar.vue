@@ -4,7 +4,7 @@
       <div class="logo" role="heading" aria-level="1">CryptoMonitor</div>
       <nav aria-label="Main navigation">
         <ul>
-          <li><a href="#" aria-current="page">Coins</a></li>
+          <li><RouterLink to="/" aria-current="page">Coins</RouterLink></li>
           <li><a href="#">Exchanges</a></li>
           <li><a href="#">About</a></li>
         </ul>
