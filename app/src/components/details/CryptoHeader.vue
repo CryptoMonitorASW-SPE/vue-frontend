@@ -6,10 +6,10 @@
       <p>Rank #{{ rank }}</p>
     </div>
     <button
-      @click="$emit('toggle-favorite')"
       class="favorite-button"
       :aria-pressed="isFavorite"
       :aria-label="isFavorite ? 'Rimuovi dai preferiti' : 'Aggiungi ai preferiti'"
+      @click="$emit('toggle-favorite')"
     >
       <span v-if="isFavorite">★</span>
       <span v-else>☆</span>
