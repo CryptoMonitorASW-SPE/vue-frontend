@@ -3,7 +3,7 @@ import { computed } from 'vue'
 export function useFilter(data, filters) {
   const filteredData = computed(() => {
     return data.value.filter(crypto => {
-      const price = crypto.prices.values.usd
+      const price = crypto.price
       const change24h = crypto.priceChangePercentage24h
 
       // Verifica Min Price

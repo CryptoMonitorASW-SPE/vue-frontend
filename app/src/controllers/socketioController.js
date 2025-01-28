@@ -17,7 +17,7 @@ export function initializeSocket() {
   })
 
   // Listen for the 'broadcast' event
-  socket.on('broadcast', data => {
+  socket.on('broadcastUSD', data => {
     console.log('Received broadcast message:', data)
     cryptoStore.updateCryptocurrencies(data)
   })
