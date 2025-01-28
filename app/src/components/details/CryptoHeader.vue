@@ -44,5 +44,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" src="../styles/CryptoHeader.scss"></style>

@@ -20,31 +20,36 @@
 <script>
 import CryptoHeader from '../components/details/CryptoHeader.vue'
 import CryptoPrice from '../components/details/CryptoPrice.vue'
-import CryptoExchanges from '../components/details/CryptoExchanges.vue'
+//import CryptoExchanges from '../components/details/CryptoExchanges.vue'
 import ChartComponent from '../components/details/CryptoOHLChart.vue'
+import { useCryptoStore } from '../stores/CryptoStore'
 
 export default {
   name: 'CryptoDetail',
   components: {
     CryptoHeader,
     CryptoPrice,
-    CryptoExchanges,
+    //CryptoExchanges,
     ChartComponent
   },
   props: {
-    crypto: {
-      type: Object,
+    cryptoId: {
+      type: String,
       required: true
     }
   },
   data() {
     return {
+      crypto: {},
       isFavorite: false,
       exchanges: [],
       userCurrency: 'USD' // Default currency; this can be dynamically set based on user preference
     }
   },
-  mounted() {},
+  async mounted() {
+    const cryptoStore = useCryptoStore()
+    this.crypto = await cryptoStore.fetchCryptoById(this.cryptoId)
+  },
   methods: {
     toggleFavorite() {
       this.isFavorite = !this.isFavorite
@@ -52,3 +57,7 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+@use '../assets/scss/details';
+</style>

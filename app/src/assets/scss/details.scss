@@ -1,0 +1,116 @@
+@use 'sass:color';
+@use './base' as base;
+
+.crypto-detail {
+  display: flex;
+  flex-direction: column;
+  gap: base.$padding-md;
+  padding: base.$padding-md;
+
+  .crypto-chart {
+    margin-top: base.$padding-sm;
+
+    h2 {
+      font-size: base.$font-size-lg;
+      margin-bottom: base.$padding-sm;
+    }
+  }
+}
+
+.crypto-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: base.$padding-md;
+  background-color: base.$secondary-color;
+  padding: base.$padding-md;
+  border-radius: base.$border-radius;
+  box-shadow: base.$box-shadow;
+
+  .crypto-image {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+  }
+
+  .crypto-info {
+    text-align: center;
+
+    h1 {
+      font-size: base.$font-size-lg;
+      margin-bottom: base.$padding-sm;
+      line-height: 1.2;
+    }
+
+    p {
+      margin: 0;
+      color: color.scale(base.$text-color, $lightness: -10%);
+    }
+  }
+
+  .favorite-button {
+    @include base.touch-target;
+    background-color: base.$primary-color;
+    color: #fff;
+    border: none;
+    border-radius: base.$border-radius;
+    padding: base.$padding-sm base.$padding-md;
+    cursor: pointer;
+    font-size: base.$font-size-base;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background-color: color.scale(base.$primary-color, $lightness: -10%);
+    }
+
+    &:focus-visible {
+      @include base.focus-visible;
+    }
+
+    span {
+      font-size: base.$font-size-lg;
+    }
+  }
+}
+
+.crypto-price {
+  background-color: base.$background-color;
+  padding: base.$padding-md;
+  border-radius: base.$border-radius;
+  box-shadow: base.$box-shadow;
+  text-align: center;
+
+  h2 {
+    margin-bottom: base.$padding-sm;
+    font-size: base.$font-size-lg;
+  }
+
+  p {
+    font-size: base.$font-size-base;
+    margin: 0;
+    font-weight: 500;
+  }
+}
+
+/* Accessibility: Large screens */
+@media (min-width: 768px) {
+  .crypto-detail {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: base.$padding-lg;
+
+    .crypto-chart {
+      flex-grow: 1;
+      margin-top: 0;
+    }
+  }
+
+  .crypto-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
