@@ -56,6 +56,17 @@ export const useCryptoStore = defineStore('cryptoStore', {
         this.timestamp = data.timestamp
         console.log('Cryptocurrencies aggiornate:', this.cryptocurrencies)
       }
+    },
+    fetchCryptoById(id) {
+      // Check if the crypto is already in the store
+      const crypto = this.cryptocurrencies.find(crypto => crypto.id === id)
+      if (crypto) {
+        return crypto
+      }
+
+      // If not found, return an empty object or handle accordingly
+      console.warn(`Crypto with ID ${id} not found in store`)
+      return {}
     }
   }
 })
