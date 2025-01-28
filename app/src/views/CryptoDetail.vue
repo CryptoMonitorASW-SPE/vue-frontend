@@ -21,7 +21,7 @@
 import CryptoHeader from '../components/details/CryptoHeader.vue'
 import CryptoPrice from '../components/details/CryptoPrice.vue'
 import CryptoExchanges from '../components/details/CryptoExchanges.vue'
-import ChartComponent from '../components/details/ChartComponent.vue'
+import ChartComponent from '../components/details/CryptoOHLChart.vue'
 
 export default {
   name: 'CryptoDetail',
@@ -44,11 +44,11 @@ export default {
       userCurrency: 'USD' // Default currency; this can be dynamically set based on user preference
     }
   },
+  mounted() {},
   methods: {
     toggleFavorite() {
       this.isFavorite = !this.isFavorite
     }
-  },
-  mounted() {}
+  }
 }
 </script>
