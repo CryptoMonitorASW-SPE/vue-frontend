@@ -21,7 +21,7 @@
 <script>
 import VueApexCharts from 'vue3-apexcharts'
 import { ref, computed, onMounted } from 'vue'
-import { useCryptoChartDetailStore } from '../stores/CryptoChartDetailStore'
+import { useCryptoChartDetailStore } from '../../stores/CryptoChartDetailStore'
 
 export default {
   name: 'CryptoOHLChart',
