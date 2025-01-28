@@ -1,18 +1,35 @@
-// eslint.config.mjs
 import js from '@eslint/js';
 import vue from 'eslint-plugin-vue';
 import vueParser from 'vue-eslint-parser';
 import globals from 'globals';
-import eslintConfigPrettier from "eslint-config-prettier";
+import eslintConfigPrettier from 'eslint-config-prettier';
+import vueA11y from 'eslint-plugin-vuejs-accessibility';
 
 export default [
   {
-    files: ['**/*.js', '**/*.vue'],
-    ignores: ['**/node_modules/**', '**/.git/**'],
+    files: ['**/*.js'],
+    ...js.configs.recommended,
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
+    },
+    rules: {
+      'no-unused-vars': 'warn',
+      'no-undef': 'error',
+      indent: ['warn', 2],
+      semi: ['warn', 'always'],
+    },
+  },
+  {
+    files: ['**/*.vue'],
+    languageOptions: {
       parser: vueParser,
+      ecmaVersion: 'latest',
+      sourceType: 'module',
       globals: {
         ...globals.browser,
         ...globals.node,
@@ -20,17 +37,41 @@ export default [
     },
     plugins: {
       vue,
+      'vuejs-accessibility': vueA11y,
     },
     rules: {
-      'no-unused-vars': 'warn', // Warns about variables declared but not used
-      'no-undef': 'off',        // Turns off the undefined variable checks
-      indent: ['warn', 4],      // Enforces consistent indentation of 4 spaces
-      semi: ['warn', 'always'], // Requires semicolons at the end of statements
-      quotes: ['warn', 'double'], // Enforces the use of double quotes for strings
-      'space-before-function-paren': ['warn', 'always'], // Requires a space before function parentheses
-      camelcase: ['warn', { properties: 'always' }], // Enforces camelCase for variable and property names
-      'space-infix-ops': 'warn', // Requires spaces around infix operators
-      'no-use-before-define': 'error', // Disallows using variables before they are defined
+      ...vue.configs.recommended.rules,
+      ...vueA11y.configs.recommended.rules,
+      'vuejs-accessibility/alt-text': 'error',
+      'vuejs-accessibility/anchor-has-content': 'error',
+      'vuejs-accessibility/aria-props': 'error',
+      'vuejs-accessibility/aria-role': ['error', { 
+        ignoreNonDOM: true 
+      }],
+      'vuejs-accessibility/aria-unsupported-elements': 'error',
+      'vuejs-accessibility/click-events-have-key-events': 'error',
+      'vuejs-accessibility/form-control-has-label': 'error',
+      'vuejs-accessibility/heading-has-content': 'error',
+      'vuejs-accessibility/iframe-has-title': 'error',
+      'vuejs-accessibility/interactive-supports-focus': 'error',
+      'vuejs-accessibility/label-has-for': ['error', {
+        required: {
+          some: ['nesting', 'id']
+        }
+      }],
+      'vuejs-accessibility/media-has-caption': 'error',
+      'vuejs-accessibility/mouse-events-have-key-events': 'error',
+      'vuejs-accessibility/no-access-key': 'error',
+      'vuejs-accessibility/no-autofocus': 'error',
+      'vuejs-accessibility/no-distracting-elements': 'error',
+      'vuejs-accessibility/no-onchange': 'error',
+      'vuejs-accessibility/no-redundant-roles': 'error',
+      'vuejs-accessibility/role-has-required-aria-props': 'error',
+      'vuejs-accessibility/tabindex-no-positive': 'error',
+      'no-unused-vars': 'warn',
+      'no-undef': 'off',
+      indent: ['warn', 2],
+      semi: ['warn', 'always'],
     },
   },
   eslintConfigPrettier,
