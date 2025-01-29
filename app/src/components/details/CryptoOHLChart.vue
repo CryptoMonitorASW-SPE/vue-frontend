@@ -31,7 +31,7 @@
 <script>
 import VueApexCharts from 'vue3-apexcharts'
 import { ref, computed, onMounted } from 'vue'
-import { useCryptoChartDetailStore } from '../../stores/CryptoChartDetailStore'
+import { useCryptoDetailStore } from '../../stores/CryptoDetailStore'
 
 export default {
   name: 'CryptoOHLChart',
@@ -43,7 +43,7 @@ export default {
     currency: { type: String, default: 'usd' }
   },
   setup(props) {
-    const cryptoChartDetailStore = useCryptoChartDetailStore()
+    const cryptoDetailStore = useCryptoDetailStore()
 
     const coinId = props.cryptoId
     const currency = props.currency
@@ -57,8 +57,8 @@ export default {
       '1Y': 365
     }
     const selectedSpan = ref('1D')
-    const isLoading = computed(() => cryptoChartDetailStore.isLoading)
-    const error = computed(() => cryptoChartDetailStore.error)
+    const isLoading = computed(() => cryptoDetailStore.isLoading)
+    const error = computed(() => cryptoDetailStore.error)
 
     const chartOptions = ref({
       chart: {
@@ -67,10 +67,6 @@ export default {
         toolbar: {
           show: true
         }
-      },
-      title: {
-        text: coinId + ' - ' + currency.toUpperCase(),
-        align: 'left'
       },
       xaxis: {
         type: 'datetime'
@@ -89,7 +85,7 @@ export default {
     })
 
     const currentSeries = computed(() => {
-      const chartDataForSpan = cryptoChartDetailStore.chartData[selectedSpan.value]
+      const chartDataForSpan = cryptoDetailStore.chartData[selectedSpan.value]
 
       if (!chartDataForSpan || !chartDataForSpan.payload) {
         console.warn(`No payload available for span: ${selectedSpan.value}`)
@@ -150,7 +146,8 @@ export default {
         return
       }
       console.log(`Fetching chart data for span: ${span}`)
-      await cryptoChartDetailStore.fetchChartData(coinId, currency, days, span)
+      console.log(coinId)
+      await cryptoDetailStore.fetchChartData(coinId, currency, days, span)
     }
 
     /**
@@ -160,7 +157,7 @@ export default {
     const setTimeSpan = async span => {
       if (selectedSpan.value !== span) {
         selectedSpan.value = span
-        if (!cryptoChartDetailStore.chartData[span]) {
+        if (!cryptoDetailStore.chartData[span]) {
           await fetchDataForSpan(span)
         }
       }

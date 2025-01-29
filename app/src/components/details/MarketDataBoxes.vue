@@ -16,20 +16,74 @@
 </template>
 
 <script>
+import { computed, onMounted } from 'vue'
+
 export default {
   name: 'MarketDataBoxes',
-  data() {
-    return {
-      marketData: [
-        { title: 'Market Cap', value: '$2.02T -0.33%' },
-        { title: 'Volume 24h', value: '$42.14B -35.43%' },
-        { title: 'FDV', value: '$2.15T' },
-        { title: 'Vol/Mkt Cap', value: '2.07%' },
-        { title: 'Total Supply', value: '19.81M BTC' },
-        { title: 'Max Supply', value: '21M BTC' },
-        { title: 'Circulating Supply', value: '19.81M BTC' }
-        // Add more dummy data items if needed
+  props: {
+    circulatingSupply: { type: Number, required: true },
+    totalSupply: { type: Number, required: true },
+    maxSupply: { type: Number, required: true },
+    ATH: { type: Number, required: true },
+    athChangePercentage: { type: Number, required: true },
+    currency: { type: String, default: 'usd' }
+  },
+  setup(props) {
+    console.log(props)
+    const marketData = computed(() => {
+      return [
+        {
+          title: 'Circulating Supply',
+          value: formatCurrency(props.circulatingSupply, props.currency)
+        },
+        {
+          title: 'Total Supply',
+          value: `${formatNumber(props.totalSupply)} ${getCurrencySymbol(props.currency)}`
+        },
+        {
+          title: 'Max Supply',
+          value: props.maxSupply
+            ? `${formatNumber(props.maxSupply)} ${getCurrencySymbol(props.currency)}`
+            : 'N/A'
+        },
+        {
+          title: 'All-Time High (ATH)',
+          value: props.ATH ? formatCurrency(props.ATH, props.currency) : 'N/A'
+        },
+        {
+          title: 'ATH Change %',
+          value: props.athChangePercentage ? `${props.athChangePercentage.toFixed(2)}%` : 'N/A'
+        }
       ]
+    })
+
+    // Helper functions to format numbers and currencies
+    const formatCurrency = (value, currency) => {
+      if (!value) return 'N/A'
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: currency.toUpperCase(),
+        maximumFractionDigits: 2
+      }).format(value)
+    }
+
+    const formatNumber = value => {
+      if (!value) return 'N/A'
+      return new Intl.NumberFormat().format(value)
+    }
+
+    const getCurrencySymbol = currency => {
+      const symbols = {
+        usd: '$',
+        eur: '€',
+        gbp: '£'
+        // Add more symbols as needed
+      }
+      return symbols[currency.toLowerCase()] || ''
+    }
+
+    return {
+      marketData
     }
   }
 }
