@@ -22,7 +22,7 @@
             :image="crypto.image"
             :name="crypto.name"
             :symbol="crypto.symbol"
-            :rank="crypto.rank"
+            :rank="crypto.marketCapRank"
             :isFavorite="isFavorite"
             @toggle-favorite="toggleFavorite"
           />
@@ -30,7 +30,7 @@
       </div>
 
       <div class="row mt-4">
-        <div class="col-12 col-md-3 mt-2">
+        <div class="col-12 col-md-3 mt-5">
           <MarketDataBoxes
             :circulatingSupply="crypto.circulatingSupply"
             :totalSupply="crypto.totalSupply"
@@ -49,8 +49,8 @@
             @timeframe-change="handleTimeframeChange"
           />
         </div>
-        <div class="col-12 col-md-3 mt-2">
-          <!-- <AdditionalInfoPanel :details="additionalDetails" /> -->
+        <div class="col-12 col-md-3 mt-5">
+          <CryptoDetailsBoxes :cryptoDetails="cryptoDetails" :currency="userCurrency" />
         </div>
       </div>
     </div>
@@ -64,13 +64,15 @@ import { useCryptoStore } from '../stores/CryptoStore'
 import CryptoHeader from '../components/details/CryptoHeader.vue'
 import ChartComponent from '../components/details/CryptoOHLChart.vue'
 import MarketDataBoxes from '../components/details/MarketDataBoxes.vue'
+import CryptoDetailsBoxes from '../components/details/CryptoDetailsBoxes.vue'
 
 export default {
   name: 'CryptoDetail',
   components: {
     CryptoHeader,
     ChartComponent,
-    MarketDataBoxes
+    MarketDataBoxes,
+    CryptoDetailsBoxes
   },
   props: {
     cryptoId: {
@@ -92,13 +94,9 @@ export default {
     return {
       crypto,
       userCurrency,
-      //cryptoDetails: computed(() => storeDetail.cryptoDetails),
-      // marketData: computed(() => ({
-      //   price: storeDetail.cryptoDetails?.currentPrice,
-      //   marketCap: storeDetail.cryptoDetails?.marketCap,
-      //   volume: storeDetail.cryptoDetails?.totalVolume,
-      //   supply: storeDetail.cryptoDetails?.circulatingSupply
-      // })),
+      //crypto details
+      cryptoDetails: computed(() => storeDetail.cryptoDetails),
+      //Chart data
       activeChartData: computed(() => storeDetail.chartData[storeDetail.activeTimeSpan]),
       initialLoading: computed(() => !storeDetail.initialLoadComplete),
       chartLoading: computed(() => storeDetail.isLoading),

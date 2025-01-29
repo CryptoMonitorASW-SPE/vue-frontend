@@ -34,7 +34,6 @@ export const useCryptoDetailStore = defineStore('cryptoDetailStore', {
       try {
         const endpoint = `/api/cryptomarket/details/${coinId}`
         const response = await axios.get(endpoint)
-        console.log(response)
 
         if (!response?.data) {
           throw new Error('Invalid response from the crypto-market service')
@@ -53,17 +52,10 @@ export const useCryptoDetailStore = defineStore('cryptoDetailStore', {
 
     transformDetailsResponse(data) {
       return {
-        id: data.id,
-        name: data.name,
-        symbol: data.symbol.toUpperCase(),
-        currentPrice: data.current_price,
-        marketCap: data.market_cap,
-        totalVolume: data.total_volume,
-        circulatingSupply: data.circulating_supply,
-        maxSupply: data.max_supply || null,
-        priceChange24h: data.price_change_24h,
-        priceChangePercentage24h: data.price_change_percentage_24h,
-        lastUpdated: new Date(data.last_updated)
+        homepage: data.links.homepage[0],
+        whitepaper: data.links.whitepaper,
+        sentiment_up_percentage: data.sentiment_votes_up_percentage,
+        sentiment_down_percentage: data.sentiment_votes_down_percentage
       }
     },
 
@@ -119,8 +111,8 @@ export const useCryptoDetailStore = defineStore('cryptoDetailStore', {
 
         // Execute both requests in parallel
         await Promise.all([
-          this.fetchChartData(coinId, currency, days, timeSpan)
-          //this.fetchCryptoDetails(coinId)
+          this.fetchChartData(coinId, currency, days, timeSpan),
+          this.fetchCryptoDetails(coinId)
         ])
 
         this.initialLoadComplete = true
