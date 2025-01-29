@@ -1,15 +1,15 @@
 <template>
-  <main class="login-form">
+  <main class="signup-form">
     <div class="form-container">
-      <AuthForm title="Welcome Back!" buttonText="Login" @form-submit="submitForm">
-        <div v-if="error" class="error-message" role="alert">
-          {{ error }}
-        </div>
+      <AuthForm title="Join Us!" buttonText="Sign Up" @form-submit="submitForm">
         <div class="form-footer">
           <p>
-            Don't have an account?
-            <RouterLink to="/signup">Join us!</RouterLink>
+            Already have an account?
+            <RouterLink to="/login">Log in</RouterLink>
           </p>
+        </div>
+        <div v-if="error" class="error-message" role="alert">
+          {{ error }}
         </div>
       </AuthForm>
     </div>
@@ -17,14 +17,13 @@
 </template>
 
 <script>
-import { useRouter } from 'vue-router'
-import AuthForm from '@/components/forms/AuthForm.vue'
+import AuthForm from '@/components/forms/AuthForm.vue' // Corrected path
 import { useAuthenticationStore } from '@/stores/AuthenticationStore'
 import { storeToRefs } from 'pinia'
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 
 export default {
-  name: 'LoginView',
+  name: 'SignupView',
   components: {
     AuthForm,
     RouterLink
@@ -36,13 +35,9 @@ export default {
 
     const submitForm = async formData => {
       console.log('formData', formData)
-      const data = {
-        email: formData.email,
-        password: formData.password
-      }
-      await authStore.login(data)
+      await authStore.register(formData)
       if (!error.value) {
-        router.push('/')
+        router.push('/login') // Redirect to login after successful signup
       }
     }
 
@@ -55,5 +50,5 @@ export default {
 </script>
 
 <style lang="scss">
-@use '../assets/scss/login';
+@use '../assets/scss/register';
 </style>
