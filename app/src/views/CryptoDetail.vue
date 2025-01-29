@@ -1,36 +1,47 @@
 <template>
-  <article class="crypto-detail">
-    <CryptoHeader
-      :image="crypto.image"
-      :name="crypto.name"
-      :symbol="crypto.symbol"
-      :rank="crypto.rank"
-      :isFavorite="isFavorite"
-      @toggle-favorite="toggleFavorite"
-    />
-    <CryptoPrice :price="crypto.price" :currency="userCurrency" />
-    <section class="crypto-chart">
-      <h2>Price Trend</h2>
-      <ChartComponent v-if="crypto.id" :cryptoId="crypto.id" :currency="userCurrency" />
-    </section>
-    <CryptoExchanges :exchanges="exchanges" />
-  </article>
+  <div class="container my-4">
+    <!-- Header Row -->
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-8">
+        <CryptoHeader
+          :image="crypto.image"
+          :name="crypto.name"
+          :symbol="crypto.symbol"
+          :rank="crypto.rank"
+          :isFavorite="isFavorite"
+          @toggle-favorite="toggleFavorite"
+        />
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-12 col-md-3">
+        <MarketDataBoxes />
+      </div>
+      <div class="col-12 col-md-6">
+        <ChartComponent v-if="crypto.id" :cryptoId="crypto.id" :currency="userCurrency" />
+      </div>
+      <div class="col-12 col-md-3">
+        <MarketDataBoxes />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import CryptoHeader from '../components/details/CryptoHeader.vue'
 import CryptoPrice from '../components/details/CryptoPrice.vue'
-//import CryptoExchanges from '../components/details/CryptoExchanges.vue'
 import ChartComponent from '../components/details/CryptoOHLChart.vue'
 import { useCryptoStore } from '../stores/CryptoStore'
+import MarketDataBoxes from '../components/details/MarketDataBoxes.vue'
 
 export default {
   name: 'CryptoDetail',
   components: {
     CryptoHeader,
     CryptoPrice,
-    //CryptoExchanges,
-    ChartComponent
+    ChartComponent,
+    MarketDataBoxes
   },
   props: {
     cryptoId: {
@@ -42,8 +53,7 @@ export default {
     return {
       crypto: {},
       isFavorite: false,
-      exchanges: [],
-      userCurrency: 'USD' // Default currency; this can be dynamically set based on user preference
+      userCurrency: 'USD' // Default currency; you can wire this up to user prefs
     }
   },
   async mounted() {
@@ -57,7 +67,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-@use '../assets/scss/details';
-</style>
