@@ -2,7 +2,7 @@
   <section class="hero">
     <h1>Welcome to CryptoMonitor</h1>
     <p>Your go-to platform for the first approach to the cryptocurrency market.</p>
-    <button class="cta btn btn-primary">Get Started</button>
+    <RouterLink to="/signup" class="cta btn btn-primary">Get Started</RouterLink>
   </section>
 
   <section class="mt-4">
