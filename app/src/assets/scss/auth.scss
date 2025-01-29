@@ -1,0 +1,75 @@
+@use 'sass:color';
+@use './base' as base;
+@use 'sass:math';
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: base.$padding-md;
+  background-color: base.$background-color;
+  border-radius: base.$border-radius;
+  box-shadow: base.$box-shadow;
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
+
+  h2 {
+    font-size: base.$font-size-lg;
+    margin-bottom: base.$padding-md;
+    color: base.$text-color;
+  }
+
+  form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: base.$padding-sm;
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+
+      label {
+        font-size: base.$font-size-sm;
+        font-weight: bold;
+        margin-bottom: math.div(base.$padding-sm, 2);
+      }
+
+      input {
+        padding: base.$padding-sm;
+        border: 1px solid color.scale(base.$secondary-color, $lightness: -10%);
+        border-radius: base.$border-radius;
+        font-size: base.$font-size-base;
+
+        &:focus {
+          border-color: base.$primary-color;
+          outline: none;
+          @include base.focus-visible;
+        }
+      }
+    }
+
+    button {
+      background-color: base.$primary-color;
+      color: white;
+      padding: base.$padding-md;
+      border: none;
+      border-radius: base.$border-radius;
+      font-size: base.$font-size-lg;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+
+      &:hover {
+        background-color: color.scale(base.$primary-color, $lightness: -10%);
+      }
+
+      &:disabled {
+        background-color: color.scale(base.$primary-color, $lightness: 30%);
+        cursor: not-allowed;
+      }
+    }
+  }
+}
