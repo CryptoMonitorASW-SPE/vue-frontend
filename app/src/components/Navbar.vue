@@ -42,7 +42,10 @@
               aria-label="Search cryptocurrencies"
             />
           </div>
-          <RouterLink to="/Login" class="btn btn-primary me-3">Sign In</RouterLink>
+          <RouterLink v-if="!isAuthenticated" to="/login" class="btn btn-primary me-3"
+            >Sign In</RouterLink
+          >
+          <button v-else class="btn btn-primary me-3" @click="logout">Logout</button>
           <ThemeToggle :isDarkMode="isDarkMode" @toggle-dark-mode="$emit('toggle-dark-mode')" />
         </form>
       </div>
@@ -52,11 +55,26 @@
 
 <script>
 import ThemeToggle from './ThemeToggle.vue'
+import { useAuthenticationStore } from '@/stores/AuthenticationStore'
+import { storeToRefs } from 'pinia'
 
 export default {
   name: 'Navbar',
   components: {
     ThemeToggle
+  },
+  setup() {
+    const authStore = useAuthenticationStore()
+    const { isAuthenticated } = storeToRefs(authStore)
+
+    const logout = () => {
+      authStore.logout()
+    }
+
+    return {
+      isAuthenticated,
+      logout
+    }
   }
 }
 </script>
