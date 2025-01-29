@@ -9,8 +9,14 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: HomeView
+      component: DefaultLayout,
+      children: [
+        {
+          path: '',
+          name: 'Home',
+          component: HomeView
+        }
+      ]
     },
     {
       path: '/login',

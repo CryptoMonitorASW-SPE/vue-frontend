@@ -1,6 +1,11 @@
 @use 'sass:color';
+@use 'sass:map';
 @use './base' as base;
 
+@include base.theme(base.$light-theme);
+.dark-mode {
+  @include base.theme(base.$dark-theme);
+}
 /* Skip Link */
 .skip-link {
   @extend .sr-only;
@@ -15,101 +20,6 @@
     padding: base.$padding-sm;
     background: base.$background-color;
     color: base.$text-color;
-  }
-}
-
-/* Navbar */
-.navbar {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: base.$padding-sm;
-  background-color: base.$navbar-background;
-  box-shadow: base.$box-shadow;
-  margin-bottom: base.$padding-md;
-
-  .logo {
-    font-weight: bold;
-    font-size: base.$font-size-lg;
-    margin-bottom: base.$padding-sm;
-  }
-
-  nav ul {
-    display: flex;
-    flex-direction: column;
-    list-style: none;
-    gap: base.$padding-sm;
-    margin-left: 0;
-    padding: 0;
-
-    li a {
-      display: flex;
-      align-items: center;
-      text-decoration: none;
-      color: base.$text-color;
-      width: 100%;
-      padding: base.$padding-sm;
-      min-height: 44px;
-      border-bottom: 1px solid #e0e0e0;
-      transition: color 0.2s ease;
-
-      &:hover,
-      &:focus-visible {
-        color: base.$primary-color;
-        @include base.focus-visible;
-      }
-    }
-  }
-
-  .search-signin {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: base.$padding-sm;
-    width: 100%;
-    max-width: 300px;
-
-    .search-bar {
-      width: 100%;
-      padding: base.$padding-sm;
-      border: 1px solid #ccc;
-      border-radius: base.$border-radius;
-      min-height: 44px;
-
-      &:focus {
-        @include base.focus-visible;
-        border-color: base.$primary-color;
-      }
-    }
-
-    .sign-in {
-      @include base.touch-target;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: base.$primary-color;
-      color: white;
-      border: none;
-      padding: base.$padding-sm base.$padding-md;
-      border-radius: base.$border-radius;
-      cursor: pointer;
-      width: 100%;
-      text-decoration: none;
-      font-weight: 500;
-
-      &:hover {
-        background-color: color.adjust(base.$primary-color, $lightness: -10%);
-      }
-
-      &:focus-visible {
-        @include base.focus-visible;
-      }
-
-      &[disabled] {
-        opacity: 0.7;
-        cursor: not-allowed;
-      }
-    }
   }
 }
 
@@ -162,7 +72,7 @@
   }
 }
 
-/*Filter button*/
+/* Filter Button */
 .filter-btn {
   background-color: base.$primary-color;
   color: white;
@@ -238,7 +148,7 @@
     }
 
     th {
-      background-color: base.$secondary-color;
+      background-color: map.get(base.$light-theme, secondary-color);
       font-weight: 600;
       color: base.$text-color;
       cursor: pointer;
@@ -247,6 +157,11 @@
       &:hover,
       &:focus-visible {
         background-color: color.adjust(base.$secondary-color, $lightness: -10%);
+      }
+
+      .dark-mode & {
+        background-color: map.get(base.$dark-theme, secondary-color);
+        color: map.get(base.$dark-theme, text-color);
       }
     }
 
@@ -305,55 +220,8 @@
   }
 }
 
-/* Footer */
-.footer {
-  text-align: start;
-  padding: base.$padding-md;
-  background-color: base.$navbar-background;
-  margin-top: base.$padding-sm;
-
-  p {
-    margin: 0;
-  }
-}
-
 /* Media Queries for Tablet */
 @media (min-width: 768px) {
-  .navbar {
-    flex-direction: row;
-    justify-content: space-between;
-    padding: base.$padding-md base.$padding-lg;
-
-    .logo {
-      margin-bottom: 0;
-    }
-
-    nav ul {
-      flex-direction: row;
-      align-items: center;
-
-      li a {
-        border: none;
-        padding: base.$padding-sm base.$padding-md;
-      }
-    }
-
-    .search-signin {
-      flex-direction: row;
-      max-width: none;
-      width: auto;
-      gap: base.$padding-md;
-
-      .search-bar {
-        width: 200px;
-      }
-
-      .sign-in {
-        width: auto;
-      }
-    }
-  }
-
   .hero {
     margin: 0 base.$padding-lg;
     padding: base.$padding-lg;
@@ -370,18 +238,6 @@
 
 /* Media Queries for Desktop */
 @media (min-width: 1024px) {
-  .navbar {
-    padding: base.$padding-lg base.$padding-lg;
-
-    .logo {
-      font-size: base.$font-size-xl;
-    }
-
-    .search-signin .search-bar {
-      width: 300px;
-    }
-  }
-
   .hero {
     margin: 0 base.$padding-lg;
   }

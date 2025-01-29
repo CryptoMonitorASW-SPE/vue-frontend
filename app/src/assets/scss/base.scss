@@ -1,5 +1,6 @@
 @use 'sass:color';
 @use 'sass:math';
+@use 'sass:map'; // Importa il modulo map
 
 /* SCSS Variable Definitions */
 $primary-color: #2850e0;
@@ -11,7 +12,7 @@ $navbar-background: #f0f1ff;
 $error-color: #dc3545;
 $success-color: #28a745;
 
-$font-family: 'Roboto', sans-serif;
+$font-family: 'Roboto';
 $font-size-base: 1rem;
 $font-size-lg: 1.2rem;
 $font-size-xl: 1.5rem;
@@ -24,6 +25,43 @@ $padding-xl: 3rem;
 
 $border-radius: 5px;
 $box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+/* Theme Maps */
+$light-theme: (
+  primary-color: $primary-color,
+  secondary-color: $secondary-color,
+  text-color: $text-color,
+  link-color: $link-color,
+  background-color: $background-color,
+  navbar-background: $navbar-background,
+  error-color: $error-color,
+  success-color: $success-color
+);
+
+$dark-theme: (
+  primary-color: color.adjust($primary-color, $lightness: -20%),
+  secondary-color: color.adjust($secondary-color, $lightness: -30%),
+  text-color: #f0f0f0,
+  link-color: #a0c4ff,
+  background-color: #121212,
+  navbar-background: #1e1e1e,
+  error-color: #ff6b6b,
+  success-color: #4caf50
+);
+
+/* Mixins */
+
+/* Theme Mixin */
+@mixin theme($theme-map) {
+  $primary-color: map.get($theme-map, primary-color);
+  $secondary-color: map.get($theme-map, secondary-color);
+  $text-color: map.get($theme-map, text-color);
+  $link-color: map.get($theme-map, link-color);
+  $background-color: map.get($theme-map, background-color);
+  $navbar-background: map.get($theme-map, navbar-background);
+  $error-color: map.get($theme-map, error-color);
+  $success-color: map.get($theme-map, success-color);
+}
 
 /* Accessibility Mixins */
 @mixin focus-visible {
@@ -70,9 +108,14 @@ body {
   margin: 0;
   font-family: $font-family;
   font-size: $font-size-base;
-  background-color: $background-color;
-  color: $text-color;
+  background-color: map.get($light-theme, background-color);
+  color: map.get($light-theme, text-color);
   line-height: 1.5;
+}
+
+.dark-mode body {
+  background-color: map.get($dark-theme, background-color);
+  color: map.get($dark-theme, text-color);
 }
 
 #app {
@@ -96,4 +139,12 @@ select {
   &:focus-visible {
     @include focus-visible;
   }
+}
+
+:root {
+  @include theme($light-theme);
+}
+
+.dark-mode {
+  @include theme($dark-theme);
 }

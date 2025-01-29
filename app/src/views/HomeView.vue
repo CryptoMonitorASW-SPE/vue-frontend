@@ -1,44 +1,35 @@
 <template>
-  <div class="home-view">
-    <Navbar />
-    <main class="hero" style="margin-left: 2rem; margin-right: 2rem">
-      <section>
-        <h1>Welcome to CryptoMonitor</h1>
-        <p>Your go-to platform for the first approach to the cryptocurrency market.</p>
-        <button class="cta">Get Started</button>
-      </section>
-    </main>
-    <section style="margin-left: 2rem; margin-right: 2rem; margin-top: 2rem">
-      <div style="display: flex; justify-content: space-between; align-items: center">
-        <h3>Top Cryptocurrencies</h3>
-        <button class="filter-btn" @click="openFilterModal">Filter</button>
-      </div>
-      <FilterModal
-        :isVisible="isFilterModalVisible"
-        :filters="filters"
-        @apply-filters="applyFilters"
-        @close="closeFilterModal"
-      />
-      <CryptoTable :filters="filters" />
-    </section>
-    <Footer />
-  </div>
+  <section class="hero">
+    <h1>Welcome to CryptoMonitor</h1>
+    <p>Your go-to platform for the first approach to the cryptocurrency market.</p>
+    <button class="cta btn btn-primary">Get Started</button>
+  </section>
+
+  <section class="mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3>Top Cryptocurrencies</h3>
+      <button class="filter-btn btn btn-primary" @click="openFilterModal">Filter</button>
+    </div>
+    <FilterModal
+      :isVisible="isFilterModalVisible"
+      :filters="filters"
+      @apply-filters="applyFilters"
+      @close="closeFilterModal"
+    />
+    <CryptoTable :filters="filters" />
+  </section>
 </template>
 
 <script>
-import Navbar from '../components/Navbar.vue'
-import Footer from '../components/Footer.vue'
 import CryptoTable from '../components/CryptoTable.vue'
-import { initializeSocket } from '../controllers/socketioController'
 import FilterModal from '../components/modals/FilterModal.vue'
+import { initializeSocket } from '../controllers/socketioController'
 
 export default {
   name: 'HomeView',
   components: {
-    Navbar,
-    Footer,
-    CryptoTable,
-    FilterModal
+    FilterModal,
+    CryptoTable
   },
   data() {
     return {

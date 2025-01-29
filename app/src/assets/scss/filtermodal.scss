@@ -1,7 +1,7 @@
 @use 'sass:color';
-@use '../../assets/scss/base' as base;
+@use 'sass:map';
+@use './base';
 
-/* Overlay della Modale */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -10,113 +10,79 @@
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
-
-  /* Centro il contenuto figlio */
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-/* Contenuto della Modale */
 .filter-modal {
-  position: relative;
-  background-color: white;
-  padding: 20px;
-  border-radius: base.$border-radius;
-  width: 300px;
+  background-color: map.get(base.$light-theme, 'background-color');
   box-shadow: base.$box-shadow;
-}
-
-/* Pulsante di Chiusura */
-.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: base.$text-color;
-
-  &:focus {
-    @include base.focus-visible;
-  }
-}
-
-/* Titolo della Modale */
-.filter-modal h4 {
-  margin-bottom: 20px;
-  text-align: center;
-  font-size: base.$font-size-lg;
-}
-
-/* Etichette dei Filtri */
-.filter-modal label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: base.$text-color;
-}
-
-/* Input dei Filtri */
-.filter-modal input {
+  border-radius: base.$border-radius;
   width: 100%;
-  padding: base.$padding-sm;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: base.$border-radius;
-  box-sizing: border-box;
+  max-width: 500px;
 
-  &:focus {
-    border-color: base.$primary-color;
-    outline: none;
-    @include base.focus-visible;
+  .dark-mode & {
+    background-color: map.get(base.$dark-theme, 'background-color');
+    color: map.get(base.$dark-theme, 'text-color');
   }
-}
 
-/* Pulsanti della Modale */
-.modal-buttons {
-  display: flex;
-  justify-content: flex-end;
-  gap: base.$padding-sm;
-}
+  .form-control {
+    background-color: map.get(base.$light-theme, 'secondary-color');
+    color: map.get(base.$light-theme, 'text-color');
 
-.modal-buttons button {
-  padding: 8px 12px;
-  border: none;
-  border-radius: base.$border-radius;
-  cursor: pointer;
-  font-size: base.$font-size-base;
-  box-shadow: base.$box-shadow;
-  transition:
-    background-color 0.3s ease,
-    transform 0.2s ease;
+    &:focus {
+      border-color: base.$primary-color;
+      box-shadow: 0 0 0 0.2rem rgba(33, 150, 243, 0.25);
+    }
 
-  &.apply-btn {
+    .dark-mode & {
+      background-color: map.get(base.$dark-theme, 'secondary-color');
+      color: map.get(base.$dark-theme, 'text-color');
+    }
+  }
+
+  .btn-close {
+    position: absolute;
+    top: base.$padding-sm;
+    right: base.$padding-sm;
+    color: map.get(base.$light-theme, 'text-color');
+
+    .dark-mode & {
+      filter: invert(1) grayscale(100%) brightness(200%);
+    }
+  }
+
+  .btn {
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    &:focus-visible {
+      @include base.focus-visible;
+    }
+  }
+
+  .btn-primary {
     background-color: base.$primary-color;
-    color: white;
 
     &:hover {
       background-color: color.adjust(base.$primary-color, $lightness: -10%);
-      transform: scale(1.05);
-    }
-
-    &:focus-visible {
-      @include base.focus-visible;
     }
   }
 
-  &.reset-btn {
-    background-color: #ccc;
-    color: #333;
+  .btn-secondary {
+    .dark-mode & {
+      background-color: #555;
 
-    &:hover {
-      background-color: #999;
-      transform: scale(1.05);
+      &:hover {
+        background-color: #777;
+      }
     }
+  }
+}
 
-    &:focus-visible {
-      @include base.focus-visible;
-    }
+@media (min-width: 768px) {
+  .filter-modal {
+    width: 400px;
   }
 }

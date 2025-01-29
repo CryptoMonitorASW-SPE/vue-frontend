@@ -1,44 +1,55 @@
 <template>
   <div
     v-if="isVisible"
-    class="modal-overlay"
+    class="modal-overlay d-flex align-items-center justify-content-center"
     role="button"
     aria-label="Chiudi la finestra modale cliccando sullo sfondo"
     tabindex="0"
     @click="closeModal"
     @keydown.enter="closeModal"
   >
-    <div class="filter-modal" role="dialog" aria-modal="true" @click.stop>
-      <button class="close-btn" @click.stop="closeModal">×</button>
-      <h4>Filters</h4>
+    <div class="filter-modal modal-content p-4" role="dialog" aria-modal="true" @click.stop>
+      <button class="close-btn btn-close" aria-label="Chiudi" @click.stop="closeModal"></button>
+      <h4 class="modal-title mb-4">Filters</h4>
 
-      <label for="minPrice">Min Price</label>
-      <input
-        id="minPrice"
-        v-model.number="localFilters.minPrice"
-        type="number"
-        placeholder="Min price"
-      />
+      <div class="mb-3">
+        <label for="minPrice" class="form-label">Min Price</label>
+        <input
+          id="minPrice"
+          v-model.number="localFilters.minPrice"
+          type="number"
+          class="form-control"
+          placeholder="Min price"
+        />
+      </div>
 
-      <label for="maxPrice">Max Price</label>
-      <input
-        id="maxPrice"
-        v-model.number="localFilters.maxPrice"
-        type="number"
-        placeholder="Max price"
-      />
+      <div class="mb-3">
+        <label for="maxPrice" class="form-label">Max Price</label>
+        <input
+          id="maxPrice"
+          v-model.number="localFilters.maxPrice"
+          type="number"
+          class="form-control"
+          placeholder="Max price"
+        />
+      </div>
 
-      <label for="change24h">Change (24h)</label>
-      <input
-        id="change24h"
-        v-model.number="localFilters.change24h"
-        type="number"
-        placeholder="Min change (24h)"
-      />
+      <div class="mb-4">
+        <label for="change24h" class="form-label">Change (24h)</label>
+        <input
+          id="change24h"
+          v-model.number="localFilters.change24h"
+          type="number"
+          class="form-control"
+          placeholder="Min change (24h)"
+        />
+      </div>
 
-      <div class="modal-buttons">
-        <button class="apply-btn" @click.stop="applyFilters">Apply Filters</button>
-        <button class="reset-btn" @click.stop="resetFilters">Reset Filters</button>
+      <div class="modal-buttons d-flex justify-content-end gap-2">
+        <button class="apply-btn btn btn-primary" @click.stop="applyFilters">Apply Filters</button>
+        <button class="reset-btn btn btn-secondary" @click.stop="resetFilters">
+          Reset Filters
+        </button>
       </div>
     </div>
   </div>

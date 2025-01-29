@@ -1,9 +1,9 @@
-import js from '@eslint/js';
-import vue from 'eslint-plugin-vue';
-import vueParser from 'vue-eslint-parser';
-import globals from 'globals';
-import eslintConfigPrettier from 'eslint-config-prettier';
-import vueA11y from 'eslint-plugin-vuejs-accessibility';
+import js from '@eslint/js'
+import vue from 'eslint-plugin-vue'
+import vueParser from 'vue-eslint-parser'
+import globals from 'globals'
+import eslintConfigPrettier from 'eslint-config-prettier'
+import vueA11y from 'eslint-plugin-vuejs-accessibility'
 
 export default [
   {
@@ -14,15 +14,15 @@ export default [
       sourceType: 'module',
       globals: {
         ...globals.browser,
-        ...globals.node,
-      },
+        ...globals.node
+      }
     },
     rules: {
       'no-unused-vars': 'warn',
       'no-undef': 'error',
       indent: ['warn', 2],
-      semi: ['warn', 'always'],
-    },
+      semi: ['warn', 'always']
+    }
   },
   {
     files: ['**/*.vue'],
@@ -37,7 +37,7 @@ export default [
     },
     plugins: {
       vue,
-      'vuejs-accessibility': vueA11y,
+      'vuejs-accessibility': vueA11y
     },
     rules: {
       ...vue.configs.recommended.rules,
@@ -45,20 +45,26 @@ export default [
       'vuejs-accessibility/alt-text': 'error',
       'vuejs-accessibility/anchor-has-content': 'error',
       'vuejs-accessibility/aria-props': 'error',
-      'vuejs-accessibility/aria-role': ['error', { 
-        ignoreNonDOM: true 
-      }],
+      'vuejs-accessibility/aria-role': [
+        'error',
+        {
+          ignoreNonDOM: true
+        }
+      ],
       'vuejs-accessibility/aria-unsupported-elements': 'error',
       'vuejs-accessibility/click-events-have-key-events': 'error',
       'vuejs-accessibility/form-control-has-label': 'error',
       'vuejs-accessibility/heading-has-content': 'error',
       'vuejs-accessibility/iframe-has-title': 'error',
       'vuejs-accessibility/interactive-supports-focus': 'error',
-      'vuejs-accessibility/label-has-for': ['error', {
-        required: {
-          some: ['nesting', 'id']
+      'vuejs-accessibility/label-has-for': [
+        'error',
+        {
+          required: {
+            some: ['nesting', 'id']
+          }
         }
-      }],
+      ],
       'vuejs-accessibility/media-has-caption': 'error',
       'vuejs-accessibility/mouse-events-have-key-events': 'error',
       'vuejs-accessibility/no-access-key': 'error',
@@ -71,8 +77,8 @@ export default [
       'no-unused-vars': 'warn',
       'no-undef': 'off',
       indent: ['warn', 2],
-      semi: ['warn', 'always'],
-    },
+      semi: ['warn', 'always']
+    }
   },
   eslintConfigPrettier
 ]
