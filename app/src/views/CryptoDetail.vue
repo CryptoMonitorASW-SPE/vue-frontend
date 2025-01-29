@@ -130,3 +130,7 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+@use '../assets/scss/details';
+</style>

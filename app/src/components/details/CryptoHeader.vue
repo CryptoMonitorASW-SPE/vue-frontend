@@ -5,7 +5,7 @@
       <h1>{{ name }} ({{ symbol }})</h1>
       <p>Rank #{{ rank }}</p>
     </div>
-    <button
+    <!-- <button
       class="favorite-button mt-3"
       :aria-pressed="isFavorite"
       :aria-label="isFavorite ? 'Rimuovi dai preferiti' : 'Aggiungi ai preferiti'"
@@ -13,7 +13,7 @@
     >
       <span v-if="isFavorite">★</span>
       <span v-else>☆</span>
-    </button>
+    </button> -->
   </header>
 </template>
 

@@ -88,24 +88,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.data-box {
-  background-color: #f8f9fa;
-  border: 1px solid #e9ecef;
-  transition: background-color 0.2s ease;
-}
-
-.data-box:hover {
-  background-color: #f1f3f5;
-}
-
-.data-title {
-  font-size: 0.875rem;
-}
-
-.data-value {
-  font-size: 1.125rem;
-  color: #212529;
-}
-</style>

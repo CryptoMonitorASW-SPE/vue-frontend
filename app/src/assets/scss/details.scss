@@ -56,3 +56,168 @@
     height: auto;
   }
 }
+
+.crypto-details-boxes {
+  padding: 20px; /* Replaced base.$padding-md with 20px */
+  background-color: #ffffff; /* Replaced base.$white-color with #ffffff */
+  border: 1px solid #e9ecef; /* Replaced base.$border-color with #e9ecef */
+  border-radius: 8px; /* Replaced base.$border-radius with 8px */
+
+  .links-section {
+    h5 {
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+      color: #343a40; /* Replaced base.$text-color with #343a40 */
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+
+      li {
+        margin-bottom: 8px;
+
+        a {
+          color: #0d6efd; /* Replaced base.$link-color with #0d6efd */
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+
+  .sentiment-section {
+    h5 {
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+      color: #343a40; /* Replaced base.$text-color with #343a40 */
+    }
+
+    .sentiment-bars {
+      display: flex;
+      flex-direction: column;
+
+      .sentiment-bar {
+        &.up,
+        &.down {
+          span {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+          }
+
+          .progress {
+            height: 20px;
+
+            .progress-bar {
+              transition: width 0.6s ease;
+            }
+          }
+        }
+
+        &.up {
+          span {
+            color: #198754; /* Replaced base.$success-color with #198754 */
+          }
+
+          .progress-bar {
+            background-color: #198754; /* Replaced base.$success-color with #198754 */
+          }
+        }
+
+        &.down {
+          margin-top: 16px; /* Replaced mt-3 (usually ~1rem or 16px) */
+
+          span {
+            color: #dc3545; /* Replaced base.$danger-color with #dc3545 */
+          }
+
+          .progress-bar {
+            background-color: #dc3545; /* Replaced base.$danger-color with #dc3545 */
+          }
+        }
+      }
+    }
+  }
+}
+
+.data-box {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  transition: background-color 0.2s ease;
+}
+
+.data-box:hover {
+  background-color: #f1f3f5;
+}
+
+.data-title {
+  font-size: 0.875rem;
+}
+
+.data-value {
+  font-size: 1.125rem;
+  color: #212529;
+}
+
+.ohlc-chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.time-span-buttons {
+  margin-bottom: 20px;
+}
+
+.time-span-button {
+  margin: 0 5px;
+  padding: 8px 16px;
+  border: none;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  color: #000; /* Ensuring sufficient contrast */
+}
+
+.time-span-button.active {
+  background-color: #0056b3; /* Darker blue for better contrast */
+  color: #ffffff;
+}
+
+.time-span-button:hover,
+.time-span-button:focus {
+  background-color: #dcdcdc;
+  outline: none; /* Ensure focus is indicated via other means */
+}
+
+.loading,
+.error {
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.error {
+  color: #d9534f; /* Red color for errors with sufficient contrast */
+}
+
+.ohlc-chart {
+  width: 100%;
+  max-width: 800px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
