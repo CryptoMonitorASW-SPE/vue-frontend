@@ -43,6 +43,10 @@
               aria-label="Search cryptocurrencies"
             />
           </div>
+          <RouterLink v-if="isAuthenticated" to="/profile" class="btn btn-primary me-3"
+            >Profile</RouterLink
+          >
+
           <RouterLink v-if="!isAuthenticated" to="/login" class="btn btn-primary me-3"
             >Sign In</RouterLink>
           <button v-else class="btn btn-primary me-3" @click="logout">Logout</button>

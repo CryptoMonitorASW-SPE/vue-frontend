@@ -4,6 +4,7 @@ import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import SignupView from '@/views/SignupView.vue'
 import CryptoDetail from '@/views/CryptoDetail.vue'
+import ProfileView from '@/views/ProfileView.vue' // Import the Profile component
 import { useAuthenticationStore } from '@/stores/AuthenticationStore'
 
 const routes = [
@@ -23,6 +24,12 @@ const routes = [
         props: route => ({
           cryptoId: route.params.id
         })
+      },
+      {
+        path: 'profile',
+        name: 'Profile',
+        component: ProfileView,
+        meta: { requiresAuth: true } // Requires user to be authenticated
       }
     ]
   },
@@ -67,12 +74,12 @@ router.beforeEach(async (to, from, next) => {
     await authStore.initAuth()
   }
 
-  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+  if (to.matched.some(record => record.meta.requiresAuth) && !authStore.isAuthenticated) {
     // Route requires authentication but user isn't authenticated
-    next('/login')
-  } else if (to.meta.requiresUnauth && authStore.isAuthenticated) {
+    next({ name: 'Login', query: { redirect: to.fullPath } })
+  } else if (to.matched.some(record => record.meta.requiresUnauth) && authStore.isAuthenticated) {
     // Route requires unauthentication but user is authenticated
-    next('/')
+    next({ name: 'Home' })
   } else {
     // Proceed to the route
     next()
