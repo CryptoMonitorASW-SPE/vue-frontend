@@ -58,16 +58,24 @@ export const useAuthenticationStore = defineStore('authentication', {
     },
 
     async refreshToken() {
+      console.log('refreshing token')
       try {
         const response = await axios.post(
           '/api/auth/refresh',
           {},
           {
-            withCredentials: true // Ensure cookies are sent
+            withCredentials: true
           }
         )
+        console.log('refresh token response:', response)
 
-        this.setAuthData(response.data)
+        const { userId, email } = response.data
+        if (!userId || !email) {
+          console.error('Invalid response data:', response.data)
+          return false
+        }
+
+        this.setAuthData({ userId, email })
         this.error = null
         return true
       } catch (error) {
@@ -78,7 +86,17 @@ export const useAuthenticationStore = defineStore('authentication', {
     },
 
     setAuthData(data) {
-      this.user = data.user
+      if (!data?.userId || !data?.email) {
+        console.error('Invalid user data:', data)
+        return
+      }
+
+      this.user = {
+        id: data.userId,
+        email: data.email
+      }
+      console.log('User set:', this.user)
+      console.log('Is authenticated:', !!this.user)
     },
 
     handleAuthError(error) {
