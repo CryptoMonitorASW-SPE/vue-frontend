@@ -160,7 +160,7 @@
       }
 
       .dark-mode & {
-        background-color: map.get(base.$dark-theme, secondary-color);
+        background-color: map.get(base.$dark-theme, navbar-background);
         color: map.get(base.$dark-theme, text-color);
       }
     }
@@ -169,7 +169,19 @@
       border-bottom: 1px solid #e0e0e0;
 
       &:hover {
-        background-color: color.adjust(base.$background-color, $lightness: -2%);
+        background-color: color.adjust(
+          map.get(base.$light-theme, background-color),
+          $lightness: -10%
+        );
+      }
+
+      .dark-mode & {
+        &:hover {
+          background-color: color.adjust(
+            map.get(base.$dark-theme, background-color),
+            $lightness: 10%
+          );
+        }
       }
 
       &.updated-row {
