@@ -6,6 +6,11 @@ export const useCryptoStore = defineStore('cryptoStore', {
     timestamp: null
   }),
   actions: {
+    setCurrency(currency) {
+      this.selectedCurrency = currency
+      localStorage.setItem('selectedCurrency', currency)
+      this.restartConnection(currency)
+    },
     updateCryptocurrencies(data) {
       if (data.eventType === 'CRYPTO_UPDATE') {
         data.payload.forEach(newCrypto => {
@@ -67,6 +72,13 @@ export const useCryptoStore = defineStore('cryptoStore', {
       // If not found, return an empty object or handle accordingly
       console.warn(`Crypto with ID ${id} not found in store`)
       return {}
+    },
+    restartConnection(currency) {
+      window.dispatchEvent(
+        new CustomEvent('currency-changed', {
+          detail: { currency }
+        })
+      )
     }
   }
 })

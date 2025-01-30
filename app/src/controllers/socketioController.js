@@ -6,35 +6,65 @@ let socket = null
 
 export function initializeSocket() {
   const cryptoStore = useCryptoStore()
+  let currentListener = null
+
+  const setupListener = currency => {
+    // Rimuovi il vecchio listener se presente
+    if (currentListener) {
+      socket.off(currentListener)
+    }
+
+    // Imposta il nuovo listener
+    const eventName = `broadcast${currency.toUpperCase()}`
+    socket.on(eventName, data => {
+      console.log(`Received ${eventName} message:`, data)
+      cryptoStore.updateCryptocurrencies(data)
+    })
+    currentListener = eventName
+  }
 
   // Connect to the Socket.IO server
-  const socket = io('http://localhost:3000', {
-    path: '/updates' // Specify the custom path for updates
+  socket = io('http://localhost:3000', {
+    path: '/updates'
   })
 
-  // Listen for the 'connect' event to confirm connection
   socket.on('connect', () => {
     console.log('Connected to the server!')
-    axios.post('/api/cryptomarket/start').then(response => {
-      console.log('Initial data:', response.data)
-      cryptoStore.updateCryptocurrencies(response.data)
-    })
+    const currency = cryptoStore.selectedCurrency
+
+    // Fai la chiamata iniziale con la valuta corretta
+    axios
+      .post('/api/cryptomarket/start', null, {
+        params: { currency }
+      })
+      .then(response => {
+        console.log('Initial data:', response.data)
+        cryptoStore.updateCryptocurrencies(response.data)
+      })
+
+    // Imposta il listener per la valuta corrente
+    setupListener(currency)
   })
 
-  // Listen for the 'broadcast' event
-  socket.on('broadcastUSD', data => {
-    console.log('Received broadcast message:', data)
-    cryptoStore.updateCryptocurrencies(data)
+  // Ascolta i cambiamenti di valuta
+  window.addEventListener('currency-changed', event => {
+    const currency = event.detail.currency
+    setupListener(currency)
+
+    // Riavvia la connessione con la nuova valuta
+    axios
+      .post('/api/cryptomarket/start', null, {
+        params: { currency }
+      })
+      .then(response => {
+        console.log('Initial data with new currency:', response.data)
+        cryptoStore.updateCryptocurrencies(response.data)
+      })
   })
 
   // Handle errors
   socket.on('connect_error', error => {
     console.error('Connection error:', error)
-  })
-
-  // Handle disconnection
-  socket.on('disconnect', reason => {
-    console.log('Disconnected from server:', reason)
   })
 }
 

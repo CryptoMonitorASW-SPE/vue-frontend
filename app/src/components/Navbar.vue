@@ -1,6 +1,6 @@
 <template>
-  <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
+  <nav :class="['navbar', { 'dark-mode': isDarkMode }]" class="navbar navbar-expand-lg">
+    <div class="container-fluid d-flex align-items-center">
       <!-- Logo -->
       <RouterLink to="/" class="navbar-brand">
         <div class="logo" role="heading" aria-level="1">CryptoMonitor</div>
@@ -25,13 +25,14 @@
           <li class="nav-item">
             <RouterLink to="/" class="nav-link" aria-current="page">Coins</RouterLink>
           </li>
-          <li class="nav-item">
+          <li class="nav-item d-flex align-items-center">
             <RouterLink to="/about" class="nav-link">About</RouterLink>
           </li>
         </ul>
 
         <!-- Sezione Search, Sign In e Toggle Dark Mode -->
         <form class="d-flex align-items-center">
+          <CurrencyToggle class="currency" @currency-changed="handleCurrencyChange" />
           <div class="me-3">
             <label for="search" class="visually-hidden">Search cryptocurrencies</label>
             <input
@@ -43,10 +44,9 @@
             />
           </div>
           <RouterLink v-if="!isAuthenticated" to="/login" class="btn btn-primary me-3"
-            >Sign In</RouterLink
-          >
+            >Sign In</RouterLink>
           <button v-else class="btn btn-primary me-3" @click="logout">Logout</button>
-          <ThemeToggle :isDarkMode="isDarkMode" @toggle-dark-mode="$emit('toggle-dark-mode')" />
+          <ThemeToggle :isDarkMode="isDarkMode" @toggle-dark-mode="handleToggleDarkMode" />
         </form>
       </div>
     </div>
@@ -57,11 +57,19 @@
 import ThemeToggle from './ThemeToggle.vue'
 import { useAuthenticationStore } from '@/stores/AuthenticationStore'
 import { storeToRefs } from 'pinia'
+import CurrencyToggle from './CurrencyToggle.vue'
 
 export default {
   name: 'Navbar',
   components: {
-    ThemeToggle
+    ThemeToggle,
+    CurrencyToggle
+  },
+  props: {
+    isDarkMode: {
+      type: Boolean,
+      required: true
+    }
   },
   setup() {
     const authStore = useAuthenticationStore()
@@ -75,8 +83,14 @@ export default {
       isAuthenticated,
       logout
     }
-  }
+  },
+  methods: {
+    handleToggleDarkMode() {
+      this.$emit('toggle-dark-mode')
+    }
+  },
 }
+
 </script>
 
 <style lang="scss">
@@ -88,8 +102,9 @@ export default {
 .navbar {
   background-color: map.get(base.$light-theme, navbar-background);
   box-shadow: base.$box-shadow;
-  padding: base.$padding-sm base.$padding-md;
-  margin-bottom: base.$padding-md;
+  padding: base.$padding-sm base.$padding-sm;
+  margin-bottom: base.$padding-sm;
+  height: 60px;
 
   .dark-mode & {
     background-color: map.get(base.$dark-theme, navbar-background);
@@ -101,7 +116,7 @@ export default {
 
     .logo {
       font-weight: bold;
-      font-size: base.$font-size-lg;
+      font-size: base.$font-size-xl;
       margin-bottom: base.$padding-sm;
       color: map.get(base.$light-theme, text-color);
 
@@ -131,10 +146,21 @@ export default {
     }
   }
 
+  .currency {
+    color: map.get(base.$light-theme, text-color);
+
+    .dark-mode & {
+      color: map.get(base.$dark-theme, text-color);
+    }
+  }
+
   .form-control {
     width: 100%;
     padding: base.$padding-sm;
     background-color: map.get(base.$light-theme, secondary-color);
+    color: map.get(base.$light-theme, 'text-color');
+    border: 1px solid #ccc;
+    border-radius: base.$border-radius;
 
     .dark-mode & {
       background-color: map.get(base.$dark-theme, secondary-color);

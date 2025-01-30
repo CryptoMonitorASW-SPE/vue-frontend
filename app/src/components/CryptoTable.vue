@@ -34,7 +34,7 @@
             @click="sortTable('prices')"
             @keydown.enter="sortTable('prices')"
           >
-            Price (USD)
+            Price
             <span v-if="sortKey === 'prices'">{{ sortAsc ? '↑' : '↓' }}</span>
           </th>
           <th
@@ -45,7 +45,7 @@
             @click="sortTable('marketCap')"
             @keydown.enter="sortTable('marketCap')"
           >
-            Market Cap (USD)
+            Market Cap
             <span v-if="sortKey === 'marketCap'">{{ sortAsc ? '↑' : '↓' }}</span>
           </th>
           <th
@@ -137,11 +137,11 @@
             </RouterLink>
           </td>
           <td>{{ crypto.symbol.toUpperCase() }}</td>
-          <td>{{ formatCurrency(crypto.price) }}</td>
-          <td>{{ formatCurrency(crypto.marketCap) }}</td>
-          <td>{{ formatCurrency(crypto.totalVolume) }}</td>
-          <td>{{ formatCurrency(crypto.high24h) }}</td>
-          <td>{{ formatCurrency(crypto.low24h) }}</td>
+          <td>{{ formatCurrency(crypto.price, selectedCurrency) }}</td>
+          <td>{{ formatCurrency(crypto.marketCap, selectedCurrency) }}</td>
+          <td>{{ formatCurrency(crypto.totalVolume, selectedCurrency) }}</td>
+          <td>{{ formatCurrency(crypto.high24h, selectedCurrency) }}</td>
+          <td>{{ formatCurrency(crypto.low24h, selectedCurrency) }}</td>
           <td
             :class="{
               positive: crypto.priceChangePercentage24h >= 0,
@@ -175,14 +175,23 @@ export default {
   },
   setup(props) {
     const cryptoStore = useCryptoStore()
+    const selectedCurrency = computed(() => cryptoStore.selectedCurrency)
     const cryptocurrencies = computed(() => cryptoStore.cryptocurrencies)
+
+    // Filtri
     const { filteredData } = useFilter(
       cryptocurrencies,
       computed(() => props.filters)
     )
+
+    // Sorting
     const { sortTable, sortedData, sortKey, sortAsc } = useSort(filteredData)
     const finalCryptocurrencies = sortedData
+
+    // Formattazione
     const { formatCurrency, formatPercentage, formatNumber, formatDate } = useFormat()
+
+    // Watch per aggiornamento filtri
     watch(() => props.filters, { deep: true, immediate: true })
 
     return {
@@ -193,7 +202,8 @@ export default {
       formatNumber,
       formatDate,
       sortKey,
-      sortAsc
+      sortAsc,
+      selectedCurrency
     }
   }
 }
