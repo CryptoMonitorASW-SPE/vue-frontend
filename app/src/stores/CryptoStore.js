@@ -3,10 +3,12 @@ import { defineStore } from 'pinia'
 export const useCryptoStore = defineStore('cryptoStore', {
   state: () => ({
     cryptocurrencies: [],
-    timestamp: null
+    timestamp: null,
+    selectedCurrency: null
   }),
   actions: {
     setCurrency(currency) {
+      console.log('Selected currency:', currency)
       this.selectedCurrency = currency
       localStorage.setItem('selectedCurrency', currency)
       this.restartConnection(currency)

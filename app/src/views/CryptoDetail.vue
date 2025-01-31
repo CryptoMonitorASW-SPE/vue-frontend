@@ -41,13 +41,7 @@
           />
         </div>
         <div class="col-12 col-md-6">
-          <ChartComponent
-            :cryptoId="crypto.id"
-            :currency="userCurrency"
-            :chartData="activeChartData"
-            :loading="chartLoading"
-            @timeframe-change="handleTimeframeChange"
-          />
+          <ChartComponent :cryptoId="crypto.id" :currency="userCurrency" />
         </div>
         <div class="col-12 col-md-3 mt-5">
           <CryptoDetailsBoxes :cryptoDetails="cryptoDetails" :currency="userCurrency" />
@@ -62,7 +56,7 @@ import { computed } from 'vue'
 import { useCryptoDetailStore } from '../stores/CryptoDetailStore'
 import { useCryptoStore } from '../stores/CryptoStore'
 import CryptoHeader from '../components/details/CryptoHeader.vue'
-import ChartComponent from '../components/details/CryptoOHLChart.vue'
+import ChartComponent from '../components/details/CryptoOHLChart.vue' // Ensure correct import
 import MarketDataBoxes from '../components/details/MarketDataBoxes.vue'
 import CryptoDetailsBoxes from '../components/details/CryptoDetailsBoxes.vue'
 
@@ -83,23 +77,21 @@ export default {
   setup(props) {
     const storeDetail = useCryptoDetailStore()
     const storeCrypto = useCryptoStore()
-    const userCurrency = 'USD' // Could be moved to a user preferences store
+    const userCurrency = computed(() => storeCrypto.selectedCurrency)
     const crypto = computed(() => storeCrypto.fetchCryptoById(props.cryptoId))
+
     // Initial data fetch
-    storeDetail.fetchInitialData(props.cryptoId, userCurrency, {
+    storeDetail.fetchInitialData(props.cryptoId, userCurrency.value, {
       days: 7, // Default to 1 week
       timeSpan: '1W'
     })
-    console.log(crypto.value)
+
     return {
       crypto,
       userCurrency,
-      //crypto details
+      // Crypto details
       cryptoDetails: computed(() => storeDetail.cryptoDetails),
-      //Chart data
-      activeChartData: computed(() => storeDetail.chartData[storeDetail.activeTimeSpan]),
       initialLoading: computed(() => !storeDetail.initialLoadComplete),
-      chartLoading: computed(() => storeDetail.isLoading),
       initialError: computed(() => storeDetail.errorDetails || storeDetail.error)
     }
   },
@@ -113,6 +105,8 @@ export default {
       this.isFavorite = !this.isFavorite
     },
     handleTimeframeChange(newTimeSpan) {
+      // If you decide to handle timeframe changes in CryptoDetail.vue, keep this method.
+      // Otherwise, you can remove it if ChartComponent manages its own timeframe.
       const daysMap = {
         '1D': 1,
         '1W': 7,

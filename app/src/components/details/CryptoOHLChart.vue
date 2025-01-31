@@ -24,13 +24,42 @@
         :series="currentSeries"
         aria-hidden="true"
       ></apexcharts>
+      <!-- Accessible Data Table -->
+      <table class="visually-hidden" aria-hidden="false">
+        <caption>
+          Candlestick Data for
+          {{
+            cryptoId
+          }}
+        </caption>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Open</th>
+            <th>High</th>
+            <th>Low</th>
+            <th>Close</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(row, index) in tableData" :key="index">
+            <td>{{ formatDate(row.x) }}</td>
+            <td>{{ row.y[0] }}</td>
+            <td>{{ row.y[1] }}</td>
+            <td>{{ row.y[2] }}</td>
+            <td>{{ row.y[3] }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+    <!-- Screen Reader Description -->
+    <div class="sr-only" aria-live="polite">{{ chartDescription }}</div>
   </div>
 </template>
 
 <script>
 import VueApexCharts from 'vue3-apexcharts'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useCryptoDetailStore } from '../../stores/CryptoDetailStore'
 
 export default {
@@ -46,7 +75,6 @@ export default {
     const cryptoDetailStore = useCryptoDetailStore()
 
     const coinId = props.cryptoId
-    const currency = props.currency
 
     const timeSpans = ['1D', '7D', '1M', '6M', '1Y']
     const spanToDaysMap = {
@@ -147,7 +175,7 @@ export default {
       }
       console.log(`Fetching chart data for span: ${span}`)
       console.log(coinId)
-      await cryptoDetailStore.fetchChartData(coinId, currency, days, span)
+      await cryptoDetailStore.fetchChartData(coinId, props.currency, days, span)
     }
 
     /**
@@ -162,6 +190,19 @@ export default {
         }
       }
     }
+
+    // Watch for changes in the 'currency' prop and refetch data accordingly
+    watch(
+      () => props.currency,
+      async (newCurrency, oldCurrency) => {
+        console.log(
+          `Currency changed from ${oldCurrency} to ${newCurrency}. Refetching chart data.`
+        )
+        // Optionally, reset chart data if needed
+        // cryptoDetailStore.resetChartData()
+        await fetchDataForSpan(selectedSpan.value)
+      }
+    )
 
     onMounted(() => {
       fetchDataForSpan(selectedSpan.value)

@@ -38,11 +38,11 @@ export default {
       return [
         {
           title: 'Circulating Supply',
-          value: formatCurrency(props.circulatingSupply, props.currency)
+          value: `${formatNumber(props.circulatingSupply)}`
         },
         {
-          title: 'Total Supply',
-          value: `${formatNumber(props.totalSupply)} ${getCurrencySymbol(props.currency)}`
+          title: 'Max Supply',
+          value: `${formatNumber(props.maxSupply)}`
         },
         {
           title: 'All-Time High (ATH)',
