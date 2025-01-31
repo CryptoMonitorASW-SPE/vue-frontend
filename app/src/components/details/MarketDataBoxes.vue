@@ -70,16 +70,6 @@ export default {
       return new Intl.NumberFormat().format(value)
     }
 
-    const getCurrencySymbol = currency => {
-      const symbols = {
-        usd: '$',
-        eur: '€',
-        gbp: '£'
-        // Add more symbols as needed
-      }
-      return symbols[currency.toLowerCase()] || ''
-    }
-
     return {
       marketData
     }
