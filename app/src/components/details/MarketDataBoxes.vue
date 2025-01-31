@@ -1,7 +1,11 @@
 <template>
   <div class="market-data-boxes">
     <div class="row g-3">
-      <div v-for="(item, index) in marketData" :key="index" class="col-12 col-md-6">
+      <div
+        v-for="(item, index) in marketData"
+        :key="index"
+        :class="index < 2 ? 'col-12' : 'col-12 col-md-6'"
+      >
         <div class="data-box p-3 rounded-3">
           <div class="data-title text-secondary mb-1 small">
             {{ item.title }}
@@ -39,12 +43,6 @@ export default {
         {
           title: 'Total Supply',
           value: `${formatNumber(props.totalSupply)} ${getCurrencySymbol(props.currency)}`
-        },
-        {
-          title: 'Max Supply',
-          value: props.maxSupply
-            ? `${formatNumber(props.maxSupply)} ${getCurrencySymbol(props.currency)}`
-            : 'N/A'
         },
         {
           title: 'All-Time High (ATH)',
