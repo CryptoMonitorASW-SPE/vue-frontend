@@ -1,4 +1,5 @@
 @use 'sass:color';
+@use 'sass:map';
 @use './base' as base;
 
 .crypto-detail {
@@ -31,11 +32,16 @@
 }
 
 .crypto-header {
-  background: white;
+  background-color: map.get(base.$light-theme, background-color);
   padding: base.$padding-md;
   border-radius: base.$border-radius;
   box-shadow: base.$box-shadow;
   margin-bottom: base.$padding-lg;
+
+  .dark-mode & {
+    background-color: map.get(base.$dark-theme, navbar-background);
+    border-color: #343a40;
+  }
 
   .crypto-info {
     flex-grow: 1;
@@ -59,15 +65,27 @@
 
 .crypto-details-boxes {
   padding: 20px; /* Replaced base.$padding-md with 20px */
-  background-color: #ffffff; /* Replaced base.$white-color with #ffffff */
+  background-color: map.get(
+    base.$light-theme,
+    background-color
+  ); /* Replaced base.$white-color with #ffffff */
   border: 1px solid #e9ecef; /* Replaced base.$border-color with #e9ecef */
   border-radius: 8px; /* Replaced base.$border-radius with 8px */
+
+  .dark-mode & {
+    background-color: map.get(base.$dark-theme, navbar-background);
+    border-color: #343a40; /* Replaced base.$dark-color with #343a40 */
+  }
 
   .links-section {
     h5 {
       margin-bottom: 15px;
       font-size: 1.1rem;
       color: #343a40; /* Replaced base.$text-color with #343a40 */
+
+      .dark-mode & {
+        color: map.get(base.$dark-theme, text-color);
+      }
     }
 
     ul {
@@ -94,6 +112,10 @@
       margin-bottom: 15px;
       font-size: 1.1rem;
       color: #343a40; /* Replaced base.$text-color with #343a40 */
+
+      .dark-mode & {
+        color: map.get(base.$dark-theme, text-color);
+      }
     }
 
     .sentiment-bars {
@@ -145,13 +167,21 @@
 }
 
 .data-box {
-  background-color: #f8f9fa;
+  background-color: map.get(base.$light-theme, background-color);
   border: 1px solid #e9ecef;
   transition: background-color 0.2s ease;
+
+  .dark-mode & {
+    background-color: map.get(base.$dark-theme, navbar-background);
+    border-color: #343a40;
+  }
 }
 
 .data-box:hover {
   background-color: #f1f3f5;
+  .dark-mode & {
+    background-color: color.adjust(map.get(base.$dark-theme, background-color), $lightness: 10%);
+  }
 }
 
 .data-title {
@@ -161,6 +191,10 @@
 .data-value {
   font-size: 1.125rem;
   color: #212529;
+
+  .dark-mode & {
+    color: map.get(base.$dark-theme, text-color);
+  }
 }
 
 .ohlc-chart-container {
@@ -183,6 +217,11 @@
   border-radius: 4px;
   transition: background-color 0.3s;
   color: #000; /* Ensuring sufficient contrast */
+
+  .dark-mode & {
+    background-color: map.get(base.$dark-theme, navbar-background);
+    color: #ffffff;
+  }
 }
 
 .time-span-button.active {
@@ -194,6 +233,9 @@
 .time-span-button:focus {
   background-color: #dcdcdc;
   outline: none; /* Ensure focus is indicated via other means */
+  .dark-mode & {
+    background-color: color.adjust(map.get(base.$dark-theme, background-color), $lightness: 10%);
+  }
 }
 
 .loading,
@@ -209,6 +251,12 @@
 .ohlc-chart {
   width: 100%;
   max-width: 800px;
+}
+
+.apexcharts-text tspan {
+  .dark-mode & {
+    fill: map.get(base.$dark-theme, text-color);
+  }
 }
 
 .visually-hidden {

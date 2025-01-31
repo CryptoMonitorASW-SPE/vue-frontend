@@ -2,6 +2,7 @@
   <div class="theme-toggle">
     <button
       class="btn"
+      type="button"
       :title="isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
       @click="toggleTheme"
     >
