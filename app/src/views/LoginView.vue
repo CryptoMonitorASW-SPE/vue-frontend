@@ -1,11 +1,11 @@
 <template>
-  <main class="login-form">
-    <div class="form-container">
+  <main class="container d-flex justify-content-center align-items-center">
+    <div class="w-100" style="max-width: 400px">
       <AuthForm title="Welcome Back!" buttonText="Login" @form-submit="submitForm">
-        <div v-if="error" class="error-message" role="alert">
+        <div v-if="error" class="alert alert-danger mt-3" role="alert">
           {{ error }}
         </div>
-        <div class="form-footer">
+        <div class="form-footer text-center mt-3">
           <p>
             Don't have an account?
             <RouterLink to="/signup">Join us!</RouterLink>
@@ -55,5 +55,5 @@ export default {
 </script>
 
 <style lang="scss">
-@use '../assets/scss/login';
+@use '../assets/scss/auth';
 </style>

@@ -1,39 +1,43 @@
 <template>
-  <div class="auth-form">
-    <h2>{{ title }}</h2>
-    <form aria-label="Authentication Form" @submit.prevent="handleSubmit">
-      <div class="form-group">
-        <label :for="emailId">Email</label>
-        <input
-          :id="emailId"
-          v-model="form.email"
-          type="email"
-          placeholder="Enter your email address"
-          required
-          aria-required="true"
-          autocomplete="username"
-        />
-      </div>
-
-      <div class="form-group">
-        <label :for="passwordId">Password</label>
-        <input
-          :id="passwordId"
-          v-model="form.password"
-          type="password"
-          placeholder="Enter your password"
-          required
-          aria-required="true"
-          autocomplete="current-password"
-        />
-      </div>
-
-      <button type="submit" :disabled="!isValidForm">{{ buttonText }}</button>
-      <slot></slot>
-      <div aria-live="polite" class="sr-only">
-        {{ isValidForm ? 'Form ready' : 'Please fill out the form' }}
-      </div>
-    </form>
+  <div class="card mx-auto auth-form">
+    <div class="card-body">
+      <h2 class="card-title text-center mb-4">{{ title }}</h2>
+      <form aria-label="Authentication Form" @submit.prevent="handleSubmit">
+        <div class="mb-3 form-group">
+          <label :for="emailId" class="form-label">Email</label>
+          <input
+            :id="emailId"
+            v-model="form.email"
+            type="email"
+            placeholder="Enter your email address"
+            required
+            aria-required="true"
+            autocomplete="username"
+            class="form-control"
+          />
+        </div>
+        <div class="mb-3 form-group">
+          <label :for="passwordId" class="form-label">Password</label>
+          <input
+            :id="passwordId"
+            v-model="form.password"
+            type="password"
+            placeholder="Enter your password"
+            required
+            aria-required="true"
+            autocomplete="current-password"
+            class="form-control"
+          />
+        </div>
+        <button type="submit" :disabled="!isValidForm" class="btn btn-primary w-100">
+          {{ buttonText }}
+        </button>
+        <slot></slot>
+        <div aria-live="polite" class="sr-only">
+          {{ isValidForm ? 'Form ready' : 'Please fill out the form' }}
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 

@@ -1,14 +1,14 @@
 <template>
-  <main class="signup-form">
-    <div class="form-container">
+  <main class="container d-flex justify-content-center align-items-center">
+    <div class="w-100" style="max-width: 400px">
       <AuthForm title="Join Us!" buttonText="Sign Up" @form-submit="submitForm">
-        <div class="form-footer">
+        <div class="form-footer text-center mt-3">
           <p>
             Already have an account?
             <RouterLink to="/login">Log in</RouterLink>
           </p>
         </div>
-        <div v-if="error" class="error-message" role="alert">
+        <div v-if="error" class="alert alert-danger mt-3" role="alert">
           {{ error }}
         </div>
       </AuthForm>
@@ -50,5 +50,5 @@ export default {
 </script>
 
 <style lang="scss">
-@use '../assets/scss/register';
+@use '../assets/scss/auth';
 </style>
