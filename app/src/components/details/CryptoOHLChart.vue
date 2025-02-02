@@ -147,7 +147,6 @@ export default {
         return
       }
       console.log(`Fetching chart data for span: ${span}`)
-      console.log(coinId)
       await cryptoDetailStore.fetchChartData(coinId, props.currency, days, span)
     }
 

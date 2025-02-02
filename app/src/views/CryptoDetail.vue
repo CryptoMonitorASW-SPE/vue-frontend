@@ -43,7 +43,7 @@
           />
         </div>
         <div class="col-12 col-md-6">
-          <ChartComponent :cryptoId="crypto.id" :currency="userCurrency" />
+          <ChartComponent :cryptoId="cryptoId" :currency="userCurrency" />
         </div>
         <div class="col-12 col-md-3 mt-5">
           <CryptoDetailsBoxes :cryptoDetails="cryptoDetails" :currency="userCurrency" />
@@ -54,16 +54,17 @@
 </template>
 
 <script>
+import { watch } from 'vue'
 import { computed } from 'vue'
-import axios from 'axios'
+import { useRoute } from 'vue-router'
 import { useCryptoDetailStore } from '../stores/CryptoDetailStore'
 import { useCryptoStore } from '../stores/CryptoStore'
-import { useAuthenticationStore } from '../stores/AuthenticationStore'
+import { useAuthenticationStore } from '@/stores/AuthenticationStore'
+import { storeToRefs } from 'pinia'
 import CryptoHeader from '../components/details/CryptoHeader.vue'
 import ChartComponent from '../components/details/CryptoOHLChart.vue'
 import MarketDataBoxes from '../components/details/MarketDataBoxes.vue'
 import CryptoDetailsBoxes from '../components/details/CryptoDetailsBoxes.vue'
-import { storeToRefs } from 'pinia'
 
 export default {
   name: 'CryptoDetail',
@@ -79,23 +80,34 @@ export default {
       required: true
     }
   },
-  setup(props) {
+  setup() {
+    // Use useRoute to access dynamic route params
+    const route = useRoute()
+    const cryptoId = computed(() => route.params.id)
+
     const storeDetail = useCryptoDetailStore()
     const storeCrypto = useCryptoStore()
-    const userCurrency = computed(() => storeCrypto.selectedCurrency)
-    const crypto = computed(() => storeCrypto.fetchCryptoById(props.cryptoId))
     const authStore = useAuthenticationStore()
     const { isAuthenticated } = storeToRefs(authStore)
 
-    // Initial data fetch
-    storeDetail.fetchInitialData(props.cryptoId, userCurrency.value, {
-      days: 7, // Default to 1 week
-      timeSpan: '1W'
-    })
+    const userCurrency = computed(() => storeCrypto.selectedCurrency)
+    const crypto = computed(() => storeCrypto.fetchCryptoById(cryptoId.value))
+    watch(
+      userCurrency,
+      newCurrency => {
+        if (newCurrency) {
+          storeDetail.fetchInitialData(cryptoId.value, newCurrency, {
+            days: 7, // Default to 1 week
+            timeSpan: '1W'
+          })
+        }
+      },
+      { immediate: true }
+    )
 
-    console.log('Auth: ' + isAuthenticated)
     return {
       crypto,
+      cryptoId,
       userCurrency,
       cryptoDetails: computed(() => storeDetail.cryptoDetails),
       initialLoading: computed(() => !storeDetail.initialLoadComplete),
@@ -117,6 +129,7 @@ export default {
       //   })
       console.log('Added to watchlist:', this.cryptoId)
     },
+    //TODO: check if the change chart works
     handleTimeframeChange(newTimeSpan) {
       const daysMap = {
         '1D': 1,
@@ -126,7 +139,7 @@ export default {
       }
       this.$store.fetchChartData(
         this.cryptoId,
-        this.userCurrency,
+        this.userCurrency.value,
         daysMap[newTimeSpan],
         newTimeSpan
       )
