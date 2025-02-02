@@ -1,0 +1,30 @@
+@use 'sass:color';
+@use './base' as base;
+@use 'sass:map';
+@use 'sass:math';
+
+.dark-mode {
+  // Card overrides
+  .card {
+    background-color: map.get(base.$dark-theme, navbar-background);
+    color: map.get(base.$dark-theme, text-color);
+    border-color: rgba(255, 255, 255, 0.125);
+  }
+
+  // Table overrides
+  table {
+    th {
+      background-color: map.get(base.$dark-theme, navbar-background);
+      color: map.get(base.$dark-theme, text-color);
+    }
+
+    tr {
+      border-top: 1px solid rgba(255, 255, 255, 0.125);
+    }
+
+    td {
+      background-color: transparent;
+      color: map.get(base.$dark-theme, text-color);
+    }
+  }
+}
