@@ -4,7 +4,7 @@ export const useCryptoStore = defineStore('cryptoStore', {
   state: () => ({
     cryptocurrencies: [],
     timestamp: null,
-    selectedCurrency: null
+    selectedCurrency: 'USD'
   }),
   actions: {
     setCurrency(currency) {
