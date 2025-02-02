@@ -46,9 +46,12 @@
           <RouterLink v-if="isAuthenticated" to="/profile" class="btn btn-primary me-3"
             >Profile</RouterLink
           >
-
+          <RouterLink v-if="isAuthenticated" to="/watchlist" class="btn btn-primary me-3"
+            >Watchlist</RouterLink
+          >
           <RouterLink v-if="!isAuthenticated" to="/login" class="btn btn-primary me-3"
-            >Sign In</RouterLink>
+            >Sign In</RouterLink
+          >
           <button v-else class="btn btn-primary me-3" @click="logout">Logout</button>
           <ThemeToggle :isDarkMode="isDarkMode" @toggle-dark-mode="handleToggleDarkMode" />
         </form>
@@ -92,9 +95,8 @@ export default {
     handleToggleDarkMode() {
       this.$emit('toggle-dark-mode')
     }
-  },
+  }
 }
-
 </script>
 
 <style lang="scss">
