@@ -15,7 +15,7 @@
 
     <!-- Content -->
     <div v-else>
-      <!-- Header Row -->
+      <!-- Header Row (now with integrated watchlist button) -->
       <div class="row justify-content-center">
         <div class="col-12 col-lg-8">
           <CryptoHeader
@@ -23,12 +23,14 @@
             :name="crypto.name"
             :symbol="crypto.symbol"
             :rank="crypto.marketCapRank"
-            :isFavorite="isFavorite"
+            :isAuthenticated="isAuthenticated"
             @toggle-favorite="toggleFavorite"
+            @add-to-watchlist="addToWatchlist"
           />
         </div>
       </div>
 
+      <!-- Other content rows -->
       <div class="row mt-4">
         <div class="col-12 col-md-3 mt-5">
           <MarketDataBoxes
@@ -53,12 +55,15 @@
 
 <script>
 import { computed } from 'vue'
+import axios from 'axios'
 import { useCryptoDetailStore } from '../stores/CryptoDetailStore'
 import { useCryptoStore } from '../stores/CryptoStore'
+import { useAuthenticationStore } from '../stores/AuthenticationStore'
 import CryptoHeader from '../components/details/CryptoHeader.vue'
-import ChartComponent from '../components/details/CryptoOHLChart.vue' // Ensure correct import
+import ChartComponent from '../components/details/CryptoOHLChart.vue'
 import MarketDataBoxes from '../components/details/MarketDataBoxes.vue'
 import CryptoDetailsBoxes from '../components/details/CryptoDetailsBoxes.vue'
+import { storeToRefs } from 'pinia'
 
 export default {
   name: 'CryptoDetail',
@@ -79,6 +84,8 @@ export default {
     const storeCrypto = useCryptoStore()
     const userCurrency = computed(() => storeCrypto.selectedCurrency)
     const crypto = computed(() => storeCrypto.fetchCryptoById(props.cryptoId))
+    const authStore = useAuthenticationStore()
+    const { isAuthenticated } = storeToRefs(authStore)
 
     // Initial data fetch
     storeDetail.fetchInitialData(props.cryptoId, userCurrency.value, {
@@ -86,34 +93,37 @@ export default {
       timeSpan: '1W'
     })
 
+    console.log('Auth: ' + isAuthenticated)
     return {
       crypto,
       userCurrency,
-      // Crypto details
       cryptoDetails: computed(() => storeDetail.cryptoDetails),
       initialLoading: computed(() => !storeDetail.initialLoadComplete),
-      initialError: computed(() => storeDetail.errorDetails || storeDetail.error)
-    }
-  },
-  data() {
-    return {
-      isFavorite: false
+      initialError: computed(() => storeDetail.errorDetails || storeDetail.error),
+      isAuthenticated
     }
   },
   methods: {
-    toggleFavorite() {
-      this.isFavorite = !this.isFavorite
+    addToWatchlist() {
+      // axios
+      //   .post('/api/watchlist', { cryptoId: this.cryptoId })
+      //   .then(response => {
+      //     // Handle success (e.g., show a success notification)
+      //     console.log('Crypto added to watchlist:', response.data)
+      //   })
+      //   .catch(error => {
+      //     // Handle error (e.g., show an error notification)
+      //     console.error('Error adding crypto to watchlist:', error)
+      //   })
+      console.log('Added to watchlist:', this.cryptoId)
     },
     handleTimeframeChange(newTimeSpan) {
-      // If you decide to handle timeframe changes in CryptoDetail.vue, keep this method.
-      // Otherwise, you can remove it if ChartComponent manages its own timeframe.
       const daysMap = {
         '1D': 1,
         '1W': 7,
         '1M': 30,
         '1Y': 365
       }
-
       this.$store.fetchChartData(
         this.cryptoId,
         this.userCurrency,

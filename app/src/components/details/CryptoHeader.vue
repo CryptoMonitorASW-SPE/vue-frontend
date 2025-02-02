@@ -5,15 +5,15 @@
       <h1>{{ name }} ({{ symbol }})</h1>
       <p>Rank #{{ rank }}</p>
     </div>
-    <!-- <button
-      class="favorite-button mt-3"
-      :aria-pressed="isFavorite"
-      :aria-label="isFavorite ? 'Rimuovi dai preferiti' : 'Aggiungi ai preferiti'"
-      @click="$emit('toggle-favorite')"
+    <!-- Watchlist Button -->
+    <button
+      v-if="isAuthenticated"
+      class="btn btn-outline-primary mt-3"
+      aria-label="Add to Watchlist"
+      @click="$emit('add-to-watchlist')"
     >
-      <span v-if="isFavorite">★</span>
-      <span v-else>☆</span>
-    </button> -->
+      <i class="bi bi-eye"></i> Add to Watchlist
+    </button>
   </header>
 </template>
 
@@ -35,6 +35,10 @@ export default {
     },
     rank: {
       type: Number,
+      required: true
+    },
+    isAuthenticated: {
+      type: Boolean,
       required: true
     },
     isFavorite: {
