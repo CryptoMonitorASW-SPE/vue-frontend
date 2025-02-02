@@ -4,8 +4,9 @@ import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import SignupView from '@/views/SignupView.vue'
 import CryptoDetail from '@/views/CryptoDetail.vue'
-import ProfileView from '@/views/ProfileView.vue'
+import ProfileView from '@/views/ProfileView.vue' // Import the Profile component
 import ProfileWatchlist from '../views/ProfileWatchlist.vue'
+import ProfileWallet from '../views/ProfileWallet.vue'
 import { useAuthenticationStore } from '@/stores/AuthenticationStore'
 
 const routes = [
@@ -31,12 +32,6 @@ const routes = [
         name: 'Profile',
         component: ProfileView,
         meta: { requiresAuth: true } // Requires user to be authenticated
-      },
-      {
-        path: 'watchlist',
-        name: 'Watchlist',
-        component: ProfileWatchlist,
-        meta: { requiresAuth: true } // Requires user to be authenticated
       }
     ]
   },
@@ -49,6 +44,18 @@ const routes = [
         name: 'Login',
         component: LoginView,
         meta: { requiresUnauth: true } // Requires user to be unauthenticated
+      },
+      {
+        path: 'watchlist',
+        name: 'Watchlist',
+        component: ProfileWatchlist,
+        meta: { requiresAuth: true } // Requires user to be authenticated
+      },
+      {
+        path: 'wallet',
+        name: 'Wallet',
+        component: ProfileWallet,
+        meta: { requiresAuth: true }
       }
     ]
   },

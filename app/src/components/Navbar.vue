@@ -46,6 +46,9 @@
           <RouterLink v-if="isAuthenticated" to="/profile" class="btn btn-primary me-3"
             >Profile</RouterLink
           >
+          <RouterLink v-if="isAuthenticated" to="/wallet" class="btn btn-primary me-3"
+            >Wallet</RouterLink
+          >
           <RouterLink v-if="isAuthenticated" to="/watchlist" class="btn btn-primary me-3"
             >Watchlist</RouterLink
           >
@@ -96,6 +99,7 @@ export default {
       this.$emit('toggle-dark-mode')
     }
   }
+  
 }
 </script>
 
