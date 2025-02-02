@@ -123,5 +123,6 @@ export const useAuthenticationStore = defineStore('authentication', {
         this.error = null
       }
     }
-  }
+  },
+  persist: true
 })

@@ -82,5 +82,6 @@ export const useCryptoStore = defineStore('cryptoStore', {
         })
       )
     }
-  }
+  },
+  persist: true
 })

@@ -121,5 +121,6 @@ export const useCryptoDetailStore = defineStore('cryptoDetailStore', {
         // Errors are already handled in individual fetch methods
       }
     }
-  }
+  },
+  persist: true
 })
