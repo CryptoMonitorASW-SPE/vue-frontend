@@ -66,6 +66,27 @@ export const useWatchlistStore = defineStore('watchlistStore', {
       }
     },
 
+    async createAlert(cryptoId, price, currency, message) {
+      try {
+        console.log({ cryptoId, price, currency })
+        // Ensure the endpoint starts with a slash and all parameters are provided.
+        const response = await axios.post(
+          '/api/notification/createAlert', // endpoint with leading slash
+          message, // request body (message should be JSON serializable)
+          {
+            withCredentials: true,
+            params: { cryptoId, price, currency } // query parameters for the API
+          }
+        )
+        console.log('Alert created:', response)
+        this.error = null
+        return true
+      } catch (error) {
+        this.handleError(error)
+        return false
+      }
+    },
+
     /**
      * DELETE /api/watchlist/:itemId
      * Purpose: Remove a crypto from the watchlist.

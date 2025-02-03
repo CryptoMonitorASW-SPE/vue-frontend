@@ -4,8 +4,8 @@
     <div class="table-header">
       <h2>Watched Cryptocurrencies</h2>
       <div class="table-actions">
-        <button class="btn" @click="addNotification">ADD NOTIFICATION</button>
-        <button class="btn" @click="listNotification">LIST NOTIFICATION</button>
+        <button class="btn" @click="addNotification">Add Notification</button>
+        <button class="btn" @click="listNotification">List Notification</button>
       </div>
     </div>
 
@@ -138,17 +138,38 @@
         </tbody>
       </table>
     </div>
+
+    <!-- Add Notification Modal -->
+    <AddNotificationModal
+      v-if="isAddNotificationModalVisible"
+      :currency="selectedCurrency"
+      @save="handleNotificationSave"
+      @close="isAddNotificationModalVisible = false"
+    />
+
+    <ListNotificationModal
+      v-if="isListNotificationModalVisible"
+      :currency="selectedCurrency"
+      @close="isListNotificationModalVisible = false"
+    />
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, computed, onMounted, watch, onUnmounted } from 'vue'
 import { useCryptoStore } from '../stores/CryptoStore'
+import { useWatchlistStore } from '../stores/WatchlistStore'
 import { useSort } from '../composables/table/useSort'
 import { useFormat } from '../composables/table/useFormat'
+import AddNotificationModal from '../components/watchlist/AddNotificationModal.vue'
+import ListNotificationModal from '../components/watchlist/ListNotificationModal.vue'
 
 export default {
   name: 'ProfileWatchlist',
+  components: {
+    AddNotificationModal,
+    ListNotificationModal
+  },
   props: {
     // If you plan to add filters later
     filters: {
@@ -158,49 +179,97 @@ export default {
     }
   },
   setup() {
-    // Fake data for cryptocurrencies to populate the table
-    const cryptocurrencies = ref([
-      {
-        id: 'btc',
-        name: 'Bitcoin',
-        symbol: 'btc', // Added symbol
-        price: 30000,
-        priceChangePercentage: 2.5, // Rename change to priceChangePercentage if needed
-        image: 'path/to/bitcoin-logo.png', // Added image
-        added: '2023-09-30', // Added date for ADDED column
-        lastUpdated: '2023-10-01'
-      },
-      {
-        id: 'eth',
-        name: 'Ethereum',
-        symbol: 'eth', // Added symbol
-        price: 2000,
-        priceChangePercentage: -1.0,
-        image: 'path/to/ethereum-logo.png',
-        added: '2023-10-01',
-        lastUpdated: '2023-10-02'
-      },
-      {
-        id: 'ada',
-        name: 'Cardano',
-        symbol: 'ada', // Added symbol
-        price: 1.5,
-        priceChangePercentage: 3.2,
-        image: 'path/to/cardano-logo.png',
-        added: '2023-10-02',
-        lastUpdated: '2023-10-03'
-      }
-    ])
+    const watchlistStore = useWatchlistStore()
+    const cryptoStore = useCryptoStore()
+    const isLoading = ref(true)
+    const error = ref(null)
+    const selectedCurrency = ref('usd')
 
-    // Sorting functionality (using a composable hook)
+    // Currency computed property
+    const currentCurrency = computed(() => ({
+      value: selectedCurrency.value.toUpperCase(),
+      timestamp: Date.now() // Force update on currency change
+    }))
+
+    // Initialization
+    onMounted(async () => {
+      try {
+        initializeSocket()
+        await cryptoStore.setCurrency(currentCurrency.value.value)
+        await watchlistStore.fetchWatchlist()
+        // Set up interval to refresh watchlist data every 60 seconds
+        intervalId = setInterval(async () => {
+          if (!isLoading.value) {
+            await watchlistStore.fetchWatchlist()
+          }
+        }, 60000)
+      } catch (e) {
+        error.value = e.message
+      } finally {
+        isLoading.value = false
+      }
+    })
+
+    // Single cryptocurrencies computed property
+    const cryptocurrencies = computed(() =>
+      watchlistStore.watchlist.map(item => {
+        const cryptoDetails = cryptoStore.fetchCryptoById(item.cryptoId)
+        return {
+          id: item.cryptoId,
+          itemId: item.itemId,
+          name: cryptoDetails.name || item.cryptoId,
+          symbol: cryptoDetails.symbol || item.cryptoId,
+          price: cryptoDetails.price,
+          priceChangePercentage: cryptoDetails.priceChangePercentage24h,
+          image: cryptoDetails.image || '',
+          added: item.addedAt,
+          lastUpdated: cryptoDetails.lastUpdated,
+          updated: cryptoDetails.updated || false,
+          marketCap: cryptoDetails.marketCap,
+          volume24h: cryptoDetails.totalVolume,
+          high24h: cryptoDetails.high24h,
+          low24h: cryptoDetails.low24h,
+          currency: selectedCurrency.value.toUpperCase()
+        }
+      })
+    )
+
+    // Sorting functionality
     const { sortTable, sortedData, sortKey, sortAsc } = useSort(cryptocurrencies)
     const finalCryptocurrencies = sortedData
 
-    // Formatting functions (using a composable hook)
+    // Formatting functions
     const { formatCurrency, formatPercentage, formatDate } = useFormat()
 
-    // Set a fixed fake currency for display (could be 'usd')
-    const selectedCurrency = ref('usd')
+    // Interval variable
+    let intervalId = null
+
+    // Watch for currency changes
+    watch(
+      () => currentCurrency.value.value,
+      async newVal => {
+        if (!isLoading.value) {
+          try {
+            await cryptoStore.setCurrency(newVal)
+            await watchlistStore.fetchWatchlist()
+          } catch (e) {
+            console.error('Failed to update currency:', e)
+            error.value = e.message
+          }
+        }
+      }
+    )
+
+    // Clean up the interval when component unmounts
+    onUnmounted(() => {
+      if (intervalId) {
+        clearInterval(intervalId)
+      }
+    })
+
+    // State to control modal visibility
+    const isAddNotificationModalVisible = ref(false)
+    const isListNotificationModalVisible = ref(false)
 
     return {
       cryptocurrencies,
@@ -211,19 +280,39 @@ export default {
       formatCurrency,
       formatPercentage,
       formatDate,
-      selectedCurrency
+      selectedCurrency,
+      isAddNotificationModalVisible,
+      isListNotificationModalVisible
+    }
+  },
+  methods: {
+    addNotification() {
+      // Show the Add Notification modal
+      this.isAddNotificationModalVisible = true
+    },
+    listNotification() {
+      // List notifications
+      this.isListNotificationModalVisible = true
+    },
+    handleNotificationSave(notificationData) {
+      // Process the notification data received from the modal
+      // For example, save it to a notifications store or perform an API call
+      const watchlistStore = useWatchlistStore()
+      watchlistStore.createAlert('bitcoin', 50000, 'usd', { message: 'Lorenzo' })
+      // Hide the modal after saving
+      this.isAddNotificationModalVisible = false
     }
   }
 }
 </script>
 
 <style scoped>
-/* Container for header and table */
+/* (Existing styles remain unchanged) */
+
 .crypto-table-container {
   padding: 1rem;
 }
 
-/* Header above the table with a flex layout */
 .table-header {
   display: flex;
   flex-wrap: wrap;
@@ -232,7 +321,6 @@ export default {
   margin-bottom: 1rem;
 }
 
-/* Action buttons styling */
 .table-actions {
   display: flex;
   gap: 0.5rem;
@@ -256,7 +344,6 @@ export default {
   outline: none;
 }
 
-/* Responsive table */
 .crypto-table {
   overflow-x: auto;
 }
@@ -296,7 +383,6 @@ th {
   text-decoration: underline;
 }
 
-/* Coloring for change percentage */
 .positive {
   color: green;
 }
@@ -305,12 +391,10 @@ th {
   color: red;
 }
 
-/* Highlight row if updated */
 .updated-row {
   background-color: #e8f5e9;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   th,
   td {
