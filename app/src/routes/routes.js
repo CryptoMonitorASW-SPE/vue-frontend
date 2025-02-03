@@ -32,18 +32,6 @@ const routes = [
         name: 'Profile',
         component: ProfileView,
         meta: { requiresAuth: true } // Requires user to be authenticated
-      }
-    ]
-  },
-  {
-    path: '/login',
-    component: DefaultLayout,
-    children: [
-      {
-        path: '',
-        name: 'Login',
-        component: LoginView,
-        meta: { requiresUnauth: true } // Requires user to be unauthenticated
       },
       {
         path: 'watchlist',
@@ -56,6 +44,18 @@ const routes = [
         name: 'Wallet',
         component: ProfileWallet,
         meta: { requiresAuth: true }
+      }
+    ]
+  },
+  {
+    path: '/login',
+    component: DefaultLayout,
+    children: [
+      {
+        path: '',
+        name: 'Login',
+        component: LoginView,
+        meta: { requiresUnauth: true } // Requires user to be unauthenticated
       }
     ]
   },
