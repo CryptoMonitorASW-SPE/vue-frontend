@@ -23,8 +23,7 @@ export function initializeSocket() {
     currentListener = eventName
   }
 
-  // Connect to the Socket.IO server
-  socket = io('http://localhost:3000', {
+  socket = io(window.location.origin, {
     path: '/updates'
   })
 
