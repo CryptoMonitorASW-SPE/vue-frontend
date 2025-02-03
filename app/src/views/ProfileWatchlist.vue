@@ -188,21 +188,18 @@ export default {
     // Currency computed property
     const currentCurrency = computed(() => ({
       value: selectedCurrency.value.toUpperCase(),
-      timestamp: Date.now() // Force update on currency change
+      timestamp: Date.now()
     }))
 
     // Initialization
     onMounted(async () => {
+      console.log('ProfileWatchlist mounted')
       try {
-        initializeSocket()
-        await cryptoStore.setCurrency(currentCurrency.value.value)
-        await watchlistStore.fetchWatchlist()
-        // Set up interval to refresh watchlist data every 60 seconds
-        intervalId = setInterval(async () => {
-          if (!isLoading.value) {
-            await watchlistStore.fetchWatchlist()
-          }
-        }, 60000)
+        //TO REMOVE
+        //initializeSocket()
+        //cryptoStore.setCurrency(currentCurrency.value)
+        const watchlist = watchlistStore.fetchWatchlist()
+        console.log(watchlist)
       } catch (e) {
         error.value = e.message
       } finally {
@@ -241,9 +238,6 @@ export default {
     // Formatting functions
     const { formatCurrency, formatPercentage, formatDate } = useFormat()
 
-    // Interval variable
-    let intervalId = null
-
     // Watch for currency changes
     watch(
       () => currentCurrency.value.value,
@@ -259,13 +253,6 @@ export default {
         }
       }
     )
-
-    // Clean up the interval when component unmounts
-    onUnmounted(() => {
-      if (intervalId) {
-        clearInterval(intervalId)
-      }
-    })
 
     // State to control modal visibility
     const isAddNotificationModalVisible = ref(false)
