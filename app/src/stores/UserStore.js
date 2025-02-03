@@ -9,20 +9,6 @@ export const useUserStore = defineStore('userStore', {
   }),
 
   actions: {
-    async createUser(userData) {
-      try {
-        const response = await axios.post('/api/management/users', userData, {
-          withCredentials: true
-        })
-        this.user = response.data
-        this.error = null
-        return true
-      } catch (error) {
-        this.handleUserError(error)
-        return false
-      }
-    },
-
     async getProfile() {
       try {
         const response = await axios.get('/api/management/users/profile', {
