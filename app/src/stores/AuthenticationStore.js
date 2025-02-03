@@ -1,13 +1,20 @@
-// filepath: /home/tone/university/SPE+WEB/bootstrap/src/vue-frontend/app/src/stores/AuthenticationStore.js
 import { defineStore } from 'pinia'
 import axios from 'axios'
+import UserSocketController from '@/controllers/UserSocketController'
 
 export const useAuthenticationStore = defineStore('authentication', {
   state: () => ({
     user: null,
     error: null,
-    isInitialized: false
+    isInitialized: false,
+    // Do not persist the socket controller instance.
+    socketController: null
   }),
+
+  // Persist only the user and error so that refresh reloads the token and socket properly.
+  persist: {
+    paths: ['user', 'error']
+  },
 
   getters: {
     isAuthenticated: state => !!state.user
@@ -15,11 +22,13 @@ export const useAuthenticationStore = defineStore('authentication', {
 
   actions: {
     async initAuth() {
-      if (this.isInitialized) return
-
+      // Always try to refresh on app start
       try {
         const success = await this.refreshToken()
         this.isInitialized = true
+        if (success && this.user) {
+          this.initSocketController()
+        }
         return success
       } catch (error) {
         console.error('Failed to initialize auth:', error)
@@ -33,23 +42,10 @@ export const useAuthenticationStore = defineStore('authentication', {
         const response = await axios.post('/api/auth/login', credentials, {
           withCredentials: true
         })
-
         this.setAuthData(response.data)
         this.error = null
-        return true
-      } catch (error) {
-        this.handleAuthError(error)
-        return false
-      }
-    },
-
-    async register(userData) {
-      try {
-        await axios.post('/api/auth/register', userData, {
-          withCredentials: true
-        })
-
-        this.error = null
+        // Initialize user-specific socket connection on login.
+        this.initSocketController()
         return true
       } catch (error) {
         this.handleAuthError(error)
@@ -58,45 +54,21 @@ export const useAuthenticationStore = defineStore('authentication', {
     },
 
     async refreshToken() {
-      console.log('refreshing token')
+      console.log('Refreshing token...')
       try {
-        const response = await axios.post(
-          '/api/auth/refresh',
-          {},
-          {
-            withCredentials: true
-          }
-        )
-        console.log('refresh token response:', response)
-
-        const { userId, email } = response.data
-        if (!userId || !email) {
-          console.error('Invalid response data:', response.data)
-          return false
-        }
-
-        this.setAuthData({ userId, email })
-        this.error = null
+        const response = await axios.post('/api/auth/refresh', {}, { withCredentials: true })
+        this.setAuthData(response.data)
         return true
       } catch (error) {
         console.error('Refresh token failed:', error)
-        this.logout()
+        this.user = null
         return false
       }
     },
 
     setAuthData(data) {
-      if (!data?.userId || !data?.email) {
-        console.error('Invalid user data:', data)
-        return
-      }
-
-      this.user = {
-        id: data.userId,
-        email: data.email
-      }
+      this.user = { userId: data.userId, email: data.email }
       console.log('User set:', this.user)
-      console.log('Is authenticated:', !!this.user)
     },
 
     handleAuthError(error) {
@@ -109,20 +81,37 @@ export const useAuthenticationStore = defineStore('authentication', {
 
     async logout() {
       try {
-        await axios.post(
-          '/api/auth/logout',
-          {},
-          {
-            withCredentials: true
-          }
-        )
+        await axios.post('/api/auth/logout', {}, { withCredentials: true })
       } catch (error) {
         console.error('Error during logout:', error)
       } finally {
         this.user = null
         this.error = null
+        // Disconnect the socket when logging out.
+        this.disconnectSocketController()
+      }
+    },
+
+    initSocketController() {
+      if (!this.user || !this.user.userId) {
+        console.warn('Cannot initialize socket: Missing user data')
+        return
+      }
+      if (this.socketController) {
+        console.log('Socket controller already initialized')
+        return
+      }
+      console.log('Initializing user socket controller...')
+      // Create instance and connect.
+      this.socketController = new UserSocketController()
+      this.socketController.connect()
+    },
+
+    disconnectSocketController() {
+      if (this.socketController) {
+        this.socketController.disconnect()
+        this.socketController = null
       }
     }
-  },
-  persist: true
+  }
 })
