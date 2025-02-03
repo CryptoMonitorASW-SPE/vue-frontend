@@ -39,9 +39,7 @@ export const useAuthenticationStore = defineStore('authentication', {
 
     async login(credentials) {
       try {
-        const response = await axios.post('/api/auth/login', credentials, {
-          withCredentials: true
-        })
+        const response = await axios.post('/api/auth/login', credentials, {})
         this.setAuthData(response.data)
         this.error = null
         // Initialize user-specific socket connection on login.
@@ -49,6 +47,19 @@ export const useAuthenticationStore = defineStore('authentication', {
         return true
       } catch (error) {
         this.handleAuthError(error)
+        return false
+      }
+    },
+
+    async register(userData) {
+      try {
+        await axios.post('/api/auth/register', userData, {})
+
+        this.error = null
+        return true
+      } catch (error) {
+        this.handleAuthError(error)
+        console.error('Registration failed:', error)
         return false
       }
     },
@@ -67,6 +78,10 @@ export const useAuthenticationStore = defineStore('authentication', {
     },
 
     setAuthData(data) {
+      if (!data || !data.userId || !data.email) {
+        console.error('Invalid auth data:', data)
+        return
+      }
       this.user = { userId: data.userId, email: data.email }
       console.log('User set:', this.user)
     },
