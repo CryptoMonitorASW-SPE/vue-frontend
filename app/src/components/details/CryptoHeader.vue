@@ -7,7 +7,7 @@
     </div>
     <!-- Watchlist Button -->
     <button
-      v-if="isAuthenticated"
+      v-if="isAuthenticated && !inWatchlist"
       class="btn btn-outline-primary mt-3"
       aria-label="Add to Watchlist"
       @click="$emit('add-to-watchlist')"
@@ -41,7 +41,7 @@ export default {
       type: Boolean,
       required: true
     },
-    isFavorite: {
+    inWatchlist: {
       type: Boolean,
       required: true
     }

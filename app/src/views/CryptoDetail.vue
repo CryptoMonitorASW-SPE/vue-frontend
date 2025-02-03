@@ -24,7 +24,7 @@
             :symbol="crypto.symbol"
             :rank="crypto.marketCapRank"
             :isAuthenticated="isAuthenticated"
-            @toggle-favorite="toggleFavorite"
+            :inWatchlist="isInWatchlist"
             @add-to-watchlist="addToWatchlist"
           />
         </div>
@@ -54,17 +54,19 @@
 </template>
 
 <script>
-import { watch } from 'vue'
+import { ref, watch } from 'vue'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useCryptoDetailStore } from '../stores/CryptoDetailStore'
 import { useCryptoStore } from '../stores/CryptoStore'
 import { useAuthenticationStore } from '@/stores/AuthenticationStore'
+import { useWatchlistStore } from '../stores/WatchlistStore'
 import { storeToRefs } from 'pinia'
 import CryptoHeader from '../components/details/CryptoHeader.vue'
 import ChartComponent from '../components/details/CryptoOHLChart.vue'
 import MarketDataBoxes from '../components/details/MarketDataBoxes.vue'
 import CryptoDetailsBoxes from '../components/details/CryptoDetailsBoxes.vue'
+import { useToast } from 'vue-toastification'
 
 export default {
   name: 'CryptoDetail',
@@ -105,6 +107,15 @@ export default {
       { immediate: true }
     )
 
+    const toast = useToast()
+
+    const watchlistStore = useWatchlistStore()
+
+    const isInWatchlist = ref(false)
+    watchlistStore.isCryptoInWatchlist(cryptoId.value).then(inWatchlist => {
+      isInWatchlist.value = inWatchlist
+    })
+
     return {
       crypto,
       cryptoId,
@@ -112,22 +123,20 @@ export default {
       cryptoDetails: computed(() => storeDetail.cryptoDetails),
       initialLoading: computed(() => !storeDetail.initialLoadComplete),
       initialError: computed(() => storeDetail.errorDetails || storeDetail.error),
-      isAuthenticated
+      isAuthenticated,
+      toast,
+      isInWatchlist
     }
   },
   methods: {
     addToWatchlist() {
-      // axios
-      //   .post('/api/watchlist', { cryptoId: this.cryptoId })
-      //   .then(response => {
-      //     // Handle success (e.g., show a success notification)
-      //     console.log('Crypto added to watchlist:', response.data)
-      //   })
-      //   .catch(error => {
-      //     // Handle error (e.g., show an error notification)
-      //     console.error('Error adding crypto to watchlist:', error)
-      //   })
-      console.log('Added to watchlist:', this.cryptoId)
+      const watchlistStore = useWatchlistStore()
+      const result = watchlistStore.addItem(this.cryptoId)
+      if (result) {
+        this.toast.success('Added to watchlist')
+      } else {
+        this.toast.error('Error in inserting to watchlist')
+      }
     },
     //TODO: check if the change chart works
     handleTimeframeChange(newTimeSpan) {
