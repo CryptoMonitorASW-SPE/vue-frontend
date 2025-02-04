@@ -10,29 +10,29 @@
     @keydown.space.prevent="closeModal"
   >
     <div class="transaction-modal modal-content p-4" role="dialog" aria-modal="true" @click.stop>
-      <!-- Pulsante X per chiudere in alto a destra -->
       <button type="button" class="btn-close" aria-label="Close" @click="closeModal"></button>
       <h4 class="modal-title mb-4">Add Transaction</h4>
       <form>
-        <!-- Row: Crypto selection and Price per Coin -->
+        <!-- Row: Crypto and Price per Coin -->
         <div class="row">
-          <!-- Campo: Crypto -->
           <div class="col-md-6 mb-3">
             <label for="transactionCrypto" class="form-label">Crypto</label>
-            <select id="transactionCrypto" v-model="localTransaction.crypto" class="form-select">
+            <select id="transactionCrypto" v-model="localTransaction.cryptoId" class="form-select">
               <option value="" disabled>Select Crypto</option>
-              <option value="bitcoin">Bitcoin</option>
-              <option value="ethereum">Ethereum</option>
-              <option value="litecoin">Litecoin</option>
-              <!-- Aggiungi altre opzioni se necessario -->
+              <option
+                v-for="crypto in cryptoStore.cryptocurrencies"
+                :key="crypto.id"
+                :value="crypto.id"
+              >
+                {{ crypto.name }}
+              </option>
             </select>
           </div>
-          <!-- Campo: Price per Coin -->
           <div class="col-md-6 mb-3">
             <label for="pricePerCoin" class="form-label">Price per Coin</label>
             <input
               id="pricePerCoin"
-              v-model.number="localTransaction.price"
+              v-model.number="localTransaction.priceAtPurchase"
               type="number"
               step="any"
               class="form-control"
@@ -42,7 +42,6 @@
         </div>
         <!-- Row: Quantity and Transaction Date -->
         <div class="row">
-          <!-- Campo: Quantity -->
           <div class="col-md-6 mb-3">
             <label for="transactionQuantity" class="form-label">Quantity</label>
             <input
@@ -54,18 +53,17 @@
               placeholder="Enter quantity"
             />
           </div>
-          <!-- Campo: Transaction Date -->
           <div class="col-md-6 mb-3">
             <label for="transactionDate" class="form-label">Transaction Date</label>
             <input
               id="transactionDate"
-              v-model="localTransaction.date"
+              v-model="localTransaction.doneAt"
               type="date"
               class="form-control"
             />
           </div>
         </div>
-        <!-- Campo: Transaction Type -->
+        <!-- Row: Transaction Type -->
         <div class="mb-3">
           <label for="transactionType" class="form-label">Transaction Type</label>
           <select id="transactionType" v-model="localTransaction.type" class="form-select">
@@ -86,43 +84,60 @@
 </template>
 
 <script>
+import { useWalletStore } from '../../stores/WalletStore'
+import { useCryptoStore } from '../../stores/CryptoStore'
+
 export default {
   name: 'TransactionModal',
-  props: {
-    isVisible: {
-      type: Boolean,
-      required: true
-    }
-  },
+  props: { isVisible: { type: Boolean, required: true } },
   data() {
     return {
       localTransaction: {
-        crypto: '',
+        cryptoId: '',
         quantity: null,
-        type: 'BUY'
+        priceAtPurchase: null,
+        type: 'BUY',
+        doneAt: new Date().toISOString().split('T')[0]
       }
+    }
+  },
+  computed: {
+    cryptoStore() {
+      return useCryptoStore()
     }
   },
   watch: {
     isVisible(newVal) {
       if (newVal) {
-        // Resetta il form ogni volta che viene aperto il modal
-        this.localTransaction = {
-          crypto: '',
-          quantity: null,
-          type: 'BUY'
-        }
+        this.resetForm()
       }
     }
   },
   methods: {
+    resetForm() {
+      this.localTransaction = {
+        cryptoId: '',
+        quantity: null,
+        priceAtPurchase: null,
+        type: 'BUY',
+        doneAt: new Date().toISOString().split('T')[0]
+      }
+    },
     closeModal() {
       this.$emit('close')
     },
-    saveTransaction() {
-      // Logica di salvataggio da implementare in seguito:
-      // Emittiamo l'evento con i dati della transazione
-      this.$emit('save', this.localTransaction)
+    async saveTransaction() {
+      if (!window.confirm('Sei sicuro di voler aggiungere questa transazione?')) {
+        return
+      }
+      const payload = { ...this.localTransaction }
+      const walletStore = useWalletStore()
+      const success = await walletStore.addTransaction(payload)
+      if (success) {
+        this.closeModal()
+      } else {
+        alert(`Errore: ${walletStore.error}`)
+      }
     }
   }
 }
@@ -132,7 +147,6 @@ export default {
 @use '../../assets/scss/base' as base;
 @use 'sass:map';
 @use 'sass:color';
-
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -142,25 +156,21 @@ export default {
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1050;
 }
-
 .transaction-modal {
   background-color: map.get(base.$light-theme, 'background-color');
   border-radius: 0.25rem;
   position: relative;
   max-width: 500px;
   width: 100%;
-
   .dark-mode & {
     background-color: map.get(base.$dark-theme, 'background-color');
     color: map.get(base.$dark-theme, 'text-color');
   }
 }
-
 .btn-close {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-
   .dark-mode & {
     filter: invert(1) grayscale(100%) brightness(200%);
   }

@@ -4,7 +4,13 @@
     <div class="card mb-4" style="width: 18rem">
       <div class="card-body">
         <h4 class="card-title">Current Balance</h4>
-        <p class="card-text fs-4">$ 12,345.67</p>
+        <p class="card-text fs-4">
+          $
+          {{
+            // Se balance non è definito, usa 0
+            (walletStore.wallet.balance !== undefined ? walletStore.wallet.balance : 0).toFixed(2)
+          }}
+        </p>
       </div>
     </div>
 
@@ -12,16 +18,12 @@
     <div class="d-flex justify-content-end mb-2">
       <button class="btn btn-primary" @click="openTransactionModal">+Add Transaction</button>
     </div>
-    <TransactionModal
-      :isVisible="isTransactionModalVisible"
-      @close="closeTransactionModal"
-      @save="handleSaveTransaction"
-    />
+    <TransactionModal :isVisible="isTransactionModalVisible" @close="closeTransactionModal" />
 
     <!-- Transactions Table -->
     <div class="table-responsive">
       <table class="table">
-        <thead class="table">
+        <thead>
           <tr>
             <th>#</th>
             <th>Crypto</th>
@@ -33,38 +35,45 @@
           </tr>
         </thead>
         <tbody class="table-group-divider">
-          <!-- Esempio di transazione -->
-          <tr>
-            <td>1</td>
-            <td>Bitcoin</td>
-            <td>0.005</td>
+          <tr
+            v-for="(transaction, index) in walletStore.wallet?.transactions || []"
+            :key="transaction.id"
+          >
+            <td>{{ index + 1 }}</td>
+            <td>{{ transaction.cryptoId }}</td>
+            <td>{{ transaction.quantity }}</td>
             <td>
-              <span class="badge bg-success">BUY</span>
+              <span
+                class="badge"
+                :class="{
+                  'bg-success': transaction.type === 'BUY',
+                  'bg-danger': transaction.type === 'SELL'
+                }"
+              >
+                {{ transaction.type }}
+              </span>
             </td>
-            <td>2023-10-23</td>
-            <td>$ 30,000</td>
+            <td>{{ formatDate(transaction.doneAt) }}</td>
             <td>
-              <button class="btn btn-sm btn-danger">
+              $
+              {{
+                transaction.priceAtPurchase !== undefined && transaction.priceAtPurchase !== null
+                  ? transaction.priceAtPurchase.toFixed(2)
+                  : '0.00'
+              }}
+            </td>
+            <td>
+              <button
+                class="btn btn-sm btn-danger"
+                @click="confirmDeleteTransaction(transaction.id)"
+              >
                 <i class="bi bi-trash"></i>
               </button>
             </td>
           </tr>
-          <tr>
-            <td>2</td>
-            <td>Ethereum</td>
-            <td>0.1</td>
-            <td>
-              <span class="badge bg-danger">SELL</span>
-            </td>
-            <td>2023-10-22</td>
-            <td>$ 2,000</td>
-            <td>
-              <button class="btn btn-sm btn-danger">
-                <i class="bi bi-trash"></i>
-              </button>
-            </td>
+          <tr v-if="!(walletStore.wallet?.transactions && walletStore.wallet.transactions.length)">
+            <td colspan="7" class="text-center">Nessuna transazione.</td>
           </tr>
-          <!-- Altre righe verranno aggiunte dinamicamente -->
         </tbody>
       </table>
     </div>
@@ -72,28 +81,55 @@
 </template>
 
 <script>
+import { ref, onMounted } from 'vue'
+import { useWalletStore } from '../stores/WalletStore'
 import TransactionModal from '../components/modals/TransactionModal.vue'
 
 export default {
   name: 'ProfileWallet',
-  components: {
-    TransactionModal
-  },
-  data() {
-    return {
-      isTransactionModalVisible: false
+  components: { TransactionModal },
+  setup() {
+    const walletStore = useWalletStore()
+    const isTransactionModalVisible = ref(false)
+
+    onMounted(async () => {
+      await walletStore.fetchWallet()
+    })
+
+    const openTransactionModal = () => {
+      isTransactionModalVisible.value = true
     }
-  },
-  methods: {
-    openTransactionModal() {
-      this.isTransactionModalVisible = true
-    },
-    closeTransactionModal() {
-      this.isTransactionModalVisible = false
-    },
-    handleSaveTransaction() {
-      console.log('Transaction saved:', transactionData)
-      this.closeTransactionModal()
+
+    const closeTransactionModal = async () => {
+      isTransactionModalVisible.value = false
+      await walletStore.fetchWallet()
+    }
+
+    const confirmDeleteTransaction = async transactionId => {
+      if (window.confirm('Sei sicuro di voler eliminare questa transazione?')) {
+        const success = await walletStore.removeTransaction(transactionId)
+        if (!success) {
+          alert(`Errore: ${walletStore.error}`)
+        } else {
+          await walletStore.fetchWallet()
+        }
+      }
+    }
+
+    const formatDate = dateStr => {
+      if (!dateStr) return ''
+      const date = new Date(dateStr)
+      if (isNaN(date.getTime())) return dateStr
+      return date.toISOString().split('T')[0]
+    }
+
+    return {
+      walletStore,
+      isTransactionModalVisible,
+      openTransactionModal,
+      closeTransactionModal,
+      confirmDeleteTransaction,
+      formatDate
     }
   }
 }

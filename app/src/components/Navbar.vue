@@ -99,7 +99,6 @@ export default {
       this.$emit('toggle-dark-mode')
     }
   }
-  
 }
 </script>
 
