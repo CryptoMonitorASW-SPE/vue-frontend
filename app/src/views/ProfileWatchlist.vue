@@ -172,6 +172,7 @@ import { useSort } from '../composables/table/useSort'
 import { useFormat } from '../composables/table/useFormat'
 import AddNotificationModal from '@/components/watchlist/AddNotificationModal.vue'
 import ListNotificationModal from '@/components/watchlist/ListNotificationModal.vue'
+import { useToast } from 'vue-toastification'
 
 export default {
   name: 'ProfileWatchlist',
@@ -276,14 +277,14 @@ export default {
       isAddNotificationModalVisible.value = false
     }
 
+    const toast = useToast()
     const handleDelete = async itemId => {
       try {
-        console.log('Deleting item:', itemId)
         const resRemoval = watchlistStore.removeItem(itemId)
         if (resRemoval) {
-          console.log('Item removed successfully')
+          toast.success('Item removed successfully')
         } else {
-          console.error('Failed to remove item')
+          toast.error('Item not removed successfully')
         }
         // Refresh the watchlist after deletion
         watchlistStore.fetchWatchlist()

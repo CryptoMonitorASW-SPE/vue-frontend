@@ -129,11 +129,12 @@ export default {
     }
   },
   methods: {
-    addToWatchlist() {
+    async addToWatchlist() {
       const watchlistStore = useWatchlistStore()
-      const result = watchlistStore.addItem(this.cryptoId)
-      if (result) {
+      const added = await watchlistStore.addItem(this.cryptoId)
+      if (added) {
         this.toast.success('Added to watchlist')
+        this.isInWatchlist = true
       } else {
         this.toast.error('Error in inserting to watchlist')
       }
