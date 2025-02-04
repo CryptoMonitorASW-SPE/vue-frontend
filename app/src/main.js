@@ -9,7 +9,7 @@ import { useAuthenticationStore } from '@/stores/AuthenticationStore'
 
 const app = createApp(App)
 const pinia = createPinia()
-pinia.use(piniaPluginPersistedstate)
+//pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
 app.use(Toast)
 

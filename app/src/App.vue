@@ -1,7 +1,18 @@
 <template>
-  <div id="app">
-    <router-view />
-  </div>
+  <router-view />
 </template>
 
-<script setup></script>
+<script setup>
+import { onMounted, onUnmounted } from 'vue'
+import { useCryptoStore } from '@/stores/CryptoStore'
+
+const cryptoStore = useCryptoStore()
+
+onMounted(() => {
+  cryptoStore.initializeSocket()
+})
+
+onUnmounted(() => {
+  cryptoStore.cleanup()
+})
+</script>

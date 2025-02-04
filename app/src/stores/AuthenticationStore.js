@@ -12,9 +12,9 @@ export const useAuthenticationStore = defineStore('authentication', {
   }),
 
   // Persist only the user and error so that refresh reloads the token and socket properly.
-  persist: {
-    paths: ['user', 'error']
-  },
+  // persist: {
+  //   paths: ['user', 'error']
+  // },
 
   getters: {
     isAuthenticated: state => !!state.user

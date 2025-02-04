@@ -59,6 +59,5 @@ export const useUserStore = defineStore('userStore', {
         this.error = 'An unexpected error occurred.'
       }
     }
-  },
-  persist: true
+  }
 })

@@ -23,7 +23,6 @@
 <script>
 import CryptoTable from '../components/CryptoTable.vue'
 import FilterModal from '../components/modals/FilterModal.vue'
-import { initializeSocket } from '../controllers/socketioController'
 
 export default {
   name: 'HomeView',
@@ -41,9 +40,7 @@ export default {
       }
     }
   },
-  mounted() {
-    initializeSocket()
-  },
+  mounted() {},
   methods: {
     openFilterModal() {
       this.isFilterModalVisible = true

@@ -8,7 +8,7 @@
       data-bs-toggle="dropdown"
       aria-expanded="false"
     >
-      {{ selectedCurrency }}
+      {{ cryptoStore.selectedCurrency }}
     </button>
     <ul class="dropdown-menu" aria-labelledby="currencyDropdown">
       <li>
@@ -22,38 +22,19 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { useCryptoStore } from '@/stores/CryptoStore'
+const cryptoStore = useCryptoStore()
 
-export default {
-  name: 'CurrencyToggle',
-  data() {
-    return {
-      selectedCurrency: 'USD'
-    }
-  },
-  mounted() {
-    const savedCurrency = localStorage.getItem('selectedCurrency')
-    if (savedCurrency) {
-      this.selectedCurrency = savedCurrency
-      const cryptoStore = useCryptoStore()
-      cryptoStore.setCurrency(savedCurrency)
-    }
-  },
-  methods: {
-    selectCurrency(currency) {
-      this.selectedCurrency = currency
-      const cryptoStore = useCryptoStore()
-      cryptoStore.setCurrency(currency)
-    }
-  }
+function selectCurrency(currency) {
+  cryptoStore.setCurrency(currency)
 }
 </script>
+
 <style scoped>
 .dropdown {
   margin-right: 1rem;
 }
-
 .btn.dropdown-toggle {
   color: inherit;
   border: none;
