@@ -155,14 +155,15 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, computed, onMounted, watch, onUnmounted } from 'vue'
-import { useCryptoStore } from '../stores/CryptoStore'
-import { useWatchlistStore } from '../stores/WatchlistStore'
-import { useSort } from '../composables/table/useSort'
-import { useFormat } from '../composables/table/useFormat'
-import AddNotificationModal from '../components/watchlist/AddNotificationModal.vue'
-import ListNotificationModal from '../components/watchlist/ListNotificationModal.vue'
+import { RouterLink } from 'vue-router'
+import { useCryptoStore } from '@/stores/CryptoStore'
+import { useWatchlistStore } from '@/stores/WatchlistStore'
+import { useSort } from '@/composables/table/useSort'
+import { useFormat } from '@/composables/table/useFormat'
+import AddNotificationModal from '@/components/watchlist/AddNotificationModal.vue'
+import ListNotificationModal from '@/components/watchlist/ListNotificationModal.vue'
 
 export default {
   name: 'ProfileWatchlist',
@@ -231,9 +232,9 @@ export default {
       })
     )
 
-    // Sorting functionality
-    const { sortTable, sortedData, sortKey, sortAsc } = useSort(cryptocurrencies)
-    const finalCryptocurrencies = sortedData
+// Sorting
+const { sortTable, sortedData, sortKey, sortAsc } = useSort(cryptocurrencies)
+const finalCryptocurrencies = sortedData
 
     // Formatting functions
     const { formatCurrency, formatPercentage, formatDate } = useFormat()
@@ -254,45 +255,21 @@ export default {
       }
     )
 
-    // State to control modal visibility
-    const isAddNotificationModalVisible = ref(false)
-    const isListNotificationModalVisible = ref(false)
-
-    return {
-      cryptocurrencies,
-      finalCryptocurrencies,
-      sortTable,
-      sortKey,
-      sortAsc,
-      formatCurrency,
-      formatPercentage,
-      formatDate,
-      selectedCurrency,
-      isAddNotificationModalVisible,
-      isListNotificationModalVisible
-    }
-  },
-  methods: {
-    addNotification() {
-      // Show the Add Notification modal
-      this.isAddNotificationModalVisible = true
-    },
-    listNotification() {
-      // List notifications
-      this.isListNotificationModalVisible = true
-    },
-    handleNotificationSave(notificationData) {
-      // Process the notification data received from the modal
-      // For example, save it to a notifications store or perform an API call
-      const watchlistStore = useWatchlistStore()
-      watchlistStore.createAlert('bitcoin', 50000, 'usd', { message: 'Lorenzo' })
-      // Hide the modal after saving
-      this.isAddNotificationModalVisible = false
-    }
-  }
+// Modal visibility
+const isAddNotificationModalVisible = ref(false)
+const isListNotificationModalVisible = ref(false)
+function addNotification() {
+  isAddNotificationModalVisible.value = true
+}
+function listNotification() {
+  isListNotificationModalVisible.value = true
+}
+function handleNotificationSave(notificationData) {
+  // Example usage
+  watchlistStore.createAlert('bitcoin', 50000, cryptoStore.selectedCurrency, notificationData)
+  isAddNotificationModalVisible.value = false
 }
 </script>
-
 <style scoped>
 /* (Existing styles remain unchanged) */
 
