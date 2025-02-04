@@ -142,26 +142,25 @@
     <!-- Add Notification Modal -->
     <AddNotificationModal
       v-if="isAddNotificationModalVisible"
-      :currency="selectedCurrency"
+      :currency="userCurrency"
       @save="handleNotificationSave"
       @close="isAddNotificationModalVisible = false"
     />
 
     <ListNotificationModal
       v-if="isListNotificationModalVisible"
-      :currency="selectedCurrency"
+      :currency="userCurrency"
       @close="isListNotificationModalVisible = false"
     />
   </div>
 </template>
 
-<script setup>
-import { ref, computed, onMounted, watch, onUnmounted } from 'vue'
-import { RouterLink } from 'vue-router'
-import { useCryptoStore } from '@/stores/CryptoStore'
+<script>
+import { ref, computed, onMounted, watch } from 'vue'
 import { useWatchlistStore } from '@/stores/WatchlistStore'
-import { useSort } from '@/composables/table/useSort'
-import { useFormat } from '@/composables/table/useFormat'
+import { useCryptoStore } from '@/stores/CryptoStore'
+import { useSort } from '../composables/table/useSort'
+import { useFormat } from '../composables/table/useFormat'
 import AddNotificationModal from '@/components/watchlist/AddNotificationModal.vue'
 import ListNotificationModal from '@/components/watchlist/ListNotificationModal.vue'
 
@@ -172,7 +171,6 @@ export default {
     ListNotificationModal
   },
   props: {
-    // If you plan to add filters later
     filters: {
       type: Object,
       required: false,
@@ -184,23 +182,16 @@ export default {
     const cryptoStore = useCryptoStore()
     const isLoading = ref(true)
     const error = ref(null)
-    const selectedCurrency = ref('usd')
+    const selectedCurrency = computed(() => cryptoStore.selectedCurrency)
 
-    // Currency computed property
-    const currentCurrency = computed(() => ({
-      value: selectedCurrency.value.toUpperCase(),
-      timestamp: Date.now()
-    }))
-
-    // Initialization
+    // Initialization on component mount
     onMounted(async () => {
       console.log('ProfileWatchlist mounted')
       try {
-        //TO REMOVE
-        //initializeSocket()
-        //cryptoStore.setCurrency(currentCurrency.value)
-        const watchlist = watchlistStore.fetchWatchlist()
-        console.log(watchlist)
+        // Optionally set the currency in cryptoStore if needed:
+        // await cryptoStore.setCurrency(currentCurrency.value.currency)
+        await watchlistStore.fetchWatchlist()
+        console.log('Watchlist:', watchlistStore.watchlist)
       } catch (e) {
         error.value = e.message
       } finally {
@@ -208,7 +199,7 @@ export default {
       }
     })
 
-    // Single cryptocurrencies computed property
+    // Computed property mapping watchlist items to cryptocurrency details
     const cryptocurrencies = computed(() =>
       watchlistStore.watchlist.map(item => {
         const cryptoDetails = cryptoStore.fetchCryptoById(item.cryptoId)
@@ -232,44 +223,69 @@ export default {
       })
     )
 
-// Sorting
-const { sortTable, sortedData, sortKey, sortAsc } = useSort(cryptocurrencies)
-const finalCryptocurrencies = sortedData
+    // Sorting
+    const { sortTable, sortedData, sortKey, sortAsc } = useSort(cryptocurrencies)
+    const finalCryptocurrencies = sortedData
 
     // Formatting functions
     const { formatCurrency, formatPercentage, formatDate } = useFormat()
 
-    // Watch for currency changes
     watch(
-      () => currentCurrency.value.value,
-      async newVal => {
+      selectedCurrency,
+      newCurrency => {
         if (!isLoading.value) {
           try {
-            await cryptoStore.setCurrency(newVal)
-            await watchlistStore.fetchWatchlist()
+            cryptoStore.setCurrency(newCurrency)
+            watchlistStore.fetchWatchlist()
           } catch (e) {
             console.error('Failed to update currency:', e)
             error.value = e.message
           }
         }
-      }
+      },
+      { immediate: true }
     )
 
-// Modal visibility
-const isAddNotificationModalVisible = ref(false)
-const isListNotificationModalVisible = ref(false)
-function addNotification() {
-  isAddNotificationModalVisible.value = true
-}
-function listNotification() {
-  isListNotificationModalVisible.value = true
-}
-function handleNotificationSave(notificationData) {
-  // Example usage
-  watchlistStore.createAlert('bitcoin', 50000, cryptoStore.selectedCurrency, notificationData)
-  isAddNotificationModalVisible.value = false
+    // Modal visibility state
+    const isAddNotificationModalVisible = ref(false)
+    const isListNotificationModalVisible = ref(false)
+
+    // Methods
+    const addNotification = () => {
+      isAddNotificationModalVisible.value = true
+    }
+
+    const listNotification = () => {
+      isListNotificationModalVisible.value = true
+    }
+
+    const handleNotificationSave = notificationData => {
+      watchlistStore.createAlert('bitcoin', 50000, cryptoStore.selectedCurrency, notificationData)
+      isAddNotificationModalVisible.value = false
+    }
+
+    return {
+      isLoading,
+      error,
+      selectedCurrency,
+      cryptocurrencies,
+      sortTable,
+      finalCryptocurrencies,
+      sortKey,
+      sortAsc,
+      formatCurrency,
+      formatPercentage,
+      formatDate,
+      isAddNotificationModalVisible,
+      isListNotificationModalVisible,
+      addNotification,
+      listNotification,
+      handleNotificationSave
+    }
+  }
 }
 </script>
+
 <style scoped>
 /* (Existing styles remain unchanged) */
 
