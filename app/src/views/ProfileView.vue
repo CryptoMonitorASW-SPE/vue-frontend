@@ -1,12 +1,14 @@
+<!-- filepath: /home/tone/university/SPE+WEB/bootstrap/src/vue-frontend/app/src/views/ProfileView.vue -->
 <template>
   <div class="profile-view container py-4">
     <div class="row justify-content-center">
-      <div class="col-md-6">
+      <div class="col-12 col-md-8 col-lg-6">
         <div class="card p-4">
-          <h2 class="mb-4">Profilo Utente</h2>
-          <form @submit.prevent="saveProfile">
+          <h2 class="mb-4">User Profile</h2>
+          <form novalidate @submit.prevent="saveProfile">
+            <!-- First Name -->
             <div class="mb-3">
-              <label for="firstName" class="form-label">Nome</label>
+              <label for="firstName" class="form-label">First Name</label>
               <input
                 id="firstName"
                 v-model="profile.firstName"
@@ -15,8 +17,9 @@
                 :disabled="!isEditing"
               />
             </div>
+            <!-- Last Name -->
             <div class="mb-3">
-              <label for="lastName" class="form-label">Cognome</label>
+              <label for="lastName" class="form-label">Last Name</label>
               <input
                 id="lastName"
                 v-model="profile.lastName"
@@ -25,17 +28,18 @@
                 :disabled="!isEditing"
               />
             </div>
+            <!-- Date of Birth -->
             <div class="mb-3">
-              <label for="dob" class="form-label">Data di Nascita</label>
+              <label for="dob" class="form-label">Date of Birth</label>
               <input
                 id="dob"
-                v-model="formattedDob"
-                type="text"
+                v-model="profile.dob"
+                type="date"
                 class="form-control"
                 :disabled="!isEditing"
-                placeholder="gg/mm/aaaa"
               />
             </div>
+            <!-- Buttons -->
             <div class="d-flex justify-content-end mt-3">
               <button
                 v-if="!isEditing"
@@ -45,9 +49,9 @@
               >
                 Edit
               </button>
-              <button v-else type="submit" class="btn btn-success me-2">Salva</button>
+              <button v-else type="submit" class="btn btn-success me-2">Save</button>
               <button v-if="isEditing" type="button" class="btn btn-danger" @click="cancelEdit">
-                Cancella
+                Cancel
               </button>
             </div>
           </form>
@@ -58,7 +62,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useUserStore } from '@/stores/UserStore'
 
 export default {
@@ -70,16 +74,22 @@ export default {
       lastName: '',
       dob: ''
     })
+    // Store the original profile values on load
+    const originalProfile = ref({ ...profile.value })
     const isEditing = ref(false)
 
     onMounted(async () => {
-      const success = await userStore.getProfile()
-      if (success) {
-        profile.value = {
-          firstName: userStore.user.firstName,
-          lastName: userStore.user.lastName,
-          dob: userStore.user.dob
+      await userStore.getProfile()
+      if (userStore.user) {
+        // Map from endpoint fields to form fields.
+        const mappedProfile = {
+          firstName: userStore.user.name || '',
+          lastName: userStore.user.surname || '',
+          dob: userStore.user.dateOfBirth ? userStore.user.dateOfBirth.slice(0, 10) : ''
         }
+        profile.value = mappedProfile
+        originalProfile.value = { ...mappedProfile }
+        console.log('[View] Mapped profile:', profile.value)
       }
     })
 
@@ -88,50 +98,26 @@ export default {
     }
 
     const saveProfile = async () => {
-      try {
-        const success = await userStore.updateProfile(profile.value)
-        if (success) {
-          isEditing.value = false
-        }
-      } catch (error) {
-        console.error('Failed to save profile:', error)
+      const success = await userStore.updateProfile(profile.value)
+      if (success) {
+        isEditing.value = false
+        // Update originalProfile after successful save
+        originalProfile.value = { ...profile.value }
       }
     }
 
-    const cancelEdit = async () => {
+    // Reset fields to original profile values on cancel
+    const cancelEdit = () => {
       isEditing.value = false
-      await userStore.getProfile()
-      profile.value = {
-        firstName: userStore.user.firstName,
-        lastName: userStore.user.lastName,
-        dob: userStore.user.dob
-      }
+      profile.value = { ...originalProfile.value }
     }
-
-    const formattedDob = computed({
-      get() {
-        if (!profile.value.dob) return ''
-        const date = new Date(profile.value.dob)
-        const day = String(date.getDate()).padStart(2, '0')
-        const month = String(date.getMonth() + 1).padStart(2, '0')
-        const year = date.getFullYear()
-        return `${day}/${month}/${year}`
-      },
-      set(value) {
-        const [day, month, year] = value.split('/')
-        if (year && month && day) {
-          profile.value.dob = `${year}-${month}-${day}`
-        }
-      }
-    })
 
     return {
       profile,
       isEditing,
       editProfile,
       saveProfile,
-      cancelEdit,
-      formattedDob
+      cancelEdit
     }
   }
 }
@@ -139,4 +125,9 @@ export default {
 
 <style lang="scss" scoped>
 @use '../assets/scss/profile' as profile;
+@media (min-width: 768px) {
+  .profile-view .card {
+    margin: 1rem 0;
+  }
+}
 </style>
