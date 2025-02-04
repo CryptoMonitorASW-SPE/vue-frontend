@@ -6,7 +6,8 @@
 
     <AddNotificationModal
       v-if="isAddNotificationModalVisible"
-      :currency="userCurrency"
+      :currency="selectedCurrency"
+      :cryptocurrencies="finalCryptocurrencies"
       @save="handleNotificationSave"
       @close="isAddNotificationModalVisible = false"
     />
@@ -109,13 +110,20 @@ export default {
     }
 
     const handleNotificationSave = notificationData => {
-      watchlistStore.createAlert(
+      const result = watchlistStore.createAlert(
         notificationData.cryptoId,
         notificationData.price,
         selectedCurrency.value,
         notificationData.alertType,
         notificationData.message
       )
+
+      if (result) {
+        toast.success('Notification added successfully')
+      } else {
+        toast.error('Failed to add notification')
+      }
+
       isAddNotificationModalVisible.value = false
     }
 

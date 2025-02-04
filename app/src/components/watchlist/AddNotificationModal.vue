@@ -16,20 +16,18 @@
       <div class="modal-body">
         <form @submit.prevent="handleSubmit">
           <div class="form-group">
-            <label for="crypto-id">Crypto ID</label>
-            <input
-              id="crypto-id"
-              v-model="cryptoId"
-              type="text"
-              placeholder="Enter cryptocurrency ID"
-              required
-            />
+            <label for="crypto-id">Cryptocurrency</label>
+            <select id="crypto-id" v-model="cryptoId" required>
+              <option v-for="crypto in cryptocurrencies" :key="crypto.id" :value="crypto.id">
+                {{ crypto.name }} ({{ crypto.symbol }})
+              </option>
+            </select>
           </div>
           <div class="form-group">
             <label for="price">Price ({{ currency }})</label>
             <input
               id="price"
-              v-model="price"
+              v-model.number="price"
               type="number"
               :placeholder="'Enter target price in ' + currency"
               required
@@ -62,37 +60,68 @@ export default {
     currency: {
       type: String,
       required: true
+    },
+    cryptocurrencies: {
+      type: Array,
+      required: true
     }
   },
   emits: ['save', 'close'],
   setup(props, { emit }) {
-    const cryptoId = ref('')
-    const price = ref('')
-    const alertType = ref('below') // Default alert type
+    const cryptoId = ref(props.cryptocurrencies.length > 0 ? props.cryptocurrencies[0].id : null) // Default to first crypto if available
+    const price = ref(null) // make it null initially
+    const alertType = ref('below')
     const message = ref('')
+    const currency = props.currency
+    console.log('Currency prop:', currency)
 
-    // Watch for changes in props.currency and update the local state if needed
     watchEffect(() => {
+      // If cryptoId is null and there are cryptocurrencies available, set it to the first one
+      if (cryptoId.value === null && props.cryptocurrencies.length > 0) {
+        cryptoId.value = props.cryptocurrencies[0].id
+      }
+
       console.log('Currency prop changed:', props.currency)
+      console.log('Cryptocurrencies prop changed:', props.cryptocurrencies)
     })
 
     const handleSubmit = () => {
+      if (isNaN(price.value) || price.value <= 0) {
+        alert('Please enter a valid positive number for the price')
+        return
+      }
+
       const notificationData = {
         cryptoId: cryptoId.value,
-        price: parseFloat(price.value),
+        price: price.value,
         alertType: alertType.value,
         message: message.value
       }
-
+      console.log(notificationData)
       emit('save', notificationData)
+      // Reset form after submit
+      cryptoId.value = props.cryptocurrencies.length > 0 ? props.cryptocurrencies[0].id : null
+      price.value = null
+      alertType.value = 'below'
+      message.value = ''
+    }
+    const closeModal = () => {
+      emit('close')
+      cryptoId.value = props.cryptocurrencies.length > 0 ? props.cryptocurrencies[0].id : null
+      price.value = null
+      alertType.value = 'below'
+      message.value = ''
     }
 
     return {
       cryptoId,
       price,
+      currency,
       alertType,
       message,
-      handleSubmit
+      handleSubmit,
+      closeModal,
+      cryptocurrencies: props.cryptocurrencies
     }
   }
 }

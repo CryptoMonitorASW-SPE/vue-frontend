@@ -18,6 +18,9 @@ function handleUserSpecificEvent(event) {
     timeout: 5000
     // additional toast options if needed
   })
+  toast.info(`${data.message}`, {
+    timeout: 10000
+  })
 }
 
 onMounted(() => {
