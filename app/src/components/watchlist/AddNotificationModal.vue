@@ -8,95 +8,97 @@
     @keydown.space.prevent="closeModal"
     @click.self="closeModal"
   >
-    <div class="modal-container">
-      <h3>Add Notification</h3>
-      <form @submit.prevent="handleSubmit">
-        <div class="form-group">
-          <label for="crypto">Cryptocurrency ID</label>
-          <input
-            id="crypto"
-            v-model="formData.cryptoId"
-            type="text"
-            placeholder="e.g., btc"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="price">Price Threshold ({{ currency.toUpperCase() }})</label>
-          <input
-            id="price"
-            v-model.number="formData.price"
-            type="number"
-            step="0.01"
-            placeholder="e.g., 30000"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="message">Message</label>
-          <input
-            id="message"
-            v-model="formData.message"
-            type="text"
-            placeholder="Enter a custom message (optional)"
-          />
-        </div>
-        <div class="form-group">
-          <label for="alertType">Alert Type</label>
-          <select id="alertType" v-model="formData.alertType" required>
-            <option value="ABOVE">Above</option>
-            <option value="BELOW">Below</option>
-          </select>
-        </div>
-        <div class="modal-actions">
-          <button type="button" class="btn secondary" @click="closeModal">Cancel</button>
-          <button type="submit" class="btn primary">Save Notification</button>
-        </div>
-      </form>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add Notification</h3>
+        <button class="close-button" aria-label="Close" @click="$emit('close')">×</button>
+      </div>
+      <div class="modal-body">
+        <form @submit.prevent="handleSubmit">
+          <div class="form-group">
+            <label for="crypto-id">Crypto ID</label>
+            <input
+              id="crypto-id"
+              v-model="cryptoId"
+              type="text"
+              placeholder="Enter cryptocurrency ID"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="price">Price ({{ currency }})</label>
+            <input
+              id="price"
+              v-model="price"
+              type="number"
+              :placeholder="'Enter target price in ' + currency"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="alert-type">Alert Type</label>
+            <select id="alert-type" v-model="alertType" required>
+              <option value="below">Below</option>
+              <option value="above">Above</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Message (Optional)</label>
+            <textarea id="message" v-model="message" placeholder="Enter a custom message" />
+          </div>
+          <button type="submit" class="btn btn-primary">Save Notification</button>
+        </form>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { ref, watchEffect } from 'vue'
+
 export default {
   name: 'AddNotificationModal',
   props: {
-    // This currency prop will be used to display the currency but can also be included in the payload
     currency: {
       type: String,
-      default: 'usd'
+      required: true
     }
   },
-  data() {
-    return {
-      formData: {
-        cryptoId: '',
-        price: null, // Changed from "threshold" to "price"
-        message: '', // Message field to be sent as JSON body content
-        alertType: 'ABOVE' // Default alertType value
-      }
-    }
-  },
-  methods: {
-    handleSubmit() {
-      this.$emit('save', { ...this.formData })
+  emits: ['save', 'close'],
+  setup(props, { emit }) {
+    const cryptoId = ref('')
+    const price = ref('')
+    const alertType = ref('below') // Default alert type
+    const message = ref('')
 
-      // Reset form data after submission
-      this.formData.cryptoId = ''
-      this.formData.price = null
-      this.formData.message = ''
-      this.formData.alertType = 'ABOVE'
-      this.closeModal()
-    },
-    closeModal() {
-      this.$emit('close')
+    // Watch for changes in props.currency and update the local state if needed
+    watchEffect(() => {
+      console.log('Currency prop changed:', props.currency)
+    })
+
+    const handleSubmit = () => {
+      const notificationData = {
+        cryptoId: cryptoId.value,
+        price: parseFloat(price.value),
+        alertType: alertType.value,
+        message: message.value
+      }
+
+      emit('save', notificationData)
+    }
+
+    return {
+      cryptoId,
+      price,
+      alertType,
+      message,
+      handleSubmit
     }
   }
 }
 </script>
 
 <style scoped>
-/* Your existing styles here */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -107,68 +109,52 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 10;
 }
 
-.modal-container {
-  background: #fff;
-  padding: 1.5rem;
-  border-radius: 6px;
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   width: 90%;
-  max-width: 400px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
 }
 
-h3 {
-  margin-top: 0;
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.close-button {
+  border: none;
+  background: none;
+  font-size: 1.5rem;
+  cursor: pointer;
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: 15px;
 }
 
-label {
+.form-group label {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 5px;
 }
 
-input[type='text'],
-input[type='number'] {
+.form-group input,
+.form-group select,
+.form-group textarea {
   width: 100%;
-  padding: 0.5rem;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
   box-sizing: border-box;
 }
 
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.5rem;
-}
-
-.btn {
-  padding: 0.5rem 0.75rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.875rem;
-  transition: background-color 0.3s ease;
-}
-
-.btn.primary {
-  background-color: var(--primary-color, #007bff);
-  color: #fff;
-}
-
-.btn.primary:hover {
-  background-color: var(--primary-color-dark, #0056b3);
-}
-
-.btn.secondary {
-  background-color: #ddd;
-  color: #333;
-}
-
-.btn.secondary:hover {
-  background-color: #ccc;
+.form-group textarea {
+  min-height: 100px;
 }
 </style>
