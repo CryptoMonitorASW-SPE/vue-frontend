@@ -26,6 +26,10 @@ $padding-xl: 3rem;
 $border-radius: 5px;
 $box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 
+// Shadows
+$shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
 /* Theme Maps */
 $light-theme: (
   primary-color: $primary-color,
