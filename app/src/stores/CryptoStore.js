@@ -1,53 +1,92 @@
 import { defineStore } from 'pinia'
+import axios from 'axios'
+import CryptoSocketController from '@/controllers/CryptoSocketController'
 
 export const useCryptoStore = defineStore('cryptoStore', {
   state: () => ({
     cryptocurrencies: [],
     timestamp: null,
-    selectedCurrency: 'USD'
+    selectedCurrency: 'USD',
+    socketController: null,
+    isInitialized: false
   }),
+
   actions: {
-    setCurrency(currency) {
-      console.log('Selected currency:', currency)
+    async setCurrency(currency) {
+      console.log('Changing currency to:', currency)
       this.selectedCurrency = currency
-      localStorage.setItem('selectedCurrency', currency)
-      this.restartConnection(currency)
+      localStorage.setItem('selectedCurrency', currency) // Explicitly set localStorage
+
+      if (this.socketController) {
+        this.socketController.setupListener(currency)
+        await this.fetchInitialData()
+      }
     },
+    // Called typically in App.vue onMounted
+    initializeSocket() {
+      if (this.isInitialized) return
+
+      // Load state from local storage at init
+      const savedData = localStorage.getItem('cryptoStore')
+      const selectedCurrency = localStorage.getItem('selectedCurrency')
+      if (selectedCurrency) {
+        this.selectedCurrency = selectedCurrency
+      }
+      if (savedData) {
+        try {
+          const parsedData = JSON.parse(savedData)
+          this.cryptocurrencies = parsedData.cryptocurrencies || []
+          this.timestamp = parsedData.timestamp || null
+        } catch (e) {
+          console.warn('Failed to parse cryptoStore data from localStorage:', e)
+        }
+      }
+
+      // Setup & connect Socket
+      this.socketController = new CryptoSocketController(this.updateCryptocurrencies.bind(this))
+      this.socketController.connect()
+      this.socketController.setupListener(this.selectedCurrency)
+
+      // Optionally fetch initial data
+      this.fetchInitialData()
+      this.isInitialized = true
+    },
+
+    async fetchInitialData() {
+      try {
+        await axios.post('/api/cryptomarket/start', null, {
+          params: { currency: this.selectedCurrency }
+        })
+        // On success, server should push CRYPTO_UPDATE event via socket
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    },
+
     updateCryptocurrencies(data) {
       if (data.eventType === 'CRYPTO_UPDATE') {
         data.payload.forEach(newCrypto => {
           const index = this.cryptocurrencies.findIndex(crypto => crypto.id === newCrypto.id)
-
           if (index !== -1) {
-            // Criptovaluta esistente: aggiorna i dati e imposta `updated` su true
+            // Existing crypto: update data, set updated = true
             this.cryptocurrencies.splice(index, 1, {
               ...this.cryptocurrencies[index],
               ...newCrypto,
               updated: true
             })
-
-            // Log per verificare l'aggiornamento
-            console.log(`Updated crypto: ${newCrypto.id}`)
-
-            // Resetta `updated` dopo 1 secondo
+            // Reset updated after 2s
             setTimeout(() => {
-              // Sposta l'elemento di nuovo per annullare updated
               this.cryptocurrencies.splice(index, 1, {
                 ...this.cryptocurrencies[index],
                 updated: false
               })
             }, 2000)
           } else {
-            // Nuova criptovaluta: aggiungi all'array con `updated` su true
+            // New crypto: push with updated = true
             this.cryptocurrencies.push({
               ...newCrypto,
               updated: true
             })
-
-            // Log per verificare l'aggiornamento
-            console.log(`New crypto added: ${newCrypto.id}`)
-
-            // Resetta `updated` dopo 1 secondo
             setTimeout(() => {
               const newIndex = this.cryptocurrencies.findIndex(crypto => crypto.id === newCrypto.id)
               if (newIndex !== -1) {
@@ -61,27 +100,32 @@ export const useCryptoStore = defineStore('cryptoStore', {
         })
 
         this.timestamp = data.timestamp
+
+        // Save latest data to local storage
+        localStorage.setItem(
+          'cryptoStore',
+          JSON.stringify({
+            cryptocurrencies: this.cryptocurrencies,
+            timestamp: this.timestamp
+          })
+        )
         console.log('Cryptocurrencies aggiornate:', this.cryptocurrencies)
       }
     },
-    fetchCryptoById(id) {
-      // Check if the crypto is already in the store
-      const crypto = this.cryptocurrencies.find(crypto => crypto.id === id)
-      if (crypto) {
-        return crypto
-      }
 
-      // If not found, return an empty object or handle accordingly
+    fetchCryptoById(id) {
+      const crypto = this.cryptocurrencies.find(crypto => crypto.id === id)
+      if (crypto) return crypto
       console.warn(`Crypto with ID ${id} not found in store`)
       return {}
     },
-    restartConnection(currency) {
-      window.dispatchEvent(
-        new CustomEvent('currency-changed', {
-          detail: { currency }
-        })
-      )
+
+    cleanup() {
+      if (this.socketController) {
+        this.socketController.disconnect()
+        this.socketController = null
+      }
+      this.isInitialized = false
     }
-  },
-  persist: true
+  }
 })
