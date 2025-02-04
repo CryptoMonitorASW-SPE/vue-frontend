@@ -55,22 +55,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.btn-delete {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  color: #ff4d4d;
-  font-size: 1rem;
-}
-
-.btn-delete:hover {
-  color: #cc0000;
-}
-
-.btn-delete i {
-  pointer-events: none;
-}
-</style>

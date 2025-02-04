@@ -14,16 +14,3 @@ export default {
   emits: ['add-notification', 'list-notification']
 }
 </script>
-
-<style scoped>
-.table-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.table-actions .btn {
-  margin-left: 10px;
-}
-</style>
