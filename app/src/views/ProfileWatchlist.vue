@@ -268,11 +268,14 @@ export default {
     }
 
     const handleNotificationSave = notificationData => {
+      console.log('Notification data:', notificationData)
+      console.log('Selected currency:', selectedCurrency.value)
       watchlistStore.createAlert(
         notificationData.cryptoId,
         notificationData.price,
-        notificationData.currency,
-        notificationData
+        selectedCurrency.value,
+        notificationData.alertType,
+        notificationData.message
       )
       isAddNotificationModalVisible.value = false
     }
@@ -318,6 +321,19 @@ export default {
 </script>
 
 <style scoped>
+/* Style for the header container */
+.table-header {
+  display: flex; /* Use flexbox to align items */
+  justify-content: space-between; /* Space out the title and buttons */
+  align-items: center; /* Align items vertically in the center */
+  margin-bottom: 20px; /* Add some space between the header and the table */
+}
+
+/* Style for the buttons */
+.table-actions .btn {
+  margin-left: 10px; /* Add some space between buttons */
+}
+
 .btn-delete {
   background: none;
   border: none;

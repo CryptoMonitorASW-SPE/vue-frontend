@@ -78,16 +78,21 @@ export const useWatchlistStore = defineStore('watchlistStore', {
       }
     },
 
-    async createAlert(cryptoId, price, currency, message) {
+    async createAlert(cryptoId, price, currency, alertType, message) {
       try {
-        const response = await axios.post('/api/notification/createAlert', message, {
+        console.log('Creating alert for', cryptoId, price, currency, alertType, message)
+        const messageBody = {
+          message: message
+        }
+        const response = await axios.post('/api/notification/createAlert', messageBody, {
           withCredentials: true,
-          params: { cryptoId, price, currency }
+          params: { cryptoId, price, currency, alertType }
         })
         console.log('Alert created:', response)
         this.error = null
         return true
       } catch (error) {
+        console.log('Error creating alert:', error)
         this.handleError(error)
         return false
       }

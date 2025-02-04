@@ -22,15 +22,31 @@
           />
         </div>
         <div class="form-group">
-          <label for="threshold">Price Threshold ({{ currency.toUpperCase() }})</label>
+          <label for="price">Price Threshold ({{ currency.toUpperCase() }})</label>
           <input
-            id="threshold"
-            v-model.number="formData.threshold"
+            id="price"
+            v-model.number="formData.price"
             type="number"
             step="0.01"
             placeholder="e.g., 30000"
             required
           />
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <input
+            id="message"
+            v-model="formData.message"
+            type="text"
+            placeholder="Enter a custom message (optional)"
+          />
+        </div>
+        <div class="form-group">
+          <label for="alertType">Alert Type</label>
+          <select id="alertType" v-model="formData.alertType" required>
+            <option value="ABOVE">Above</option>
+            <option value="BELOW">Below</option>
+          </select>
         </div>
         <div class="modal-actions">
           <button type="button" class="btn secondary" @click="closeModal">Cancel</button>
@@ -45,6 +61,7 @@
 export default {
   name: 'AddNotificationModal',
   props: {
+    // This currency prop will be used to display the currency but can also be included in the payload
     currency: {
       type: String,
       default: 'usd'
@@ -54,15 +71,21 @@ export default {
     return {
       formData: {
         cryptoId: '',
-        threshold: null
+        price: null, // Changed from "threshold" to "price"
+        message: '', // Message field to be sent as JSON body content
+        alertType: 'ABOVE' // Default alertType value
       }
     }
   },
   methods: {
     handleSubmit() {
       this.$emit('save', { ...this.formData })
+
+      // Reset form data after submission
       this.formData.cryptoId = ''
-      this.formData.threshold = null
+      this.formData.price = null
+      this.formData.message = ''
+      this.formData.alertType = 'ABOVE'
       this.closeModal()
     },
     closeModal() {
@@ -73,6 +96,7 @@ export default {
 </script>
 
 <style scoped>
+/* Your existing styles here */
 .modal-overlay {
   position: fixed;
   top: 0;

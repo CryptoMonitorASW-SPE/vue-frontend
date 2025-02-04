@@ -49,6 +49,7 @@ export default class UserSocketController {
     // Listen for user-specific events.
     this.socket.on('user-specific-event', data => {
       console.log('[UserSocket] Received user-specific-event:', data)
+      window.dispatchEvent(new CustomEvent('user-specific-event', { detail: data }))
     })
   }
 
