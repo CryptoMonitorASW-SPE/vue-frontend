@@ -95,6 +95,8 @@
               UpdatedDate
               <span v-if="sortKey === 'lastUpdated'">{{ sortAsc ? '↑' : '↓' }}</span>
             </th>
+            <!-- Actions column -->
+            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
@@ -134,6 +136,13 @@
             </td>
             <!-- UpdatedDate -->
             <td>{{ formatDate(crypto.lastUpdated) }}</td>
+            <!-- Actions -->
+            <td>
+              <button class="btn-delete" aria-label="Delete" @click="handleDelete(crypto.itemId)">
+                <!-- Use Bootstrap's trash3-fill icon -->
+                <i class="bi bi-trash3-fill"></i>
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -188,8 +197,6 @@ export default {
     onMounted(async () => {
       console.log('ProfileWatchlist mounted')
       try {
-        // Optionally set the currency in cryptoStore if needed:
-        // await cryptoStore.setCurrency(currentCurrency.value.currency)
         await watchlistStore.fetchWatchlist()
         console.log('Watchlist:', watchlistStore.watchlist)
       } catch (e) {
@@ -260,8 +267,30 @@ export default {
     }
 
     const handleNotificationSave = notificationData => {
-      watchlistStore.createAlert('bitcoin', 50000, cryptoStore.selectedCurrency, notificationData)
+      watchlistStore.createAlert(
+        notificationData.cryptoId,
+        notificationData.price,
+        notificationData.currency,
+        notificationData
+      )
       isAddNotificationModalVisible.value = false
+    }
+
+    const handleDelete = async itemId => {
+      try {
+        console.log('Deleting item:', itemId)
+        const resRemoval = watchlistStore.removeItem(itemId)
+        if (resRemoval) {
+          console.log('Item removed successfully')
+        } else {
+          console.error('Failed to remove item')
+        }
+        // Refresh the watchlist after deletion
+        watchlistStore.fetchWatchlist()
+      } catch (e) {
+        console.error('Failed to delete item:', e)
+        error.value = e.message
+      }
     }
 
     return {
@@ -280,115 +309,28 @@ export default {
       isListNotificationModalVisible,
       addNotification,
       listNotification,
-      handleNotificationSave
+      handleNotificationSave,
+      handleDelete
     }
   }
 }
 </script>
 
 <style scoped>
-/* (Existing styles remain unchanged) */
-
-.crypto-table-container {
-  padding: 1rem;
-}
-
-.table-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-}
-
-.table-actions {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.btn {
-  background-color: var(--primary-color, #007bff);
-  color: #fff;
+.btn-delete {
+  background: none;
   border: none;
-  padding: 0.5rem 0.75rem;
-  border-radius: 4px;
+  padding: 0;
   cursor: pointer;
-  font-size: 0.875rem;
-  transition: background-color 0.3s ease;
+  color: #ff4d4d; /* Example color for delete action */
+  font-size: 1rem;
 }
 
-.btn:hover,
-.btn:focus {
-  background-color: var(--primary-color-dark, #0056b3);
-  outline: none;
+.btn-delete:hover {
+  color: #cc0000; /* Darker shade on hover */
 }
 
-.crypto-table {
-  overflow-x: auto;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th,
-td {
-  padding: 0.75rem;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-  white-space: nowrap;
-}
-
-th {
-  background-color: #f9f9f9;
-}
-
-.crypto-logo {
-  width: 30px;
-  height: 30px;
-  margin-right: 8px;
-  vertical-align: middle;
-}
-
-.crypto-link {
-  color: inherit;
-  text-decoration: none;
-  display: inline-block;
-  padding: 0.25rem 0;
-}
-
-.crypto-link:hover {
-  text-decoration: underline;
-}
-
-.positive {
-  color: green;
-}
-
-.negative {
-  color: red;
-}
-
-.updated-row {
-  background-color: #e8f5e9;
-}
-
-@media (max-width: 768px) {
-  th,
-  td {
-    padding: 0.5rem;
-    font-size: 0.875rem;
-  }
-
-  .table-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .table-actions {
-    margin-top: 0.5rem;
-  }
+.btn-delete i {
+  pointer-events: none; /* Makes the icon non-target for events */
 }
 </style>

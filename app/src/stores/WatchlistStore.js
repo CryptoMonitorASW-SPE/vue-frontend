@@ -68,7 +68,7 @@ export const useWatchlistStore = defineStore('watchlistStore', {
 
     async removeItem(itemId) {
       try {
-        await axios.delete(`/api/watchlist/${itemId}`, { withCredentials: true })
+        await axios.delete(`/api/management/watchlist/${itemId}`, { withCredentials: true })
         await this.fetchWatchlist()
         this.error = null
         return true
