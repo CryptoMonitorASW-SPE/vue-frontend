@@ -81,7 +81,7 @@ export const useWalletStore = defineStore('wallet', {
         distribution[t.cryptoId] = t.type === 'BUY' ? current + t.quantity : current - t.quantity
       })
       return Object.entries(distribution)
-        .filter(([_, qty]) => qty > 0)
+        .filter(([, qty]) => qty > 0)
         .map(([crypto, quantity]) => ({ crypto, quantity }))
     }
   },
@@ -143,7 +143,6 @@ export const useWalletStore = defineStore('wallet', {
     async generatePdfReport() {
       const { jsPDF } = await import('jspdf')
       const doc = new jsPDF()
-      const cryptoStore = useCryptoStore()
 
       // Header
       doc.setFontSize(18)

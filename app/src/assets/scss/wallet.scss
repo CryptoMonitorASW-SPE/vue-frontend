@@ -70,13 +70,12 @@
   .charts-section {
     display: grid;
     gap: 2rem;
+    margin: 2rem 0;
     grid-template-columns: 1fr;
     @media (min-width: 480px) {
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     }
-    margin: 2rem 0;
   }
-
   .chart-card {
     background: base.$background-color;
     padding: 1.5rem;
