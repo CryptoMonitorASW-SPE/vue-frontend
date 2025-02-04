@@ -118,7 +118,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-/* Table styles, if any */
-</style>

@@ -151,32 +151,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.table-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.table-actions .btn {
-  margin-left: 10px;
-}
-
-.btn-delete {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  color: #ff4d4d;
-  font-size: 1rem;
-}
-
-.btn-delete:hover {
-  color: #cc0000;
-}
-
-.btn-delete i {
-  pointer-events: none;
-}
+<style lang="scss">
+@use '../assets/scss/watchlist';
 </style>
