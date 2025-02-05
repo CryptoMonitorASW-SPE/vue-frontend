@@ -1,6 +1,10 @@
 <template>
-  <div class="crypto-table">
-    <table>
+  <div class="crypto-table-container">
+    <table class="crypto-table">
+      <!-- A caption that is visually hidden but announced by screen readers -->
+      <caption class="visually-hidden">
+        Cryptocurrency Watchlist Table
+      </caption>
       <thead>
         <tr>
           <th
@@ -69,10 +73,11 @@
             @click="sortTable('lastUpdated')"
             @keydown.enter="sortTable('lastUpdated')"
           >
-            UpdatedDate
+            Updated Date
             <span v-if="sortKey === 'lastUpdated'">{{ sortAsc ? '↑' : '↓' }}</span>
           </th>
-          <th scope="col"></th>
+          <!-- This header is empty but hidden from assistive technologies -->
+          <th scope="col" aria-hidden="true"></th>
         </tr>
       </thead>
       <tbody>

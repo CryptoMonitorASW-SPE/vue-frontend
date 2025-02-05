@@ -1,10 +1,10 @@
 <template>
   <tr :class="{ 'updated-row': crypto.updated }">
-    <td>{{ formatDate(crypto.added) }}</td>
-    <td>
+    <td data-label="Added">{{ formatDate(crypto.added) }}</td>
+    <td data-label="Logo">
       <img :src="crypto.image" :alt="'Logo of ' + crypto.name" class="crypto-logo" />
     </td>
-    <td>
+    <td data-label="Name">
       <RouterLink
         :to="`/crypto/${crypto.id}`"
         class="crypto-link"
@@ -13,9 +13,10 @@
         {{ crypto.name }}
       </RouterLink>
     </td>
-    <td>{{ crypto.symbol.toUpperCase() }}</td>
-    <td>{{ formatCurrency(crypto.price, crypto.currency) }}</td>
+    <td data-label="Symbol">{{ crypto.symbol.toUpperCase() }}</td>
+    <td data-label="Price">{{ formatCurrency(crypto.price, crypto.currency) }}</td>
     <td
+      data-label="Change"
       :class="{
         positive: crypto.priceChangePercentage >= 0,
         negative: crypto.priceChangePercentage < 0
@@ -23,10 +24,10 @@
     >
       {{ formatPercentage(crypto.priceChangePercentage) }}
     </td>
-    <td>{{ formatDate(crypto.lastUpdated) }}</td>
-    <td>
-      <button class="btn-delete" aria-label="Delete" @click="$emit('delete')">
-        <i class="bi bi-trash3-fill"></i>
+    <td data-label="Updated Date">{{ formatDate(crypto.lastUpdated) }}</td>
+    <td data-label="Actions">
+      <button class="btn-delete" aria-label="Delete {{ crypto.name }}" @click="$emit('delete')">
+        <i class="bi bi-trash3-fill" aria-hidden="true"></i>
       </button>
     </td>
   </tr>
