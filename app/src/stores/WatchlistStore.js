@@ -6,6 +6,7 @@ import { useCryptoStore } from './CryptoStore'
 export const useWatchlistStore = defineStore('watchlistStore', {
   state: () => ({
     watchlist: [],
+    alerts: [], // <-- added state for alerts/notifications
     error: null,
     watchInitialized: false
   }),
@@ -35,6 +36,7 @@ export const useWatchlistStore = defineStore('watchlistStore', {
         const response = await axios.get('/api/management/watchlist', {
           withCredentials: true
         })
+        console.log('Fetched watchlist:', response.data)
         this.watchlist = response.data.items
         this.error = null
         return true
@@ -90,6 +92,8 @@ export const useWatchlistStore = defineStore('watchlistStore', {
         })
         console.log('Alert created:', response)
         this.error = null
+        // Optionally refresh alerts after creating one
+        await this.fetchAlerts()
         return true
       } catch (error) {
         console.log('Error creating alert:', error)
@@ -98,7 +102,41 @@ export const useWatchlistStore = defineStore('watchlistStore', {
       }
     },
 
+    // NEW: Fetch alerts from the API
+    async fetchAlerts() {
+      try {
+        const response = await axios.get('/api/notification/alerts', { withCredentials: true })
+        // Adjust based on your API response structure:
+        // If the response returns an object with an "items" property, use that.
+        console.log('Fetched alerts:', response.data)
+        this.alerts = response.data
+        this.error = null
+        return true
+      } catch (error) {
+        this.handleError(error)
+        return false
+      }
+    },
+
+    // NEW: Delete a specific alert
+    async deleteAlert(alertId) {
+      try {
+        await axios.delete(`/api/notification/alerts`, {
+          withCredentials: true,
+          params: { alertId }
+        })
+        // Refresh the alerts after deletion
+        await this.fetchAlerts()
+        this.error = null
+        return true
+      } catch (error) {
+        this.handleError(error)
+        return false
+      }
+    },
+
     handleError(error) {
+      console.log(error)
       if (error.response && error.response.data && error.response.data.error) {
         this.error = error.response.data.error
       } else {

@@ -23,7 +23,7 @@
               <th>Crypto ID</th>
               <th>Target Price</th>
               <th>Alert Type</th>
-              <th>Message</th>
+              <th>Optional Message</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -32,9 +32,18 @@
               <td>{{ alert.cryptoId }}</td>
               <td>{{ formatCurrency(alert.targetPrice, currency) }}</td>
               <td>{{ alert.alertType }}</td>
-              <td>{{ alert.message || 'N/A' }}</td>
               <td>
-                <button class="btn-delete" @click="handleDelete(alert.alertId)">Delete</button>
+                <span
+                  v-if="alert.message && alert.message.length > 0"
+                  title="Notification message set"
+                  >✓</span
+                >
+                <span v-else>-</span>
+              </td>
+              <td>
+                <button class="btn-delete" aria-label="Delete" @click="handleDelete(alert.alertId)">
+                  <i class="bi bi-trash3-fill"></i>
+                </button>
               </td>
             </tr>
           </tbody>
@@ -45,9 +54,9 @@
 </template>
 
 <script>
+import { computed, onMounted } from 'vue'
 import { useWatchlistStore } from '@/stores/WatchlistStore'
 import { useFormat } from '@/composables/table/useFormat'
-import { computed } from 'vue'
 
 export default {
   name: 'ListNotificationModal',
@@ -58,18 +67,24 @@ export default {
     }
   },
   emits: ['close'],
-  setup() {
+  setup(props, { emit }) {
     const watchlistStore = useWatchlistStore()
     const { formatCurrency } = useFormat()
 
+    // Fetch the latest alerts when the modal mounts
+    onMounted(() => {
+      watchlistStore.fetchAlerts()
+    })
+
     const alerts = computed(() => {
+      // Transform alerts data if needed (e.g., capitalizing alertType)
       return watchlistStore.alerts.map(alert => ({
-        alertId: alert.alertId,
+        alertId: alert.id,
         cryptoId: alert.cryptoId,
-        targetPrice: alert.targetPrice,
-        currency: alert.currency,
+        targetPrice: alert.alertPrice,
+        currency: alert.currency.type,
         alertType: alert.alertType === 'below' ? 'Below' : 'Above',
-        message: alert.message
+        message: alert.message.message
       }))
     })
 
@@ -81,11 +96,60 @@ export default {
       }
     }
 
+    // Example closeModal method if needed (or use $emit('close') from the button)
+    const closeModal = () => {
+      emit('close')
+    }
+
     return {
       alerts,
       formatCurrency,
-      handleDelete
+      handleDelete,
+      closeModal
     }
   }
 }
 </script>
+
+<style scoped>
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.modal-body {
+  margin-top: 1rem;
+}
+
+.empty-message {
+  text-align: center;
+  padding: 1rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+}
+
+.btn-delete {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+</style>
