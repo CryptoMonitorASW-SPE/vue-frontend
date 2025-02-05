@@ -65,54 +65,66 @@ export const useCryptoStore = defineStore('cryptoStore', {
 
     updateCryptocurrencies(data) {
       if (data.eventType === 'CRYPTO_UPDATE') {
-        data.payload.forEach(newCrypto => {
-          const index = this.cryptocurrencies.findIndex(crypto => crypto.id === newCrypto.id)
-          if (index !== -1) {
-            // Existing crypto: update data, set updated = true
-            this.cryptocurrencies.splice(index, 1, {
-              ...this.cryptocurrencies[index],
-              ...newCrypto,
-              updated: true
-            })
-            // Reset updated after 2s
-            setTimeout(() => {
-              this.cryptocurrencies.splice(index, 1, {
-                ...this.cryptocurrencies[index],
-                updated: false
-              })
-            }, 2000)
-          } else {
-            // New crypto: push with updated = true
-            this.cryptocurrencies.push({
-              ...newCrypto,
-              updated: true
-            })
-            setTimeout(() => {
-              const newIndex = this.cryptocurrencies.findIndex(crypto => crypto.id === newCrypto.id)
-              if (newIndex !== -1) {
-                this.cryptocurrencies.splice(newIndex, 1, {
-                  ...this.cryptocurrencies[newIndex],
-                  updated: false
-                })
+        const updatedIds = new Set()
+        console.log('Received crypto update:', data.payload)
+        this.$patch(state => {
+          data.payload.forEach(newCrypto => {
+            // Find if crypto already exists
+            const index = state.cryptocurrencies.findIndex(crypto => crypto.id === newCrypto.id)
+
+            if (index !== -1) {
+              if (state.cryptocurrencies[index].lastUpdated !== newCrypto.lastUpdated) {
+                state.cryptocurrencies[index] = {
+                  ...state.cryptocurrencies[index],
+                  ...newCrypto,
+                  updated: true
+                }
+                updatedIds.add(newCrypto.id)
               }
-            }, 2000)
-          }
+            } else {
+              // If it's a brand-new crypto, push it
+              state.cryptocurrencies.push({ ...newCrypto, updated: true })
+              updatedIds.add(newCrypto.id)
+            }
+          })
+
+          // Update overall timestamp after processing
+          state.timestamp = data.timestamp
+
+          // Keep local storage update INSIDE $patch
+          localStorage.setItem(
+            'cryptoStore',
+            JSON.stringify({
+              cryptocurrencies: state.cryptocurrencies,
+              timestamp: state.timestamp
+            })
+          )
         })
 
-        this.timestamp = data.timestamp
+        console.log('Updated cryptos:', updatedIds)
 
-        // Save latest data to local storage
-        localStorage.setItem(
-          'cryptoStore',
-          JSON.stringify({
-            cryptocurrencies: this.cryptocurrencies,
-            timestamp: this.timestamp
+        // Reset the "updated" flag with a timeout for any crypto that was updated/added
+        setTimeout(() => {
+          this.$patch(state => {
+            state.cryptocurrencies = state.cryptocurrencies.map(crypto => {
+              if (updatedIds.has(crypto.id)) {
+                return { ...crypto, updated: false }
+              }
+              return crypto
+            })
+
+            // Persist again to local storage after resetting
+            localStorage.setItem(
+              'cryptoStore',
+              JSON.stringify({
+                cryptocurrencies: state.cryptocurrencies,
+                timestamp: state.timestamp
+              })
+            )
           })
-        )
-        console.log('Cryptocurrencies aggiornate:', this.cryptocurrencies)
+        }, 3000)
       }
     },
-
     fetchCryptoById(id) {
       const crypto = this.cryptocurrencies.find(crypto => crypto.id === id)
       if (crypto) return crypto
