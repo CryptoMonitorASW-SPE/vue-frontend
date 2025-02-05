@@ -14,12 +14,9 @@ const cryptoStore = useCryptoStore()
 function handleUserSpecificEvent(event) {
   const data = event.detail
   // Customize the toast content as needed. Here we assume data has a "message" property.
-  toast(`${data.message}`, {
+  toast.success(`${data.message}`, {
     timeout: 5000
     // additional toast options if needed
-  })
-  toast.info(`${data.message}`, {
-    timeout: 10000
   })
 }
 

@@ -118,6 +118,25 @@ export const useWatchlistStore = defineStore('watchlistStore', {
       }
     },
 
+    async toggleAlert(alertId, status) {
+      try {
+        await axios.put(
+          '/api/notification/active',
+          null, // No data in the body
+          {
+            withCredentials: true,
+            params: { alertId, status }
+          }
+        )
+        await this.fetchAlerts()
+        this.error = null
+        return true
+      } catch (error) {
+        this.handleError(error)
+        return false
+      }
+    },
+
     // NEW: Delete a specific alert
     async deleteAlert(alertId) {
       try {
