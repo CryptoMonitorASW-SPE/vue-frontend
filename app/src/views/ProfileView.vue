@@ -1,3 +1,4 @@
+<!-- filepath: /home/tone/university/SPE+WEB/bootstrap/src/vue-frontend/app/src/views/ProfileView.vue -->
 <template>
   <div class="profile-view container py-4">
     <div class="row justify-content-center">

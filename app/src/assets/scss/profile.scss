@@ -1,10 +1,6 @@
 @use 'sass:map';
 @use 'sass:color';
-// Import your base file if necessary
 @use './base' as base;
-
-// Import the entire Bootstrap SCSS (handles order of functions, variables, and mixins)
-@use 'bootstrap/scss/bootstrap';
 
 // Your custom styles below
 .profile-view {
@@ -28,7 +24,7 @@
     }
 
     h2 {
-      @extend .h4; // Use Bootstrap’s .h4 style
+      @extend .h4 !optional; // Use Bootstrap’s .h4 style (optional extend)
       margin-bottom: base.$padding-sm;
       color: map.get(base.$light-theme, text-color);
 
@@ -38,7 +34,7 @@
     }
 
     .form-label {
-      @extend .fw-bold; // Use the Bootstrap .fw-bold utility
+      @extend .fw-bold !optional; // Use the Bootstrap .fw-bold utility (optional extend)
       margin-bottom: base.$padding-sm;
       color: map.get(base.$light-theme, text-color);
 
@@ -46,7 +42,6 @@
         color: map.get(base.$dark-theme, text-color);
       }
     }
-
     .form-control {
       margin-bottom: base.$padding-sm;
       background-color: map.get(base.$light-theme, secondary-color);
