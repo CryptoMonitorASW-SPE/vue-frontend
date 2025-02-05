@@ -1,10 +1,10 @@
-<!-- filepath: /home/tone/university/SPE+WEB/bootstrap/src/vue-frontend/app/src/views/ProfileView.vue -->
 <template>
   <div class="profile-view container py-4">
     <div class="row justify-content-center">
       <div class="col-12 col-md-8 col-lg-6">
         <div class="card p-4">
           <h2 class="mb-4">User Profile</h2>
+          <!-- Keep your form logic (novalidate, @submit.prevent, etc.) -->
           <form novalidate @submit.prevent="saveProfile">
             <!-- First Name -->
             <div class="mb-3">
@@ -15,6 +15,7 @@
                 type="text"
                 class="form-control"
                 :disabled="!isEditing"
+                placeholder="Enter your first name"
               />
             </div>
             <!-- Last Name -->
@@ -26,6 +27,7 @@
                 type="text"
                 class="form-control"
                 :disabled="!isEditing"
+                placeholder="Enter your last name"
               />
             </div>
             <!-- Date of Birth -->
@@ -124,10 +126,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '../assets/scss/profile' as profile;
-@media (min-width: 768px) {
-  .profile-view .card {
-    margin: 1rem 0;
-  }
-}
+@use '../assets/scss/profile';
 </style>
