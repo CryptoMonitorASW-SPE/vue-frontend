@@ -132,8 +132,9 @@ export default {
       }
       const payload = { ...this.localTransaction }
       const walletStore = useWalletStore()
-      const success = await walletStore.addTransaction(payload)
-      if (success) {
+      await walletStore.addTransaction(payload)
+      // Close modal automatically if there’s no error in wallet store
+      if (!walletStore.error) {
         this.closeModal()
       } else {
         alert(`Errore: ${walletStore.error}`)
