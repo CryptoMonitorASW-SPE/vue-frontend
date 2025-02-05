@@ -1,45 +1,157 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Bootstrap 5 CSS -->
+    <!-- Meta Tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Monitor your crypto portfolio and stay updated with live market data." />
+    <meta name="author" content="CryoptoMonitor" />
+    <meta name="theme-color" content="#2850E0" />
+
+  <!-- Inline Critical CSS -->
+  <style>
+    /* Critical styles for above-the-fold content (Hero & Footer LCP Element) */
+    .hero {
+      text-align: center;
+      background-color: #2850E0;
+      color: white;
+      padding: 2rem;
+      border-radius: 5px;
+      margin: 0 1rem;
+    }
+    .hero h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .hero p {
+      margin-bottom: 2rem;
+      line-height: 1.5;
+      max-width: 60ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Base Navbar Styling */
+    .navbar {
+      background-color: #f0f1ff; /* Fallback or default navbar background */
+      border-bottom: 1px solid #ddd;
+      padding: 0.75rem 1rem;
+    }
+    .navbar .navbar-brand,
+    .navbar .nav-link {
+      color: #222222;
+      transition: color 0.2s ease;
+    }
+    .navbar .navbar-brand:hover,
+    .navbar .nav-link:hover {
+      color: #2850E0;
+      text-decoration: none;
+    }
+
+    /* Base Nav-Tabs Styling */
+    .nav-tabs {
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 1rem;
+    }
+    .nav-tabs .nav-item .nav-link {
+      color: #2850E0;
+      border: 1px solid transparent;
+      border-top-left-radius: 0.25rem;
+      border-top-right-radius: 0.25rem;
+      padding: 0.5rem 1rem;
+    }
+    .nav-tabs .nav-item .nav-link:hover {
+      border-color: #ddd;
+    }
+    .nav-tabs .nav-item .nav-link.active {
+      color: #ffffff;
+      background-color: #2850E0;
+      border-color: #2850E0 #2850E0 transparent;
+    }
+
+    /* Footer Styling */
+    .footer {
+      text-align: start;
+      padding: 1rem;
+      background-color: #f0f1ff;
+    }
+    .footer p {
+      margin: 0;
+      color: #222222;
+    }
+  </style>
+
+    <!-- Preconnect to required origins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Preload Bootstrap CSS -->
     <link
+      rel="preload"
+      as="style"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+        crossorigin="anonymous"
+      />
+    </noscript>
 
-    <meta charset="utf-8" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CryptoMonitor</title>
-    <script type="module" crossorigin src="/src/main.js"></script>
+    <!-- Preload Google Fonts -->
     <link
+      rel="preload"
+      as="style"
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
-      rel="stylesheet"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      />
+    </noscript>
+
+    <!-- Preload Bootstrap Icons CSS -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      crossorigin="anonymous"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+        crossorigin="anonymous"
+      />
+    </noscript>
+
+    <link rel="icon" href="/favicon.ico" />
+    <title>CryptoMonitor</title>
+
+    <!-- Defer Main Script -->
+    <script type="module" crossorigin src="/src/main.js" defer></script>
   </head>
   <body>
     <noscript>
-      <strong
-        >We're sorry but this app doesn't work properly without JavaScript enabled. Please enable it
-        to continue.</strong
-      >
+      <strong>We're sorry but this app doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app"></div>
+
+    <!-- Defer Bootstrap Bundle JS -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
+      defer
     ></script>
-    <script type="module" crossorigin src="/src/main.js"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
-      rel="stylesheet"
-    />
   </body>
 </html>
