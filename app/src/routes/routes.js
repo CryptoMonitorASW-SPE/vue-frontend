@@ -7,6 +7,7 @@ import CryptoDetail from '@/views/CryptoDetail.vue'
 import ProfileView from '@/views/ProfileView.vue' // Import the Profile component
 import ProfileWatchlist from '../views/ProfileWatchlist.vue'
 import ProfileWallet from '../views/ProfileWallet.vue'
+import AboutView from '@/views/AboutView.vue'
 import { useAuthenticationStore } from '@/stores/AuthenticationStore'
 
 const routes = [
@@ -18,6 +19,11 @@ const routes = [
         path: '',
         name: 'Home',
         component: HomeView
+      },
+      {
+        path: 'about',
+        name: 'About',
+        component: AboutView
       },
       {
         path: 'crypto/:id',
@@ -70,8 +76,22 @@ const routes = [
         meta: { requiresUnauth: true } // Requires user to be unauthenticated
       }
     ]
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    component: DefaultLayout,
+    children: [
+      {
+        path: '',
+        name: 'NotFound',
+        component: AboutView,
+        props: {
+          errorMessage: 'If you are redirected here, it means that something went wrong.',
+          errorCode: 404
+        }
+      }
+    ]
   }
-  // Add more routes as needed
 ]
 
 const router = createRouter({
