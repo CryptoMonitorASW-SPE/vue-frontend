@@ -153,12 +153,7 @@ export default {
 
     const confirmDeleteTransaction = async transactionId => {
       if (window.confirm('Are you sure you want to delete this transaction?')) {
-        const success = await walletStore.removeTransaction(transactionId)
-        if (!success) {
-          alert(`Error: ${walletStore.error}`)
-        } else {
-          await walletStore.fetchWallet()
-        }
+        await walletStore.removeTransaction(transactionId)
       }
     }
 

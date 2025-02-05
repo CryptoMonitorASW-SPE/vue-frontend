@@ -121,6 +121,7 @@ export const useWalletStore = defineStore('wallet', {
         })
         await this.fetchWallet()
       } catch (error) {
+        console.log('Error:', error)
         this.error = error.response?.data?.message || 'Error removing transaction'
       } finally {
         this.loading = false
