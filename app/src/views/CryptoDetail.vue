@@ -47,6 +47,22 @@
         </div>
         <div class="col-12 col-md-3 mt-5">
           <CryptoDetailsBoxes :cryptoDetails="cryptoDetails" :currency="userCurrency" />
+          <div class="d-flex align-items-center justify-content-end mt-2">
+            <span class="me-2 mx-2">Data Powered by</span>
+            <a
+              href="https://www.coingecko.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="d-flex align-items-center"
+            >
+              <img
+                src="../assets/img/coingecko-logo.png"
+                alt="CoinGecko Logo"
+                class="img-fluid"
+                style="height: 30px"
+              />
+            </a>
+          </div>
         </div>
       </div>
     </div>
