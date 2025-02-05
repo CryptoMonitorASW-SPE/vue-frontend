@@ -5,6 +5,7 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './routes/routes'
 import { useAuthenticationStore } from '@/stores/AuthenticationStore'
+import './middleware/AuthenticationInterceptor.js'
 
 const app = createApp(App)
 const pinia = createPinia()
