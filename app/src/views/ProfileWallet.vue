@@ -104,7 +104,7 @@
                   aria-label="Delete transaction"
                   @click="confirmDeleteTransaction(transaction.id)"
                 >
-                  <i class="bi bi-trash" aria-hidden="true"></i>
+                  <i class="bi bi-trash3-fill" aria-hidden="true"></i>
                 </button>
               </td>
             </tr>

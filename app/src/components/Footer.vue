@@ -1,7 +1,11 @@
 <template>
   <footer class="footer mt-auto py-3">
     <h4>CryptoMonitor</h4>
-    <p>CryptoMonitor offers the best approach to the cryptocurrency market.</p>
+    <div class="d-flex justify-content-between align-items-center container-fluid px-0">
+      <p class="mb-0">CryptoMonitor offers the best approach to the cryptocurrency market.</p>
+      <!-- Utilizzo ms-3 (margin-start) per avere solo lo spazio tra i paragrafi -->
+      <p class="mb-0 ms-3">&copy; 2025 CryptoMonitor.</p>
+    </div>
   </footer>
 </template>
 
@@ -22,12 +26,20 @@ export default {
   background-color: map.get(base.$light-theme, navbar-background);
   margin-top: base.$padding-sm;
 
+  .text-right {
+    color: map.get(base.$light-theme, text-color);
+  }
+
   p {
     margin: 0;
   }
 
   .dark-mode & {
     background-color: map.get(base.$dark-theme, navbar-background);
+
+    .text-right {
+      color: map.get(base.$dark-theme, text-color);
+    }
   }
 }
 </style>
