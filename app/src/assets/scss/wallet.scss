@@ -2,6 +2,7 @@
 @use './base' as base;
 @use 'sass:map';
 @use 'sass:math';
+@use './table';
 
 // Light mode (default)
 .wallet-view {
@@ -76,6 +77,7 @@
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     }
   }
+
   .chart-card {
     background: base.$background-color;
     padding: 1.5rem;
@@ -159,14 +161,18 @@
 
     .balance-card,
     .chart-card {
-      background-color: color.scale(map.get(base.$dark-theme, background-color), $lightness: 10%);
+      // Imposto un background più scuro per garantire contrasto
+      background-color: color.scale(map.get(base.$dark-theme, background-color), $lightness: -10%);
       box-shadow: none;
     }
-
+    .card {
+      background-color: color.scale(map.get(base.$dark-theme, background-color), $lightness: 20%);
+    }
     .balance-card h2,
     .chart-card .chart-title,
     .section-header h2,
-    .page-title {
+    .page-title,
+    .balance-card p {
       color: map.get(base.$dark-theme, text-color);
     }
 
