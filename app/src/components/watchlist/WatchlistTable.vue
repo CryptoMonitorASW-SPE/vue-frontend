@@ -15,7 +15,7 @@
             @click="sortTable('added')"
             @keydown.enter="sortTable('added')"
           >
-            ADDED
+            Added
             <span v-if="sortKey === 'added'">{{ sortAsc ? '↑' : '↓' }}</span>
           </th>
           <th scope="col">Logo</th>
@@ -38,7 +38,7 @@
             @click="sortTable('symbol')"
             @keydown.enter="sortTable('symbol')"
           >
-            SYMBOL
+            Symbol
             <span v-if="sortKey === 'symbol'">{{ sortAsc ? '↑' : '↓' }}</span>
           </th>
           <th scope="col">Price</th>
@@ -52,8 +52,7 @@
           v-for="crypto in sortedCryptocurrencies"
           :key="crypto.id"
           :crypto="crypto"
-          @delete="deleteCrypto(crypto.id)"
-          @select="selectCrypto(crypto.id)"
+          @delete="$emit('delete', crypto.itemId)"
         />
       </tbody>
     </table>

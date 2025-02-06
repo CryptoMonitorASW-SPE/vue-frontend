@@ -32,7 +32,7 @@ export default {
 
   p {
     margin: 0;
-    background-color: map.get(base.$dark-theme, navbar-background);
+    color: map.get(base.$light-theme, text-color);
     .dark-mode & {
       color: map.get(base.$dark-theme, text-color);
     }
