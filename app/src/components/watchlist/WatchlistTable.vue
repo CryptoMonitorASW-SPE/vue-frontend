@@ -1,5 +1,5 @@
 <template>
-  <div class="crypto-table-container">
+  <div class="table-container">
     <table class="watchlist-table" role="grid" aria-label="Cryptocurrency Watchlist Table">
       <!-- A caption that is visually hidden but announced by screen readers -->
       <caption class="visually-hidden">
