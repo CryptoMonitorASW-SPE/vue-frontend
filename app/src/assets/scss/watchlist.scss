@@ -1,10 +1,14 @@
 @use 'sass:color';
 @use 'sass:map';
 @use './base' as base;
+@use './_table';
+
+// NOTA: lo styling generico per la tabella (larghezza, border-collapse, thead/tbody, zebra striping, hover/focus, dark mode, ecc.)
+// è già definito in _table.scss. Qui si mantengono solo le regole uniche per la parte crypto e le modal.
 
 .crypto-table-container {
   // =====================================================
-  // Watchlist Header & Table Row Styles
+  // Header della tabella (univoco per la sezione crypto)
   // =====================================================
   .table-header {
     display: flex;
@@ -19,28 +23,14 @@
     }
   }
 
-  // Merge table styles from both snippets
+  // =====================================================
+  // Regole specifiche per la tabella (crypto-specifiche)
+  // =====================================================
   table {
-    width: 100%; // Full width table
-    border-collapse: collapse; // Collapse table borders
-    table-layout: fixed; // Fix table layout for even columns
-
-    th,
+    // Le proprietà strutturali (width, border-collapse, padding, etc.)
+    // sono già definite in _table.scss; qui si aggiungono solo gli override
+    // relativi alle celle per elementi crypto.
     td {
-      padding: 0.5rem; // Adjusted padding from the modal table rules
-      border: 1px solid #ddd;
-      text-align: left;
-    }
-
-    th {
-      background-color: #f2f2f2;
-      .dark-mode & {
-        background-color: #333;
-      }
-    }
-
-    td {
-      // Crypto-specific styles from the second snippet
       .crypto-logo {
         width: 30px;
         height: 30px;
@@ -51,7 +41,6 @@
       .crypto-link {
         color: #007bff;
         text-decoration: none;
-
         &:hover {
           text-decoration: underline;
         }
@@ -66,7 +55,7 @@
       }
     }
 
-    // Delete button inside table rows (from second snippet)
+    // Pulsante di eliminazione all’interno della tabella
     .btn-delete {
       background: none;
       border: none;
@@ -74,11 +63,9 @@
       cursor: pointer;
       color: #ff4d4d;
       font-size: 1rem;
-
       &:hover {
         color: #cc0000;
       }
-
       i {
         pointer-events: none;
       }
@@ -86,30 +73,26 @@
   }
 
   // =====================================================
-  // Modal Styles (Notifications / Larger modals)
+  // Stili per le modal (overlay, contenuto standard e contenuto maggiore)
   // =====================================================
 
-  // Shared overlay styles (from both snippets)
   .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); // Default overlay color
+    background-color: rgba(0, 0, 0, 0.5); // Colore overlay di default
     display: flex;
     justify-content: center;
     align-items: center;
-    // Use a higher z-index for the larger modal variant if needed:
     z-index: 10;
 
     .dark-mode & {
-      // Slightly darker overlay for dark mode (from second snippet)
-      background-color: rgba(0, 0, 0, 0.7);
+      background-color: rgba(0, 0, 0, 0.7); // Overlay leggermente più scuro in dark mode
     }
   }
 
-  // Standard modal content (e.g. for AddNotificationModal)
   .modal-content {
     background-color: map.get(base.$light-theme, background-color);
     padding: base.$padding-md;
@@ -157,7 +140,7 @@
       }
     }
 
-    // Dark mode overrides for standard modal
+    // Dark mode override per la modal standard
     .dark-mode & {
       background-color: map.get(base.$dark-theme, background-color);
       border: 1px solid map.get(base.$dark-theme, navbar-background);
@@ -165,7 +148,6 @@
 
       .modal-header {
         border-bottom: 1px solid map.get(base.$dark-theme, navbar-background);
-
         .close-button {
           color: map.get(base.$dark-theme, text-color);
         }
@@ -176,7 +158,6 @@
           label {
             color: map.get(base.$dark-theme, text-color);
           }
-
           input,
           select,
           textarea {
@@ -197,20 +178,19 @@
   }
 
   .modal-content-larger {
-    // Position relative for both themes
     position: relative;
-    background-color: map.get(base.$light-theme, background-color); // Light theme background
+    background-color: map.get(base.$light-theme, background-color); // Background per light mode
     padding: 2rem;
     border-radius: 5px;
     width: 80%;
     max-width: 1200px;
     max-height: 80vh;
     overflow-y: auto;
-    box-shadow: base.$box-shadow; // Light mode box shadow
+    box-shadow: base.$box-shadow;
 
     .modal-header {
       h3 {
-        color: map.get(base.$light-theme, text-color); // Light theme text color
+        color: map.get(base.$light-theme, text-color);
       }
       .close-button {
         position: absolute;
@@ -222,42 +202,20 @@
         font-size: 2rem;
         cursor: pointer;
         padding: 5px;
-        // Remove pseudo-element to prevent duplicate cross
-        // &::before { ... } is removed
       }
       border-bottom: 1px solid map.get(base.$light-theme, navbar-background);
     }
 
-    // **Light Mode Table & Button Styles**
+    // Per la tabella all’interno della modal maggiore,
+    // si rimuovono le regole duplicate (es. layout, padding, border, etc.)
+    // e si mantengono solo gli override specifici (stati, bottoni, etc.)
     table {
-      width: 100%;
-      border-collapse: collapse;
-
-      th,
-      td {
-        border: 1px solid map.get(base.$light-theme, navbar-background);
-        padding: 0.5rem;
-        text-align: left;
-      }
-
-      th {
-        // Adjust header background if needed. Here we use a slightly darker version of the modal background.
-        background-color: color.scale(
-          map.get(base.$light-theme, background-color),
-          $lightness: -5%
-        );
-      }
-
-      // Status Text Colors
       .status-active {
-        color: #28a745; // A good green for success (you can adjust as needed)
+        color: #28a745;
       }
-
       .status-inactive {
-        color: #dc3545; // A good red for danger (adjust if necessary)
+        color: #dc3545;
       }
-
-      // Button Styles for Light Mode
       .btn-toggle {
         background-color: #007bff;
         color: white;
@@ -265,7 +223,6 @@
         padding: 0.3rem 0.6rem;
         cursor: pointer;
         border-radius: 3px;
-        // Ensure icons inside inherit the button's color
         i {
           color: inherit;
         }
@@ -273,7 +230,6 @@
           background-color: #0062cc;
         }
       }
-
       .btn-delete {
         background-color: #dc3545;
         color: white;
@@ -290,7 +246,6 @@
       }
     }
 
-    // **Dark Mode Overrides**
     .dark-mode & {
       background-color: map.get(base.$dark-theme, background-color);
       color: map.get(base.$dark-theme, text-color);
@@ -308,18 +263,6 @@
       }
 
       table {
-        th,
-        td {
-          border-color: map.get(base.$dark-theme, navbar-background);
-        }
-
-        th {
-          background-color: color.scale(
-            map.get(base.$dark-theme, background-color),
-            $lightness: -5%
-          );
-        }
-
         .btn-delete {
           background-color: #dc3545;
           color: white;
@@ -327,7 +270,6 @@
             background-color: #c82333;
           }
         }
-
         .btn-toggle {
           background-color: #007bff;
           color: white;
@@ -335,13 +277,11 @@
             background-color: #0062cc;
           }
         }
-
         .status-active {
-          color: green; // adjust as needed for dark mode
+          color: green;
         }
-
         .status-inactive {
-          color: red; // adjust as needed for dark mode
+          color: red;
         }
       }
     }
