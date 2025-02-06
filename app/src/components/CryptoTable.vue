@@ -164,6 +164,7 @@ import { useCryptoStore } from '../stores/CryptoStore'
 import { useSort } from '../composables/table/useSort'
 import { useFilter } from '../composables/table/useFilter'
 import { useFormat } from '../composables/table/useFormat'
+import { useSearch } from '../composables/table/useSearch'
 
 export default {
   name: 'CryptoTable',
@@ -171,6 +172,10 @@ export default {
     filters: {
       type: Object,
       required: true
+    },
+    searchQuery: {
+      type: String,
+      default: ''
     }
   },
   setup(props) {
@@ -186,7 +191,9 @@ export default {
 
     // Sorting
     const { sortTable, sortedData, sortKey, sortAsc } = useSort(filteredData)
-    const finalCryptocurrencies = sortedData
+    const searchQueryRef = computed(() => props.searchQuery)
+    const { searchResults } = useSearch(sortedData, searchQueryRef)
+    const finalCryptocurrencies = searchResults
 
     // Formattazione
     const { formatCurrency, formatPercentage, formatNumber, formatDate } = useFormat()

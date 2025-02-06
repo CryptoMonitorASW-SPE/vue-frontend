@@ -9,6 +9,19 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h3>Top Cryptocurrencies</h3>
       <div class="d-flex align-items-center">
+        <div class="me-2">
+          <label for="search-desktop" class="visually-hidden">Search cryptocurrencies</label>
+          <div class="input-group">
+            <input
+              id="search-desktop"
+              v-model="searchQuery"
+              type="search"
+              class="form-control"
+              placeholder="Search..."
+              aria-label="Search cryptocurrencies"
+            />
+          </div>
+        </div>
         <button class="filter-btn btn btn-primary" @click="openFilterModal">Filter</button>
         <div class="d-flex align-items-center">
           <span class="me-2 mx-2">Data Powered by</span>
@@ -34,7 +47,7 @@
       @apply-filters="applyFilters"
       @close="closeFilterModal"
     />
-    <CryptoTable :filters="filters" />
+    <CryptoTable :filters="filters" :searchQuery="searchQuery" />
   </section>
 </template>
 
@@ -61,6 +74,7 @@ export default {
   data() {
     return {
       isFilterModalVisible: false,
+      searchQuery: '',
       filters: {
         minPrice: null,
         maxPrice: null,
