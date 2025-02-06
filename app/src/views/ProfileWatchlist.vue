@@ -1,6 +1,10 @@
 <template>
   <div class="crypto-table-container">
-    <WatchlistHeader @add-notification="addNotification" @list-notification="listNotification" />
+    <WatchlistHeader
+      :list-empty="finalCryptocurrencies == 0"
+      @add-notification="addNotification"
+      @list-notification="listNotification"
+    />
 
     <WatchlistTable :cryptocurrencies="finalCryptocurrencies" @delete="handleDelete" />
 
