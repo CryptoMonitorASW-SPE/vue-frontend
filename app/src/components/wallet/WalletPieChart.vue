@@ -1,8 +1,10 @@
-<!-- filepath: /src/components/wallet/WalletPieChart.vue -->
 <template>
-  <div class="pie-chart">
+  <figure class="pie-chart" aria-labelledby="pie-chart-caption">
+    <figcaption id="pie-chart-caption" class="sr-only">
+      Wallet Asset Allocation Pie Chart showing the distribution of assets in your wallet.
+    </figcaption>
     <apexchart type="pie" :options="chartOptions" :series="series" />
-  </div>
+  </figure>
 </template>
 
 <script>
@@ -23,12 +25,7 @@ export default {
     const chartOptions = computed(() => ({
       labels: props.data.map(item => item.crypto),
       legend: { position: 'bottom' },
-      responsive: [
-        {
-          breakpoint: 480,
-          options: { chart: { width: 300 } }
-        }
-      ]
+      responsive: [{ breakpoint: 480, options: { chart: { width: 300 } } }]
     }))
 
     return { series, chartOptions }

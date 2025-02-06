@@ -1,8 +1,10 @@
-<!-- filepath: /src/components/wallet/WalletPerformanceChart.vue -->
 <template>
-  <div class="performance-chart">
+  <figure class="performance-chart" aria-labelledby="performance-chart-caption">
+    <figcaption id="performance-chart-caption" class="sr-only">
+      Wallet Performance Chart showing the historical performance of the wallet.
+    </figcaption>
     <apexchart type="line" :options="chartOptions" :series="series" />
-  </div>
+  </figure>
 </template>
 
 <script>
@@ -23,7 +25,6 @@ export default {
     }
   },
   setup(props) {
-    // Merge history with currentValue if necessary
     const augmentedHistory = computed(() => {
       let points = [...props.history]
       if (points.length === 0 || points[points.length - 1].value !== props.currentValue) {
@@ -36,7 +37,6 @@ export default {
       return points
     })
 
-    // Format series data as [timestamp, value]
     const series = computed(() => [
       {
         name: 'Wallet Value',
@@ -45,25 +45,14 @@ export default {
     ])
 
     const chartOptions = computed(() => ({
-      chart: {
-        type: 'line',
-        zoom: { enabled: false }
-      },
-      xaxis: {
-        type: 'datetime'
-      },
+      chart: { type: 'line', zoom: { enabled: false } },
+      xaxis: { type: 'datetime' },
       yaxis: {
-        labels: {
-          formatter: val => `${val.toLocaleString()}`
-        }
+        labels: { formatter: val => `${val.toLocaleString()}` }
       },
       tooltip: {
-        x: {
-          format: 'dd MMM yyyy'
-        },
-        y: {
-          formatter: val => `${val.toLocaleString()}`
-        }
+        x: { format: 'dd MMM yyyy' },
+        y: { formatter: val => `${val.toLocaleString()}` }
       }
     }))
 
