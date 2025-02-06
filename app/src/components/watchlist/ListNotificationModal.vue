@@ -18,7 +18,7 @@
         <div v-if="alerts.length === 0" class="empty-message">
           No notifications set. Click "Add Notification" to create one.
         </div>
-        <table v-else>
+        <table v-else class="modal-table">
           <thead>
             <tr>
               <th>Crypto ID</th>

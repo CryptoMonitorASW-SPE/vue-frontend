@@ -1,6 +1,6 @@
 <template>
   <div class="crypto-table-container">
-    <table class="crypto-table">
+    <table class="watchlist-table">
       <!-- A caption that is visually hidden but announced by screen readers -->
       <caption class="visually-hidden">
         Cryptocurrency Watchlist Table

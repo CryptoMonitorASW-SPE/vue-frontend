@@ -2,8 +2,7 @@
 @use './base' as base;
 @use 'sass:map';
 @use 'sass:math';
-@use './table';
-
+@use './_table';
 // Light mode (default)
 .wallet-view {
   padding: base.$padding-md;
