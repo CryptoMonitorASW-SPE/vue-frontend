@@ -6,13 +6,13 @@
       </caption>
       <thead>
         <tr data-row="0">
-          <th data-col="0" tabindex="0" @keydown="handleGridNavigation">#</th>
-          <th data-col="1" tabindex="0" @keydown="handleGridNavigation">Crypto ID</th>
-          <th data-col="2" tabindex="0" @keydown="handleGridNavigation">Quantity</th>
-          <th data-col="3" tabindex="0" @keydown="handleGridNavigation">Type</th>
-          <th data-col="4" tabindex="0" @keydown="handleGridNavigation">Date</th>
-          <th data-col="5" tabindex="0" @keydown="handleGridNavigation">Price</th>
-          <th data-col="6" tabindex="0" @keydown="handleGridNavigation">Actions</th>
+          <th data-col="0" scope="col" tabindex="0" @keydown="handleGridNavigation">#</th>
+          <th data-col="1" scope="col" tabindex="0" @keydown="handleGridNavigation">Crypto ID</th>
+          <th data-col="2" scope="col" tabindex="0" @keydown="handleGridNavigation">Quantity</th>
+          <th data-col="3" scope="col" tabindex="0" @keydown="handleGridNavigation">Type</th>
+          <th data-col="4" scope="col" tabindex="0" @keydown="handleGridNavigation">Date</th>
+          <th data-col="5" scope="col" tabindex="0" @keydown="handleGridNavigation">Price</th>
+          <th data-col="6" scope="col" tabindex="0" @keydown="handleGridNavigation">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -25,7 +25,13 @@
             {{ rowIndex + 1 }}
           </th>
           <td role="gridcell" data-col="1" tabindex="0" @keydown="handleGridNavigation">
-            {{ transaction.cryptoId }}
+            <RouterLink
+              :to="`/crypto/${transaction.cryptoId}`"
+              class="crypto-link"
+              :aria-label="`View details for ${transaction.cryptoId}`"
+            >
+              {{ transaction.cryptoId }}
+            </RouterLink>
           </td>
           <td role="gridcell" data-col="2" tabindex="0" @keydown="handleGridNavigation">
             {{ transaction.quantity }}

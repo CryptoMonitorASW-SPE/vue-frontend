@@ -6,7 +6,7 @@
     tabindex="0"
     @keydown.enter="$emit('select', crypto.id)"
   >
-    <td
+    <th
       role="gridcell"
       tabindex="0"
       data-col="0"
@@ -14,7 +14,7 @@
       @keydown="$emit('keydown', $event)"
     >
       {{ $attrs['data-row'] }}
-    </td>
+    </th>
     <td
       role="gridcell"
       tabindex="0"
