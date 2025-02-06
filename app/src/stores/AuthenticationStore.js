@@ -87,10 +87,19 @@ export const useAuthenticationStore = defineStore('authentication', {
     },
 
     handleAuthError(error) {
-      if (error.response && error.response.data && error.response.data.message) {
-        this.error = error.response.data.message
+      if (error.response) {
+        switch (error.response.status) {
+          case 401:
+            this.error = 'Invalid credentials. Please check your email and password.'
+            break
+          case 409:
+            this.error = 'Email already registered. Please use a different email.'
+            break
+          default:
+            this.error = error.response.data?.message || 'An unexpected error occurred.'
+        }
       } else {
-        this.error = 'An unexpected error occurred.'
+        this.error = 'Network error. Please check your connection.'
       }
     },
 
