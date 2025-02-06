@@ -19,69 +19,26 @@
       </RouterLink>
 
       <!-- Offcanvas Menu for Mobile -->
-      <div
-        id="offcanvasNavbar"
-        class="offcanvas offcanvas-start d-lg-none"
-        tabindex="-1"
-        aria-labelledby="offcanvasNavbarLabel"
-      >
-        <div class="offcanvas-header">
-          <h5 id="offcanvasNavbarLabel" class="offcanvas-title">Menu</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="offcanvas"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="offcanvas-body">
-          <!-- Navigation Links -->
-          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-            <li class="nav-item">
-              <RouterLink to="/" class="nav-link" aria-current="page">Coins</RouterLink>
-            </li>
-            <li class="nav-item">
-              <RouterLink to="/about" class="nav-link">About</RouterLink>
-            </li>
-          </ul>
-
-          <!-- Search & User Actions -->
-          <form class="d-flex flex-column align-items-stretch mt-3">
-            <CurrencyToggle class="currency mb-2" @currency-changed="handleCurrencyChange" />
-            <div class="mb-2">
-              <RouterLink v-if="isAuthenticated" to="/profile" class="btn btn-primary w-100"
-                >Profile</RouterLink
-              >
-            </div>
-            <div v-if="isAuthenticated" class="mb-2">
-              <RouterLink to="/wallet" class="btn btn-primary w-100">Wallet</RouterLink>
-            </div>
-            <div v-if="isAuthenticated" class="mb-2">
-              <RouterLink to="/watchlist" class="btn btn-primary w-100">Watchlist</RouterLink>
-            </div>
-            <div v-if="!isAuthenticated" class="mb-2">
-              <RouterLink to="/login" class="btn btn-primary w-100">Sign In</RouterLink>
-            </div>
-            <div v-else class="mb-2">
-              <button type="button" class="btn btn-primary w-100" @click="logout">Logout</button>
-            </div>
-            <ThemeToggle
-              :isDarkMode="isDarkMode"
-              class="mt-2"
-              @toggle-dark-mode="handleToggleDarkMode"
-            />
-          </form>
-        </div>
-      </div>
+      <NavbarOffcanvas
+        :isDarkMode="isDarkMode"
+        :isAuthenticated="isAuthenticated"
+        @logout="logout"
+        @currency-changed="handleCurrencyChange"
+        @toggle-dark-mode="handleToggleDarkMode"
+      />
 
       <!-- Desktop Navigation (visible on large screens) -->
       <div class="collapse navbar-collapse d-none d-lg-flex justify-content-between">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <RouterLink to="/" class="nav-link" aria-current="page">Coins</RouterLink>
+            <RouterLink to="/" class="nav-link" aria-current="page"
+              >Coins<i class="bi bi-coin ms-1"></i
+            ></RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink to="/about" class="nav-link">About</RouterLink>
+            <RouterLink to="/about" class="nav-link"
+              >About<i class="bi bi-question-circle ms-1"></i
+            ></RouterLink>
           </li>
         </ul>
         <form class="d-flex align-items-center">
@@ -105,11 +62,15 @@
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
                 <li>
-                  <RouterLink to="/profile" class="dropdown-item">Your Profile</RouterLink>
+                  <RouterLink to="/profile" class="dropdown-item"
+                    >Your Profile<i class="bi bi-person-circle ms-1"></i
+                  ></RouterLink>
                 </li>
                 <li><hr class="dropdown-divider" /></li>
                 <li>
-                  <a href="#" class="dropdown-item" @click="logout">Logout</a>
+                  <a href="#" class="dropdown-item" @click="logout"
+                    >Logout<i class="bi bi-box-arrow-left ms-1"></i
+                  ></a>
                 </li>
               </ul>
             </div>
@@ -131,6 +92,7 @@
 <script>
 import ThemeToggle from './ThemeToggle.vue'
 import CurrencyToggle from './CurrencyToggle.vue'
+import NavbarOffcanvas from './NavbarOffcanvas.vue'
 import { useAuthenticationStore } from '@/stores/AuthenticationStore'
 import { storeToRefs } from 'pinia'
 
@@ -138,7 +100,8 @@ export default {
   name: 'Navbar',
   components: {
     ThemeToggle,
-    CurrencyToggle
+    CurrencyToggle,
+    NavbarOffcanvas
   },
   props: {
     isDarkMode: {
@@ -268,7 +231,7 @@ export default {
 }
 
 /* Mobile First adjustments */
-@media (min-width: 1024px) {
+@media (min-width: 991px) {
   .navbar-toggler {
     display: none;
   }

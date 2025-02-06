@@ -72,6 +72,16 @@
   }
 }
 
+h3 {
+  font-size: base.$font-size-base;
+}
+
+.search-filter {
+  flex-direction: column;
+  align-items: stretch;
+  gap: base.$padding-sm;
+}
+
 .form-control {
   background-color: map.get(base.$light-theme, secondary-color);
   color: map.get(base.$light-theme, text-color);
@@ -272,6 +282,31 @@
   }
 }
 
+@media (max-width: 767.98px) {
+  /* Rende il container contenente l'h3 e il blocco di search/filter/data in colonna */
+  .d-flex.justify-content-between.align-items-center.mb-3 {
+    flex-direction: column !important;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  /* Puoi ridurre le dimensioni di input e pulsanti per ottimizzare lo spazio */
+  .form-control {
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .filter-btn {
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  /* Se necessario, riduci anche la dimensione o l'allineamento del Data Powered by */
+  .d-flex.align-items-center > span {
+    font-size: 0.875rem;
+  }
+}
+
 /* Media Queries for Tablet */
 @media (min-width: 768px) {
   .hero {
@@ -281,6 +316,16 @@
     p {
       font-size: base.$font-size-lg;
     }
+  }
+
+  h3 {
+    font-size: base.$font-size-lg; // oppure un valore specifico (es. 1rem)
+  }
+
+  .search-filter {
+    display: flex;
+    align-items: center;
+    gap: base.$padding-md;
   }
 
   .table-container {
