@@ -1,15 +1,45 @@
 <template>
-  <!-- Remove explicit role on tr; tabindex kept for keyboard navigation -->
+  <!-- Bind inherited attributes (like data-row) from the parent -->
   <tr
+    v-bind="$attrs"
     :class="{ 'updated-row': crypto.updated }"
     tabindex="0"
     @keydown.enter="$emit('select', crypto.id)"
   >
-    <td data-label="Added" data-col="added">{{ formatDate(crypto.added) }}</td>
-    <td data-label="Logo" data-col="logo">
+    <td
+      role="gridcell"
+      tabindex="0"
+      data-col="0"
+      data-label="#"
+      @keydown="$emit('keydown', $event)"
+    >
+      {{ $attrs['data-row'] }}
+    </td>
+    <td
+      role="gridcell"
+      tabindex="0"
+      data-col="0"
+      data-label="Added"
+      @keydown="$emit('keydown', $event)"
+    >
+      {{ formatDate(crypto.added) }}
+    </td>
+    <td
+      role="gridcell"
+      tabindex="0"
+      data-col="1"
+      data-label="Logo"
+      @keydown="$emit('keydown', $event)"
+    >
       <img :src="crypto.image" :alt="'Logo of ' + crypto.name" class="crypto-logo" />
     </td>
-    <td data-label="Name" data-col="name">
+    <td
+      role="gridcell"
+      tabindex="0"
+      data-col="2"
+      data-label="Name"
+      @keydown="$emit('keydown', $event)"
+    >
       <RouterLink
         :to="`/crypto/${crypto.id}`"
         class="crypto-link"
@@ -18,20 +48,53 @@
         {{ crypto.name }}
       </RouterLink>
     </td>
-    <td data-label="Symbol" data-col="symbol">{{ crypto.symbol.toUpperCase() }}</td>
-    <td data-label="Price" data-col="price">{{ formatCurrency(crypto.price, crypto.currency) }}</td>
     <td
+      role="gridcell"
+      tabindex="0"
+      data-col="3"
+      data-label="Symbol"
+      @keydown="$emit('keydown', $event)"
+    >
+      {{ crypto.symbol.toUpperCase() }}
+    </td>
+    <td
+      role="gridcell"
+      tabindex="0"
+      data-col="4"
+      data-label="Price"
+      @keydown="$emit('keydown', $event)"
+    >
+      {{ formatCurrency(crypto.price, crypto.currency) }}
+    </td>
+    <td
+      role="gridcell"
+      tabindex="0"
+      data-col="5"
       data-label="Change"
-      data-col="change"
       :class="{
         positive: crypto.priceChangePercentage >= 0,
         negative: crypto.priceChangePercentage < 0
       }"
+      @keydown="$emit('keydown', $event)"
     >
       {{ formatPercentage(crypto.priceChangePercentage) }}
     </td>
-    <td data-label="Updated Date" data-col="updated-date">{{ formatDate(crypto.lastUpdated) }}</td>
-    <td data-label="Actions" data-col="actions">
+    <td
+      role="gridcell"
+      tabindex="0"
+      data-col="6"
+      data-label="Updated Date"
+      @keydown="$emit('keydown', $event)"
+    >
+      {{ formatDate(crypto.lastUpdated) }}
+    </td>
+    <td
+      role="gridcell"
+      tabindex="0"
+      data-col="7"
+      data-label="Actions"
+      @keydown="$emit('keydown', $event)"
+    >
       <button class="btn-delete" aria-label="Delete {{ crypto.name }}" @click="$emit('delete')">
         <i class="bi bi-trash3-fill" aria-hidden="true"></i>
       </button>
@@ -40,17 +103,22 @@
 </template>
 
 <script>
+import { defineComponent } from 'vue'
 import { useFormat } from '@/composables/table/useFormat'
+import { RouterLink } from 'vue-router'
 
-export default {
+export default defineComponent({
   name: 'WatchlistTableRow',
+  components: {
+    RouterLink
+  },
   props: {
     crypto: {
       type: Object,
       required: true
     }
   },
-  emits: ['delete'],
+  emits: ['delete', 'keydown', 'select'],
   setup() {
     const { formatCurrency, formatPercentage, formatDate } = useFormat()
 
@@ -60,5 +128,5 @@ export default {
       formatDate
     }
   }
-}
+})
 </script>
