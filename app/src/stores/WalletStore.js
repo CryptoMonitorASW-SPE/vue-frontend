@@ -196,9 +196,12 @@ export const useWalletStore = defineStore('wallet', {
     },
 
     formatCurrency(value) {
+      // Retrieve the selected currency from cryptoStore.
+      const cryptoStore = useCryptoStore()
+      const currencyCode = cryptoStore.selectedCurrency || 'USD'
       return new Intl.NumberFormat('en-US', {
         style: 'currency',
-        currency: 'USD'
+        currency: currencyCode
       }).format(value)
     }
   }
