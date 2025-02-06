@@ -145,6 +145,7 @@ export default {
   padding: base.$padding-sm;
   margin-bottom: base.$padding-sm;
   position: relative;
+  border-radius: base.$border-radius;
 
   /* Dark Mode Adjustments */
   &.dark-mode {

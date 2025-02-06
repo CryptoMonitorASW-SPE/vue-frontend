@@ -331,20 +331,4 @@ export default {
   height: 30px;
   margin-right: 8px;
 }
-
-.crypto-link {
-  color: blue;
-  text-decoration: none;
-  display: block;
-  padding: 1.5rem;
-
-  &:hover {
-    text-decoration: underline;
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--primary-color);
-    outline-offset: 2px;
-  }
-}
 </style>

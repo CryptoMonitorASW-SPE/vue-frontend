@@ -44,7 +44,7 @@
             <label for="message">Message (Optional)</label>
             <textarea id="message" v-model="message" placeholder="Enter a custom message" />
           </div>
-          <button type="submit" class="btn btn-primary">Save Notification</button>
+          <button type="submit" class="btn btn-primary btn-success">Save Notification</button>
         </form>
       </div>
     </div>

@@ -74,8 +74,10 @@
         </div>
       </form>
       <div class="modal-buttons d-flex justify-content-end gap-2">
-        <button type="button" class="btn btn-secondary" @click="closeModal">Cancel</button>
-        <button type="button" class="btn btn-primary" @click="saveTransaction">
+        <button type="button" class="btn btn-secondary btn-danger" @click="closeModal">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-primary btn-success" @click="saveTransaction">
           Save Transaction
         </button>
       </div>
@@ -173,6 +175,7 @@ export default {
   position: relative;
   max-width: 500px;
   width: 100%;
+  box-shadow: 0 4px 20px rgba(color.scale(base.$primary-color, $lightness: -20%), 0.5);
   .dark-mode & {
     background-color: map.get(base.$dark-theme, 'background-color');
     color: map.get(base.$dark-theme, 'text-color');
@@ -184,6 +187,18 @@ export default {
   right: 0.5rem;
   .dark-mode & {
     filter: invert(1) grayscale(100%) brightness(200%);
+  }
+}
+
+@media (max-width: 768px) {
+  .transaction-modal {
+    width: 100%;
+    max-width: none;
+    border-radius: 0.25rem;
+    max-height: 100vh;
+    margin: 1rem;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(color.scale(base.$primary-color, $lightness: -20%), 0.5);
   }
 }
 </style>

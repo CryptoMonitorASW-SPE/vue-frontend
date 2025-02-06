@@ -58,7 +58,7 @@
           </td>
           <td role="gridcell" data-col="6" tabindex="0" @keydown="handleGridNavigation">
             <button
-              class="btn btn-sm btn-danger"
+              class="btn btn-sm btn-delete"
               aria-label="Delete transaction"
               @click="deleteTransaction(transaction.id)"
             >
