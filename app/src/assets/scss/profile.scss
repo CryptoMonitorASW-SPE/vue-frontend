@@ -2,25 +2,34 @@
 @use 'sass:color';
 @use './base' as base;
 
-// Your custom styles below
 .profile-view {
   display: flex;
   flex-direction: column;
   justify-content: center;
   margin-left: auto;
   margin-right: auto;
-  padding: base.$padding-sm;
+  padding: base.$padding-sm; // Assuming base.$padding-sm is defined
   max-width: 100%;
 
   .card {
     background-color: map.get(base.$light-theme, secondary-color);
-    border-radius: base.$border-radius;
-    box-shadow: base.$shadow-sm;
+    border-radius: base.$border-radius; // Assuming base.$border-radius is defined
     margin: 0 auto;
     transition: all 0.3s ease;
 
+    .dark-mode & {
+      background-color: map.get(base.$dark-theme, navbar-background);
+    }
+
+    input::placeholder {
+      color: map.get(base.$light-theme, text-color);
+      .dark-mode & {
+        color: map.get(base.$dark-theme, text-color);
+      }
+    }
+
     .card-body {
-      padding: base.$padding-md;
+      padding: base.$padding-md; // Assuming base.$padding-md is defined
     }
 
     h2 {
@@ -46,7 +55,8 @@
       margin-bottom: base.$padding-sm;
       background-color: map.get(base.$light-theme, secondary-color);
       color: map.get(base.$light-theme, text-color);
-      border: 1px solid map.get(base.$light-theme, secondary-color);
+      border: 1px solid map.get(base.$light-theme, text-color);
+
       border-radius: base.$border-radius;
       transition: all 0.3s ease;
 
@@ -57,11 +67,11 @@
 
       &:disabled {
         background-color: rgba(map.get(base.$light-theme, secondary-color), 0.7);
-        opacity: 0.8;
       }
 
       .dark-mode & {
-        background-color: map.get(base.$dark-theme, secondary-color);
+        color-scheme: dark;
+        background-color: map.get(base.$dark-theme, background-color);
         color: map.get(base.$dark-theme, text-color);
         border-color: map.get(base.$dark-theme, secondary-color);
 
@@ -70,8 +80,8 @@
           box-shadow: 0 0 0 0.2rem rgba(map.get(base.$dark-theme, primary-color), 0.25);
         }
         &:disabled {
-          background-color: rgba(map.get(base.$dark-theme, secondary-color), 0.7);
-          color: map.get(base.$dark-theme, text-color);
+          background-color: rgba(map.get(base.$dark-theme, background-color), 0.7);
+          color: map.get(base.$dark-theme, text-color); // Keep this, consistency.
         }
       }
     }
