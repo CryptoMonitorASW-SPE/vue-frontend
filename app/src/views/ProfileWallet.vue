@@ -65,13 +65,18 @@
   </div>
 </template>
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, defineAsyncComponent } from 'vue'
 import { useWalletStore } from '@/stores/WalletStore'
-import TransactionModal from '@/components/modals/TransactionModal.vue'
-import WalletPieChart from '@/components/wallet/WalletPieChart.vue'
-import WalletPerformanceChart from '@/components/wallet/WalletPerformanceChart.vue'
-import TransactionsTable from '@/components/wallet/WalletTable.vue'
 
+// Lazy load TransactionModal
+const WalletPerformanceChart = defineAsyncComponent(
+  () => import('@/components/wallet/WalletPerformanceChart.vue')
+)
+const WalletPieChart = defineAsyncComponent(() => import('@/components/wallet/WalletPieChart.vue'))
+const TransactionModal = defineAsyncComponent(
+  () => import('@/components/modals/TransactionModal.vue')
+)
+const TransactionsTable = defineAsyncComponent(() => import('@/components/wallet/WalletTable.vue'))
 export default {
   name: 'ProfileWallet',
   components: {
