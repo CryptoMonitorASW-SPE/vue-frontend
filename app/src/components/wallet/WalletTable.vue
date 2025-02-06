@@ -1,4 +1,3 @@
-<!-- filepath: /home/tone/university/SPE+WEB/bootstrap/src/components/wallet/WalletTable.vue -->
 <template>
   <div class="table-container" tabindex="0" role="region" aria-label="Transactions Table">
     <table class="transaction-table" role="grid" aria-label="Transactions Table">
@@ -64,6 +63,14 @@
           <td colspan="7" class="text-center">No transactions found.</td>
         </tr>
       </tbody>
+      <tfoot>
+        <tr>
+          <td id="table-summary" colspan="7" role="contentinfo">
+            Wallet transactions details.
+            <span class="sr-only">End of wallet transactions table</span>
+          </td>
+        </tr>
+      </tfoot>
     </table>
   </div>
 </template>
@@ -114,8 +121,7 @@ export default defineComponent({
       const table = currentCell.closest('table')
       if (!table) return
 
-      // Query the target cell based on data-row and data-col. This query handles both nested and same-level attributes.
-      let targetCell = table.querySelector(
+      const targetCell = table.querySelector(
         `[data-row="${newRow}"] [data-col="${newCol}"], [data-row="${newRow}"][data-col="${newCol}"]`
       )
       if (targetCell) {
