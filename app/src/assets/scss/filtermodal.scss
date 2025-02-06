@@ -39,6 +39,12 @@
     }
   }
 
+  fieldset {
+    legend {
+      font-size: 1rem;
+    }
+  }
+
   .btn-close {
     position: absolute;
     top: base.$padding-sm;
@@ -83,6 +89,6 @@
 
 @media (min-width: 768px) {
   .filter-modal {
-    width: 400px;
+    width: auto;
   }
 }

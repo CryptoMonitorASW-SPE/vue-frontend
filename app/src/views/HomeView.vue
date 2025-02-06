@@ -22,7 +22,9 @@
             />
           </div>
         </div>
-        <button class="filter-btn btn btn-primary" @click="openFilterModal">Filter</button>
+        <button class="filter-btn btn btn-primary" @click="openFilterModal">
+          <i class="bi bi-filter-right me-1"></i>Filter
+        </button>
         <div class="d-flex align-items-center">
           <span class="me-2 mx-2">Data Powered by</span>
           <a
