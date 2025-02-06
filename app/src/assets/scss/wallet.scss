@@ -155,6 +155,9 @@
 // Dark mode overrides
 .dark-mode {
   .wallet-view {
+    header {
+      background-color: map.get(base.$dark-theme, background-color);
+    }
     background-color: map.get(base.$dark-theme, background-color);
     color: map.get(base.$dark-theme, text-color);
 

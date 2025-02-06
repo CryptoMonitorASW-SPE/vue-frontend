@@ -3,7 +3,12 @@
     <figcaption id="performance-chart-caption" class="sr-only">
       Wallet Performance Chart showing the historical performance of the wallet.
     </figcaption>
-    <apexchart type="line" :options="chartOptions" :series="series" />
+    <div v-if="!history || history.length === 0" class="text-center my-5">
+      <div>
+        <h2>No data available</h2>
+      </div>
+    </div>
+    <apexchart v-else type="line" :options="chartOptions" :series="series" />
   </figure>
 </template>
 

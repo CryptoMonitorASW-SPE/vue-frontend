@@ -3,7 +3,12 @@
     <figcaption id="pie-chart-caption" class="sr-only">
       Wallet Asset Allocation Pie Chart showing the distribution of assets in your wallet.
     </figcaption>
-    <apexchart type="pie" :options="chartOptions" :series="series" />
+    <div v-if="!data || data.length === 0" class="text-center my-5">
+      <div>
+        <h2>No data available</h2>
+      </div>
+    </div>
+    <apexchart v-esle type="pie" :options="chartOptions" :series="series" />
   </figure>
 </template>
 
