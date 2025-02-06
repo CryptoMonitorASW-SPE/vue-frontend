@@ -19,7 +19,6 @@ export const useUserStore = defineStore('userStore', {
         console.log('User profile:', response.data)
         // Store the returned profile
         this.user = response.data
-        console.log('User:', this.user)
         this.error = null
         return true
       } catch (error) {

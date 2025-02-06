@@ -67,6 +67,7 @@
 <script>
 import { ref, onMounted } from 'vue'
 import { useUserStore } from '@/stores/UserStore'
+import { useToast } from 'vue-toastification'
 
 export default {
   name: 'ProfileView',
@@ -100,12 +101,16 @@ export default {
       isEditing.value = true
     }
 
+    const toast = useToast()
     const saveProfile = async () => {
       const success = await userStore.updateProfile(profile.value)
       if (success) {
         isEditing.value = false
         // Update originalProfile after successful save
         originalProfile.value = { ...profile.value }
+        toast.success('Profile saved succesfully!')
+      } else {
+        toast.error('Profile could not be saved!')
       }
     }
 

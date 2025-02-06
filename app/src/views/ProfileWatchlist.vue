@@ -132,7 +132,7 @@ export default {
       try {
         const resRemoval = watchlistStore.removeItem(itemId)
         if (resRemoval) {
-          toast.success('Item removed successfully')
+          toast.success('Item removed successfully!')
           await watchlistStore.fetchWatchlist()
         } else {
           toast.error('Item not removed successfully')

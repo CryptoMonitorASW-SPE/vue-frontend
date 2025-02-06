@@ -103,8 +103,10 @@ export const useWalletStore = defineStore('wallet', {
           withCredentials: true
         })
         await this.fetchWallet()
+        return true
       } catch (error) {
         this.error = error.response?.data?.message || 'Error adding transaction'
+        return false
       } finally {
         this.loading = false
       }

@@ -86,6 +86,7 @@
 <script>
 import { useWalletStore } from '../../stores/WalletStore'
 import { useCryptoStore } from '../../stores/CryptoStore'
+import { useToast } from 'vue-toastification'
 
 export default {
   name: 'TransactionModal',
@@ -127,12 +128,18 @@ export default {
       this.$emit('close')
     },
     async saveTransaction() {
-      if (!window.confirm('Sei sicuro di voler aggiungere questa transazione?')) {
+      if (!window.confirm('Are you sure you want to add this transaction?')) {
         return
       }
       const payload = { ...this.localTransaction }
       const walletStore = useWalletStore()
-      await walletStore.addTransaction(payload)
+      const result = await walletStore.addTransaction(payload)
+      const toast = useToast()
+      if (result) {
+        toast.success('Transaction added successfully')
+      } else {
+        toast.error('Error during save of the transaction')
+      }
       // Close modal automatically if there’s no error in wallet store
       if (!walletStore.error) {
         this.closeModal()
