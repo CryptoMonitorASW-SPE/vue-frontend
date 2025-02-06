@@ -49,16 +49,6 @@
           <form class="d-flex flex-column align-items-stretch mt-3">
             <CurrencyToggle class="currency mb-2" @currency-changed="handleCurrencyChange" />
             <div class="mb-2">
-              <label for="search-mobile" class="visually-hidden">Search cryptocurrencies</label>
-              <input
-                id="search-mobile"
-                type="search"
-                class="form-control"
-                placeholder="Search..."
-                aria-label="Search cryptocurrencies"
-              />
-            </div>
-            <div class="mb-2">
               <RouterLink v-if="isAuthenticated" to="/profile" class="btn btn-primary w-100"
                 >Profile</RouterLink
               >
@@ -96,32 +86,36 @@
         </ul>
         <form class="d-flex align-items-center">
           <CurrencyToggle class="currency me-2" @currency-changed="handleCurrencyChange" />
-          <div class="me-2">
-            <label for="search-desktop" class="visually-hidden">Search cryptocurrencies</label>
-            <input
-              id="search-desktop"
-              type="search"
-              class="form-control"
-              placeholder="Search..."
-              aria-label="Search cryptocurrencies"
-            />
-          </div>
           <div class="d-flex">
-            <RouterLink v-if="isAuthenticated" to="/profile" class="btn btn-primary me-2"
-              >Profile</RouterLink
+            <RouterLink v-if="isAuthenticated" to="/wallet" class="btn btn-primary me-3"
+              ><i class="bi bi-wallet2 me-1"></i>Wallet</RouterLink
             >
-            <RouterLink v-if="isAuthenticated" to="/wallet" class="btn btn-primary me-2"
-              >Wallet</RouterLink
+            <RouterLink v-if="isAuthenticated" to="/watchlist" class="btn btn-primary me-3"
+              ><i class="bi bi-star-fill me-1"></i>Watchlist</RouterLink
             >
-            <RouterLink v-if="isAuthenticated" to="/watchlist" class="btn btn-primary me-2"
-              >Watchlist</RouterLink
-            >
+            <div v-if="isAuthenticated" class="dropdown">
+              <a
+                href="#"
+                class="dropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                aria-label="User account menu"
+              >
+                <i class="bi bi-person-vcard profile-icon"></i>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <RouterLink to="/profile" class="dropdown-item">Your Profile</RouterLink>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a href="#" class="dropdown-item" @click="logout">Logout</a>
+                </li>
+              </ul>
+            </div>
             <RouterLink v-if="!isAuthenticated" to="/login" class="btn btn-primary me-2"
               >Sign In</RouterLink
             >
-            <button v-else type="button" class="btn btn-primary me-2" @click="logout">
-              Logout
-            </button>
           </div>
           <ThemeToggle
             :isDarkMode="isDarkMode"
@@ -254,19 +248,6 @@ export default {
     }
   }
 
-  /* Form Input and Button Styles */
-  .form-control {
-    background-color: map.get(base.$light-theme, secondary-color);
-    color: map.get(base.$light-theme, text-color);
-    border: 1px solid #ccc;
-    border-radius: base.$border-radius;
-
-    &:focus {
-      border-color: base.$primary-color;
-      box-shadow: 0 0 0 0.2rem rgba(33, 150, 243, 0.25);
-    }
-  }
-
   .btn-primary {
     background-color: base.$primary-color;
     color: #fff;
@@ -300,6 +281,37 @@ export default {
   }
   .navbar {
     height: 60px;
+  }
+  .profile-icon {
+    color: map.get(base.$light-theme, text-color);
+    transition: color 0.2s ease;
+    font-size: 2.5rem;
+    line-height: 1;
+    .dark-mode & {
+      color: map.get(base.$dark-theme, text-color);
+    }
+  }
+
+  .dropdown-menu {
+    background-color: map.get(base.$light-theme, navbar-background);
+    border: 1px solid map.get(base.$light-theme, border-color);
+    box-shadow: base.$box-shadow;
+    .dropdown-item {
+      color: map.get(base.$light-theme, text-color);
+      &:hover {
+        background-color: map.get(base.$light-theme, hover-color);
+      }
+    }
+    .dark-mode & {
+      background-color: map.get(base.$dark-theme, navbar-background);
+      border-color: map.get(base.$dark-theme, border-color);
+      .dropdown-item {
+        color: map.get(base.$dark-theme, text-color);
+        &:hover {
+          background-color: map.get(base.$dark-theme, secondary-color);
+        }
+      }
+    }
   }
 }
 </style>

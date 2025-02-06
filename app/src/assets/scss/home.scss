@@ -72,6 +72,18 @@
   }
 }
 
+.form-control {
+  background-color: map.get(base.$light-theme, secondary-color);
+  color: map.get(base.$light-theme, text-color);
+  border: 1px solid #ccc;
+  border-radius: base.$border-radius;
+
+  &:focus {
+    border-color: base.$primary-color;
+    box-shadow: 0 0 0 0.2rem rgba(33, 150, 243, 0.25);
+  }
+}
+
 /* Filter Button */
 .filter-btn {
   background-color: base.$primary-color;
