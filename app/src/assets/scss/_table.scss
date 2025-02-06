@@ -33,7 +33,10 @@
   }
 }
 
-.transaction-table .crypto-table .modal-table .watchlist-table {
+.transaction-table,
+.crypto-table,
+.modal-table,
+.watchlist-table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
@@ -97,7 +100,10 @@
 
 /* DARK MODE OVERRIDES */
 .dark-mode {
-  .my-table {
+  .transaction-table,
+  .crypto-table,
+  .modal-table,
+  .watchlist-table {
     thead {
       background-color: map.get(base.$dark-theme, navbar-background);
       color: map.get(base.$dark-theme, text-color);
