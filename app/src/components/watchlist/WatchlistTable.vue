@@ -38,46 +38,13 @@
             @click="sortTable('symbol')"
             @keydown.enter="sortTable('symbol')"
           >
-            Symbol
+            SYMBOL
             <span v-if="sortKey === 'symbol'">{{ sortAsc ? '↑' : '↓' }}</span>
           </th>
-          <th
-            scope="col"
-            style="cursor: pointer"
-            :aria-sort="sortKey === 'price' ? (sortAsc ? 'ascending' : 'descending') : 'none'"
-            tabindex="0"
-            @click="sortTable('price')"
-            @keydown.enter="sortTable('price')"
-          >
-            Price
-            <span v-if="sortKey === 'price'">{{ sortAsc ? '↑' : '↓' }}</span>
-          </th>
-          <th
-            scope="col"
-            style="cursor: pointer"
-            :aria-sort="
-              sortKey === 'priceChangePercentage' ? (sortAsc ? 'ascending' : 'descending') : 'none'
-            "
-            tabindex="0"
-            @click="sortTable('priceChangePercentage')"
-            @keydown.enter="sortTable('priceChangePercentage')"
-          >
-            Change
-            <span v-if="sortKey === 'priceChangePercentage'">{{ sortAsc ? '↑' : '↓' }}</span>
-          </th>
-          <th
-            scope="col"
-            style="cursor: pointer"
-            :aria-sort="sortKey === 'lastUpdated' ? (sortAsc ? 'ascending' : 'descending') : 'none'"
-            tabindex="0"
-            @click="sortTable('lastUpdated')"
-            @keydown.enter="sortTable('lastUpdated')"
-          >
-            Updated Date
-            <span v-if="sortKey === 'lastUpdated'">{{ sortAsc ? '↑' : '↓' }}</span>
-          </th>
-          <!-- This header is empty but hidden from assistive technologies -->
-          <th scope="col" aria-hidden="true"></th>
+          <th scope="col">Price</th>
+          <th scope="col">Change</th>
+          <th scope="col">Updated Date</th>
+          <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -85,7 +52,8 @@
           v-for="crypto in sortedCryptocurrencies"
           :key="crypto.id"
           :crypto="crypto"
-          @delete="$emit('delete', crypto.itemId)"
+          @delete="deleteCrypto(crypto.id)"
+          @select="selectCrypto(crypto.id)"
         />
       </tbody>
     </table>
