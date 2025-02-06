@@ -1,7 +1,7 @@
 <template>
   <div class="card mx-auto auth-form">
     <div class="card-body">
-      <h2 class="card-title text-center mb-4">{{ title }}</h2>
+      <h1 class="card-title text-center mb-4">{{ title }}</h1>
       <form aria-label="Authentication Form" @submit.prevent="handleSubmit">
         <div class="mb-3 form-group">
           <label :for="emailId" class="form-label">Email</label>

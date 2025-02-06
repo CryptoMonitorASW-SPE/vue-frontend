@@ -1,7 +1,6 @@
 <template>
   <div class="dropdown">
     <button
-      id="currencyDropdown"
       class="btn btn-white dropdown-toggle"
       data-bs-display="static"
       type="button"

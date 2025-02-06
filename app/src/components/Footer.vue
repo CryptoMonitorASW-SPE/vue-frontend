@@ -1,6 +1,6 @@
 <template>
   <footer class="footer mt-auto py-3">
-    <h4>CryptoMonitor</h4>
+    <h1>CryptoMonitor</h1>
     <div class="d-flex justify-content-between align-items-center container-fluid px-0">
       <p class="mb-0">CryptoMonitor offers the best approach to the cryptocurrency market.</p>
       <!-- Utilizzo ms-3 (margin-start) per avere solo lo spazio tra i paragrafi -->

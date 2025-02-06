@@ -131,7 +131,10 @@ export default {
       if (!window.confirm('Are you sure you want to add this transaction?')) {
         return
       }
-      const payload = { ...this.localTransaction }
+      const payload = {
+        ...this.localTransaction,
+        currency: this.cryptoStore.selectedCurrency
+      }
       const walletStore = useWalletStore()
       const result = await walletStore.addTransaction(payload)
       const toast = useToast()

@@ -1,16 +1,13 @@
 <template>
   <div :class="{ 'dark-mode': isDarkMode }" class="d-flex flex-column min-vh-100">
-    <header>
+    <header class="main-header">
       <Navbar :isDarkMode="isDarkMode" @toggle-dark-mode="toggleDarkMode" />
     </header>
 
     <main class="flex-grow-1">
       <router-view />
     </main>
-
-    <footer class="mt-auto">
-      <Footer />
-    </footer>
+    <Footer />
   </div>
 </template>
 

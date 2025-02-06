@@ -1,6 +1,6 @@
 <template>
   <div class="table-header">
-    <h2>Watched Cryptocurrencies</h2>
+    <h1>Watched Cryptocurrencies</h1>
     <div class="table-actions">
       <button class="btn btn-primary" @click="$emit('add-notification')">Add Notification</button>
       <button class="btn btn-primary" @click="$emit('list-notification')">List Notification</button>

@@ -51,7 +51,8 @@
             {{ formatDate(transaction.doneAt) }}
           </td>
           <td role="gridcell" data-col="5" tabindex="0" @keydown="handleGridNavigation">
-            ${{
+            {{ transaction.currency === 'USD' ? '$' : '€'
+            }}{{
               transaction.priceAtPurchase != null ? transaction.priceAtPurchase.toFixed(2) : '0.00'
             }}
           </td>
