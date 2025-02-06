@@ -1,5 +1,12 @@
 <template>
-  <div class="table-container">
+  <div v-if="cryptocurrencies.length === 0" class="text-center my-5">
+    <div>
+      <h2>Your watchlist is empty</h2>
+      <p class="lead">Start tracking cryptocurrencies by adding them to your watchlist</p>
+    </div>
+  </div>
+
+  <div v-else class="table-container">
     <table class="watchlist-table" role="grid" aria-label="Cryptocurrency Watchlist Table">
       <!-- A caption that is visually hidden but announced by screen readers -->
       <caption class="visually-hidden">
