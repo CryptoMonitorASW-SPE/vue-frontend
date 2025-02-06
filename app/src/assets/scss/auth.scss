@@ -7,7 +7,7 @@
   padding: base.$padding-md;
   background-color: map.get(base.$light-theme, background-color);
   border-radius: base.$border-radius;
-  box-shadow: base.$box-shadow;
+  box-shadow: 0 4px 20px rgba(color.scale(base.$primary-color, $lightness: -20%), 0.5);
   margin: auto;
 
   .dark-mode & {

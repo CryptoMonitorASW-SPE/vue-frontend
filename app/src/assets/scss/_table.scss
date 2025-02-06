@@ -129,6 +129,8 @@
       background-color: map.get(base.$dark-theme, navbar-background);
       color: map.get(base.$dark-theme, text-color);
       th {
+        background-color: map.get(base.$dark-theme, navbar-background);
+        color: map.get(base.$dark-theme, text-color);
         &:hover,
         &:focus-visible {
           background-color: color.adjust(

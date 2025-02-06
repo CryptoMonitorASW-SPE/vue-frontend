@@ -152,3 +152,54 @@ select {
 .dark-mode {
   @include theme($dark-theme);
 }
+
+h1 {
+  font-size: 2rem;
+  margin: 0 0 $padding-md;
+  .dark-mode & {
+    color: map.get($dark-theme, text-color);
+  }
+}
+h2 {
+  font-size: 1.5rem;
+  margin: 0 0 $padding-md;
+  .dark-mode & {
+    color: map.get($dark-theme, text-color);
+  }
+}
+
+h3 {
+  font-size: 1.25rem;
+  margin: 0 0 $padding-md;
+  .dark-mode & {
+    color: map.get($dark-theme, text-color);
+  }
+}
+
+h4 {
+  font-size: 1rem;
+  margin: 0 0 $padding-md;
+  .dark-mode & {
+    color: map.get($dark-theme, text-color);
+  }
+}
+
+p {
+  margin: 0 0 $padding-lg;
+  line-height: 1.5;
+  max-width: 60ch;
+  margin-inline: auto;
+  .dark-mode & {
+    color: map.get($dark-theme, text-color);
+  }
+}
+
+.main-header {
+  background-color: $primary-color;
+}
+
+.dropdown {
+  .dark-mode & {
+    color: map.get($dark-theme, text-color);
+  }
+}
