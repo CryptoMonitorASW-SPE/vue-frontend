@@ -154,20 +154,6 @@ h3 {
 
 /* Crypto Table */
 .crypto-table {
-  table {
-    td {
-      .positive {
-        color: base.$success-color;
-        font-weight: 500;
-      }
-
-      .negative {
-        color: base.$error-color;
-        font-weight: 500;
-      }
-    }
-  }
-
   &.loading {
     opacity: 0.7;
     pointer-events: none;
@@ -204,6 +190,21 @@ h3 {
   /* Se necessario, riduci anche la dimensione o l'allineamento del Data Powered by */
   .d-flex.align-items-center > span {
     font-size: 0.875rem;
+  }
+}
+
+table {
+  // Le proprietà strutturali (width, border-collapse, padding, etc.)
+  // sono già definite in _table.scss; qui si aggiungono solo gli override
+  // relativi alle celle per elementi crypto.
+  td {
+    &.positive {
+      color: green;
+    }
+
+    &.negative {
+      color: red;
+    }
   }
 }
 
@@ -247,5 +248,23 @@ h3 {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+.crypto-link {
+  color: black;
+  text-decoration: none;
+  display: block;
+  padding: 1rem;
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+  }
+  .dark-mode & {
+    color: base.$secondary-color;
   }
 }

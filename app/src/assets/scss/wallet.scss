@@ -9,6 +9,21 @@
   max-width: 1200px;
   margin: 0 auto;
 
+  .btn-delete {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: #ff4d4d;
+    font-size: 1rem;
+    &:hover {
+      color: #cc0000;
+    }
+    i {
+      pointer-events: none;
+    }
+  }
+
   .wallet-header {
     margin-bottom: 2rem;
 

@@ -75,6 +75,92 @@
   // =====================================================
   // Stili per le modal (overlay, contenuto standard e contenuto maggiore)
   // =====================================================
+  .modal-content {
+    background-color: map.get(base.$light-theme, background-color);
+    padding: base.$padding-md;
+    border-radius: base.$border-radius;
+    box-shadow: base.$box-shadow;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 20px rgba(color.scale(base.$primary-color, $lightness: -20%), 0.5);
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: base.$padding-lg;
+
+      .close-button {
+        border: none;
+        background: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+    }
+
+    .modal-body {
+      .form-group {
+        margin-bottom: base.$padding-sm;
+
+        label {
+          display: block;
+          margin-bottom: 5px;
+          z-index: inherit;
+        }
+        option,
+        input,
+        select,
+        textarea {
+          width: 100%;
+          padding: 8px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          box-sizing: border-box;
+        }
+
+        textarea {
+          min-height: 100px;
+        }
+      }
+    }
+
+    // Dark mode override per la modal standard
+    .dark-mode & {
+      background-color: map.get(base.$dark-theme, background-color);
+      border: 1px solid map.get(base.$dark-theme, navbar-background);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+
+      .modal-header {
+        border-bottom: 1px solid map.get(base.$dark-theme, navbar-background);
+        .close-button {
+          color: map.get(base.$dark-theme, text-color);
+        }
+      }
+
+      .modal-body {
+        .form-group {
+          label {
+            color: map.get(base.$dark-theme, text-color);
+          }
+          option,
+          input,
+          select,
+          textarea {
+            background-color: color.adjust(
+              map.get(base.$dark-theme, background-color),
+              $lightness: -5%
+            );
+            color: map.get(base.$dark-theme, text-color);
+            border: 1px solid map.get(base.$dark-theme, navbar-background);
+
+            &::placeholder {
+              color: color.adjust(map.get(base.$dark-theme, text-color), $lightness: 30%);
+            }
+          }
+        }
+      }
+    }
+  }
 
   .modal-overlay {
     position: fixed;
@@ -94,6 +180,7 @@
   }
 
   .modal-content-larger {
+    box-shadow: 0 4px 20px rgba(color.scale(base.$primary-color, $lightness: -20%), 0.5);
     position: relative;
     background-color: map.get(base.$light-theme, background-color); // Background per light mode
     padding: 2rem;
@@ -207,5 +294,16 @@
         }
       }
     }
+  }
+}
+@media (max-width: 768px) {
+  .modal-content {
+    width: 100%;
+    max-width: none;
+    border-radius: 0.25rem;
+    max-height: 100vh;
+    margin: 1rem;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(color.scale(base.$primary-color, $lightness: -20%), 0.5);
   }
 }
