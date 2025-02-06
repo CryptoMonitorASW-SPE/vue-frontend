@@ -1,11 +1,10 @@
-// composables/useSort.js
 import { ref, computed } from 'vue'
 
 export function useSort(data) {
   const sortKey = ref('name') // Chiave per ordinare
   const sortAsc = ref(true) // Ordinamento crescente o decrescente
 
-  // Funzione di ordinamento
+  // Aggiornata la funzione di ordinamento
   const sortTable = key => {
     if (sortKey.value === key) {
       // Inverti l'ordine
@@ -17,21 +16,27 @@ export function useSort(data) {
     }
   }
 
-  // Funzione per estrarre il valore corretto per ogni tipo di dato
+  // Mappatura per convertire il sortKey nel campo reale dell'oggetto crypto
   const getValueForSorting = (crypto, key) => {
-    if (
-      key === 'prices' ||
-      key === 'marketCap' ||
-      key === 'totalVolume' ||
-      key === 'high24h' ||
-      key === 'low24h' ||
-      key === 'priceChangePercentage24h'
-    ) {
-      return crypto[key]?.values?.usd || 0
-    } else if (key === 'circulatingSupply') {
-      return crypto[key] || 0
-    } else {
-      return crypto[key] || ''
+    switch (key) {
+      case 'prices':
+        return typeof crypto.price === 'number' ? crypto.price : 0
+      case 'marketCap':
+        return typeof crypto.marketCap === 'number' ? crypto.marketCap : 0
+      case 'totalVolume':
+        return typeof crypto.totalVolume === 'number' ? crypto.totalVolume : 0
+      case 'high24h':
+        return typeof crypto.high24h === 'number' ? crypto.high24h : 0
+      case 'low24h':
+        return typeof crypto.low24h === 'number' ? crypto.low24h : 0
+      case 'priceChangePercentage24h':
+        return typeof crypto.priceChangePercentage24h === 'number'
+          ? crypto.priceChangePercentage24h
+          : 0
+      case 'circulatingSupply':
+        return typeof crypto.circulatingSupply === 'number' ? crypto.circulatingSupply : 0
+      default:
+        return crypto[key] || ''
     }
   }
 
