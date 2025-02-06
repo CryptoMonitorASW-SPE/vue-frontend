@@ -16,6 +16,7 @@
   overflow-x: auto; // Enable horizontal scrolling on smaller screens
   -webkit-overflow-scrolling: touch; // Smooth scrolling on iOS
   position: relative;
+  justify-content: center;
 
   // Visually hint to scroll horizontally on mobile
   &::after {
@@ -45,6 +46,19 @@
   // For screen reader accessibility
   caption {
     @extend .sr-only;
+  }
+
+  table {
+    /* Keyframes */
+    @keyframes blink {
+      0%,
+      100% {
+        background-color: #81f29b;
+      }
+      50% {
+        background-color: transparent;
+      }
+    }
   }
 
   // THEAD (Light Mode)
@@ -85,6 +99,13 @@
       &:focus-within {
         outline: 2px solid base.$primary-color;
         outline-offset: -2px;
+      }
+
+      &.updated-row {
+        td {
+          background-color: #81f29b !important;
+          animation: blink 1s ease-in-out infinite;
+        }
       }
     }
     td {
@@ -141,6 +162,12 @@
         &:focus-within {
           outline: 2px solid map.get(base.$dark-theme, primary-color);
           outline-offset: -2px;
+        }
+        &.updated-row {
+          td {
+            background-color: #0357168c !important;
+            animation: blink 1s ease-in-out infinite;
+          }
         }
       }
       td {

@@ -1,6 +1,7 @@
 @use 'sass:color';
 @use 'sass:map';
 @use './base' as base;
+@use './_table';
 
 @include base.theme(base.$light-theme);
 .dark-mode {
@@ -151,109 +152,19 @@ h3 {
   }
 }
 
-/* Table Container */
-.table-container {
-  display: flex;
-  justify-content: center;
-  padding: 0 base.$padding-md;
-  width: 100%;
-  margin: base.$padding-lg 0;
-}
-
 /* Crypto Table */
 .crypto-table {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  margin-bottom: base.$padding-lg;
-  position: relative;
-
-  &::after {
-    content: '→';
-    position: absolute;
-    right: base.$padding-md;
-    top: 50%;
-    transform: translateY(-50%);
-
-    @media (min-width: 768px) {
-      display: none;
-    }
-  }
-
   table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: left;
-
-    caption {
-      @extend .sr-only;
-      content: 'Current cryptocurrency prices and changes';
-    }
-
-    th,
     td {
-      padding: base.$padding-sm;
-      border: none;
-      white-space: nowrap;
-    }
-
-    th {
-      background-color: map.get(base.$light-theme, secondary-color);
-      font-weight: 600;
-      color: base.$text-color;
-      cursor: pointer;
-      user-select: none;
-
-      &:hover,
-      &:focus-visible {
-        background-color: color.adjust(base.$secondary-color, $lightness: -10%);
+      .positive {
+        color: base.$success-color;
+        font-weight: 500;
       }
 
-      .dark-mode & {
-        background-color: map.get(base.$dark-theme, navbar-background);
-        color: map.get(base.$dark-theme, text-color);
+      .negative {
+        color: base.$error-color;
+        font-weight: 500;
       }
-    }
-
-    tr {
-      border-bottom: 1px solid #e0e0e0;
-
-      &:hover {
-        background-color: color.adjust(
-          map.get(base.$light-theme, background-color),
-          $lightness: -10%
-        );
-      }
-
-      .dark-mode & {
-        &:hover {
-          background-color: color.adjust(
-            map.get(base.$dark-theme, background-color),
-            $lightness: 10%
-          );
-        }
-      }
-
-      &.updated-row {
-        td {
-          background-color: #81f29b !important;
-          animation: blink 1s ease-in-out infinite;
-        }
-      }
-    }
-
-    td {
-      background-color: transparent;
-    }
-
-    .positive {
-      color: base.$success-color;
-      font-weight: 500;
-    }
-
-    .negative {
-      color: base.$error-color;
-      font-weight: 500;
     }
   }
 
@@ -268,17 +179,6 @@ h3 {
     border: 1px solid base.$error-color;
     border-radius: base.$border-radius;
     margin: base.$padding-md 0;
-  }
-
-  /* Keyframes */
-  @keyframes blink {
-    0%,
-    100% {
-      background-color: #81f29b;
-    }
-    50% {
-      background-color: transparent;
-    }
   }
 }
 
