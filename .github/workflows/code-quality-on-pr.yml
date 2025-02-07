@@ -30,12 +30,12 @@ jobs:
         id: eslint
         run: |
           npx eslint app/src/components/* \
-            app/src/layouts/* \
-            app/src/controllers/* \
-            app/src/composables/* \
-            app/src/stores/* \
+            app/src/layout/* \
+            app/src/controller/* \
+            app/src/composable/* \
+            app/src/store/* \
             app/src/routes/* \
-            app/src/views/* \
+            app/src/view/* \
             app/src/App.vue \
             app/src/main.js \
             --no-ignore > eslint-report.txt || true
