@@ -11,7 +11,7 @@
           deep insights into the digital financial world. Our mission is to empower users with
           real‑time market data and analytical tools.
         </p>
-        <p>
+        <p class="lead">
           Whether you're a seasoned investor or just beginning your crypto journey, our intuitive
           interface ensure you always have the latest information at your fingertips.
         </p>

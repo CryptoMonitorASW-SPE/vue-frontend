@@ -92,22 +92,6 @@ $dark-theme: (
   border: 0;
 }
 
-/* Global Styles */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
 body {
   margin: 0;
   font-family: $font-family;
@@ -201,5 +185,25 @@ p {
 .dropdown {
   .dark-mode & {
     color: map.get($dark-theme, text-color);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  transition:
+    background-color 0.3s ease,
+    color 0.1s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
