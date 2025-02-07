@@ -1,5 +1,4 @@
 <template>
-  <!-- Bind inherited attributes (like data-row) from the parent -->
   <tr
     v-bind="$attrs"
     :class="{ 'updated-row': crypto.updated }"
@@ -104,7 +103,7 @@
 
 <script>
 import { defineComponent } from 'vue'
-import { useFormat } from '@/composables/table/useFormat'
+import { useFormat } from '@/composable/table/useFormat'
 import { RouterLink } from 'vue-router'
 
 export default defineComponent({

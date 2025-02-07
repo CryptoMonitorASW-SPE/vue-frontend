@@ -1,19 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-// Remove static imports for views (or keep those you want loaded immediately)
-const HomeView = () => import('@/views/HomeView.vue')
-const AboutView = () => import('@/views/AboutView.vue')
-const CryptoDetail = () => import('@/views/CryptoDetail.vue')
-const ProfileView = () => import('@/views/ProfileView.vue')
-const ProfileWatchlist = () => import('@/views/ProfileWatchlist.vue')
-const ProfileWallet = () => import('@/views/ProfileWallet.vue')
-const LoginView = () => import('@/views/LoginView.vue')
-const SignupView = () => import('@/views/SignupView.vue')
+const HomeView = () => import('@/view/HomeView.vue')
+const AboutView = () => import('@/view/AboutView.vue')
+const CryptoDetail = () => import('@/view/CryptoDetail.vue')
+const ProfileView = () => import('@/view/ProfileView.vue')
+const ProfileWatchlist = () => import('@/view/ProfileWatchlist.vue')
+const ProfileWallet = () => import('@/view/ProfileWallet.vue')
+const LoginView = () => import('@/view/LoginView.vue')
+const SignupView = () => import('@/view/SignupView.vue')
 
 const routes = [
   {
     path: '/',
-    component: () => import('@/layouts/DefaultLayout.vue'),
+    component: () => import('@/layout/DefaultLayout.vue'),
     children: [
       { path: '', name: 'Home', component: HomeView },
       { path: 'about', name: 'About', component: AboutView },
@@ -45,17 +44,17 @@ const routes = [
   },
   {
     path: '/login',
-    component: () => import('@/layouts/DefaultLayout.vue'),
+    component: () => import('@/layout/DefaultLayout.vue'),
     children: [{ path: '', name: 'Login', component: LoginView, meta: { requiresUnauth: true } }]
   },
   {
     path: '/signup',
-    component: () => import('@/layouts/DefaultLayout.vue'),
+    component: () => import('@/layout/DefaultLayout.vue'),
     children: [{ path: '', name: 'Signup', component: SignupView, meta: { requiresUnauth: true } }]
   },
   {
     path: '/:pathMatch(.*)*',
-    component: () => import('@/layouts/DefaultLayout.vue'),
+    component: () => import('@/layout/DefaultLayout.vue'),
     children: [
       {
         path: '',
@@ -75,9 +74,8 @@ const router = createRouter({
   routes
 })
 
-// Navigation Guard (make sure to import useAuthenticationStore before using it)
 router.beforeEach(async (to, from, next) => {
-  const { useAuthenticationStore } = await import('@/stores/AuthenticationStore')
+  const { useAuthenticationStore } = await import('@/store/AuthenticationStore')
   const authStore = useAuthenticationStore()
 
   if (!authStore.isInitialized) {

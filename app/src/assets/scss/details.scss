@@ -142,23 +142,23 @@
 
         &.up {
           span {
-            color: #198754; /* Replaced base.$success-color with #198754 */
+            color: #198754;
           }
 
           .progress-bar {
-            background-color: #198754; /* Replaced base.$success-color with #198754 */
+            background-color: #198754;
           }
         }
 
         &.down {
-          margin-top: 16px; /* Replaced mt-3 (usually ~1rem or 16px) */
+          margin-top: 16px;
 
           span {
-            color: #dc3545; /* Replaced base.$danger-color with #dc3545 */
+            color: #dc3545;
           }
 
           .progress-bar {
-            background-color: #dc3545; /* Replaced base.$danger-color with #dc3545 */
+            background-color: #dc3545;
           }
         }
       }

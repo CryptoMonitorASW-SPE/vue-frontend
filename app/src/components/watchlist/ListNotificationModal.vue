@@ -152,8 +152,8 @@
 
 <script>
 import { computed, onMounted } from 'vue'
-import { useWatchlistStore } from '@/stores/WatchlistStore'
-import { useFormat } from '@/composables/table/useFormat'
+import { useWatchlistStore } from '@/store/WatchlistStore'
+import { useFormat } from '@/composable/table/useFormat'
 
 export default {
   name: 'ListNotificationModal',

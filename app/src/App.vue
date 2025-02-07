@@ -5,25 +5,20 @@
 <script setup>
 import { onMounted, onUnmounted } from 'vue'
 import { useToast } from 'vue-toastification'
-import { useCryptoStore } from '@/stores/CryptoStore'
+import { useCryptoStore } from '@/store/CryptoStore'
 
 const toast = useToast()
 const cryptoStore = useCryptoStore()
 
-// Handler for the custom event
 function handleUserSpecificEvent(event) {
   const data = event.detail
-  // Customize the toast content as needed. Here we assume data has a "message" property.
   toast.success(`${data.message}`, {
     timeout: 5000
-    // additional toast options if needed
   })
 }
 
 onMounted(() => {
-  // Initialize the socket connection
   cryptoStore.initializeSocket()
-  // Add the event listener for our custom event.
   window.addEventListener('user-specific-event', handleUserSpecificEvent)
 })
 

@@ -8,7 +8,6 @@
 
   <div v-else class="table-container">
     <table class="watchlist-table" role="grid" aria-label="Cryptocurrency Watchlist Table">
-      <!-- A caption that is visually hidden but announced by screen readers -->
       <caption class="visually-hidden">
         Cryptocurrency Watchlist Table
       </caption>
@@ -88,7 +87,7 @@
 
 <script>
 import { computed } from 'vue'
-import { useSort } from '@/composables/table/useSort'
+import { useSort } from '@/composable/table/useSort'
 import WatchlistTableRow from './WatchlistTableRow.vue'
 
 export default {

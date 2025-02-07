@@ -69,14 +69,13 @@ export default {
   emits: ['save', 'close'],
   setup(props, { emit }) {
     const cryptoId = ref(props.cryptocurrencies.length > 0 ? props.cryptocurrencies[0].id : null) // Default to first crypto if available
-    const price = ref(null) // make it null initially
+    const price = ref(null)
     const alertType = ref('below')
     const message = ref('')
     const currency = props.currency
     console.log('Currency prop:', currency)
 
     watchEffect(() => {
-      // If cryptoId is null and there are cryptocurrencies available, set it to the first one
       if (cryptoId.value === null && props.cryptocurrencies.length > 0) {
         cryptoId.value = props.cryptocurrencies[0].id
       }
@@ -99,7 +98,6 @@ export default {
       }
       console.log(notificationData)
       emit('save', notificationData)
-      // Reset form after submit
       cryptoId.value = props.cryptocurrencies.length > 0 ? props.cryptocurrencies[0].id : null
       price.value = null
       alertType.value = 'below'

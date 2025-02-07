@@ -3,13 +3,7 @@
 @use './base' as base;
 @use './_table';
 
-// NOTA: lo styling generico per la tabella (larghezza, border-collapse, thead/tbody, zebra striping, hover/focus, dark mode, ecc.)
-// è già definito in _table.scss. Qui si mantengono solo le regole uniche per la parte crypto e le modal.
-
 .crypto-table-container {
-  // =====================================================
-  // Header della tabella (univoco per la sezione crypto)
-  // =====================================================
   .table-header {
     display: flex;
     justify-content: space-between;
@@ -23,13 +17,7 @@
     }
   }
 
-  // =====================================================
-  // Regole specifiche per la tabella (crypto-specifiche)
-  // =====================================================
   table {
-    // Le proprietà strutturali (width, border-collapse, padding, etc.)
-    // sono già definite in _table.scss; qui si aggiungono solo gli override
-    // relativi alle celle per elementi crypto.
     td {
       .crypto-logo {
         width: 30px;
@@ -55,7 +43,6 @@
       }
     }
 
-    // Pulsante di eliminazione all’interno della tabella
     .btn-delete {
       background: none;
       border: none;
@@ -72,9 +59,6 @@
     }
   }
 
-  // =====================================================
-  // Stili per le modal (overlay, contenuto standard e contenuto maggiore)
-  // =====================================================
   .modal-content {
     background-color: map.get(base.$light-theme, background-color);
     padding: base.$padding-md;
@@ -124,7 +108,6 @@
       }
     }
 
-    // Dark mode override per la modal standard
     .dark-mode & {
       background-color: map.get(base.$dark-theme, background-color);
       border: 1px solid map.get(base.$dark-theme, navbar-background);
@@ -168,21 +151,21 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); // Colore overlay di default
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 10;
 
     .dark-mode & {
-      background-color: rgba(0, 0, 0, 0.7); // Overlay leggermente più scuro in dark mode
+      background-color: rgba(0, 0, 0, 0.7);
     }
   }
 
   .modal-content-larger {
     box-shadow: 0 4px 20px rgba(color.scale(base.$primary-color, $lightness: -20%), 0.5);
     position: relative;
-    background-color: map.get(base.$light-theme, background-color); // Background per light mode
+    background-color: map.get(base.$light-theme, background-color);
     padding: 2rem;
     border-radius: 5px;
     width: 80%;
@@ -211,9 +194,6 @@
       border-bottom: 1px solid map.get(base.$light-theme, navbar-background);
     }
 
-    // Per la tabella all’interno della modal maggiore,
-    // si rimuovono le regole duplicate (es. layout, padding, border, etc.)
-    // e si mantengono solo gli override specifici (stati, bottoni, etc.)
     table {
       .status-active {
         color: #28a745;
@@ -227,8 +207,8 @@
         border: none;
         padding: 0.3rem 0.6rem;
         cursor: pointer;
-        border-radius: 5px; // More rounded than the previous 3px
-        margin-right: 0.5rem; // Separation between action buttons
+        border-radius: 5px;
+        margin-right: 0.5rem;
 
         i {
           color: inherit;
@@ -243,8 +223,8 @@
         border: none;
         padding: 0.3rem 0.6rem;
         cursor: pointer;
-        border-radius: 5px; // More rounded than the previous 3px
-        margin-right: 0.5rem; // Separation between action buttons
+        border-radius: 5px;
+        margin-right: 0.5rem;
 
         i {
           color: inherit;

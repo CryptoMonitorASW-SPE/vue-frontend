@@ -178,7 +178,6 @@
 
     .balance-card,
     .chart-card {
-      // Imposto un background più scuro per garantire contrasto
       background-color: color.scale(map.get(base.$dark-theme, background-color), $lightness: -10%);
       box-shadow: none;
     }

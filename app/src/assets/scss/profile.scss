@@ -8,12 +8,12 @@
   justify-content: center;
   margin-left: auto;
   margin-right: auto;
-  padding: base.$padding-sm; // Assuming base.$padding-sm is defined
+  padding: base.$padding-sm;
   max-width: 100%;
 
   .card {
     background-color: map.get(base.$light-theme, secondary-color);
-    border-radius: base.$border-radius; // Assuming base.$border-radius is defined
+    border-radius: base.$border-radius;
     margin: 0 auto;
     transition: all 0.3s ease;
 
@@ -29,11 +29,11 @@
     }
 
     .card-body {
-      padding: base.$padding-md; // Assuming base.$padding-md is defined
+      padding: base.$padding-md;
     }
 
     h2 {
-      @extend .h4 !optional; // Use Bootstrap’s .h4 style (optional extend)
+      @extend .h4 !optional;
       margin-bottom: base.$padding-sm;
       color: map.get(base.$light-theme, text-color);
 
@@ -43,7 +43,7 @@
     }
 
     .form-label {
-      @extend .fw-bold !optional; // Use the Bootstrap .fw-bold utility (optional extend)
+      @extend .fw-bold !optional;
       margin-bottom: base.$padding-sm;
       color: map.get(base.$light-theme, text-color);
 
@@ -81,7 +81,7 @@
         }
         &:disabled {
           background-color: rgba(map.get(base.$dark-theme, background-color), 0.7);
-          color: map.get(base.$dark-theme, text-color); // Keep this, consistency.
+          color: map.get(base.$dark-theme, text-color);
         }
       }
     }
