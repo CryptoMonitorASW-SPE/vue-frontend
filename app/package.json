@@ -23,7 +23,7 @@
     "vue3-apexcharts": "^1.8.0"
   },
   "engines": {
-    "node": "22.13.1"
+    "node": "22.14.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
