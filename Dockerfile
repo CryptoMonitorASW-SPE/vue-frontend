@@ -1,5 +1,5 @@
 # Stage 1: Build the Vue.js application
-FROM node:22.14-alpine AS build
+FROM node:22.13-alpine AS build
 
 # Set working directory
 WORKDIR /app
@@ -17,7 +17,7 @@ COPY app/ .
 RUN npm run build
 
 # Stage 2: Serve the application with Nginx
-FROM nginx:stable as prod-stage
+FROM nginx:stable AS prod-stage
 
 # Remove default Nginx website
 #RUN rm -rf /usr/share/nginx/html/*

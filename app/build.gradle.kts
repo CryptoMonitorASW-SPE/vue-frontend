@@ -24,7 +24,7 @@ gitSemVer {
 }
 
 node {
-    version.set("22.14")
+    version.set("22.13.1")
     download.set(true)
     nodeProjectDir.set(file(project.projectDir))
 }
